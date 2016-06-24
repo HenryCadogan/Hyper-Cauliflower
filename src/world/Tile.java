@@ -2,6 +2,7 @@ package world;
 
 import entities.Entity;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Point;
 import states.Renderable;
 
@@ -10,8 +11,9 @@ import states.Renderable;
  */
 abstract class Tile implements Renderable{
 
-    public static final int TILE_WIDTH = 0,NORTH = 0, EAST = 1,SOUTH = 2, LEFT = 3; //pixel width of each tile
+    static final int TILE_WIDTH = 32,NORTH = 0, EAST = 1,SOUTH = 2, LEFT = 3; //cheeky temp 32
     private Chunk parent;
+    private SpriteSheet spriteSheet;
 
     public Tile(Chunk parent){
         this.parent = parent;
