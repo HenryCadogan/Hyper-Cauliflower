@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Matt on 24/06/2016.
  */
-public class GameState extends BasicGameState{
+public class GameState extends BasicGameState {
 
     private List<Renderable> renderables;
     private List<Updatable> updatables;
@@ -30,18 +30,20 @@ public class GameState extends BasicGameState{
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        for (Renderable r:renderables) {
-            r.render(graphics,new Point(-cameraPosition.getX(),-cameraPosition.getY()));
+        for (Renderable r : renderables) {
+            r.render(graphics, new Point(-cameraPosition.getX(), -cameraPosition.getY()));
         }
     }
 
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        for (Updatable u:updatables){
+        for (Updatable u : updatables) {
             u.update(this);
         }
     }
 
-    public Point getCameraPosition(){
+    public Point getCameraPosition() {
         return cameraPosition;
     }
+
+
 }
