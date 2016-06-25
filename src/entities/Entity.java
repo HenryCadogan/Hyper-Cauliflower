@@ -32,4 +32,5 @@ public abstract class Entity implements Renderable, Updatable{
         //drawing method
 
     }
+
 }
