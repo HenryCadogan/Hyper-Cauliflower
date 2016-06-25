@@ -16,8 +16,7 @@ public class RenderingWorld implements Renderable, Updatable{
     //maintains and draws the visible and soon-to-be visible tiles
 
     private int seed,u,v;
-    float mod;
-    private static final int STORED_WIDTH = 2+(Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = 2+(Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT);
+    private static final int STORED_WIDTH = 5+(Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = 5+(Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT);
     private Chunk[][] chunksLoaded;
 
     public RenderingWorld(int seed){
@@ -49,35 +48,31 @@ public class RenderingWorld implements Renderable, Updatable{
         Point br = chunksLoaded[adjustValue(u-1,STORED_WIDTH)][adjustValue(v-1,STORED_HEIGHT)].getLocation();
         if(cameraPosition.getX()<=tl.getX()){
             u = adjustValue(u-1,STORED_WIDTH);
-            mod = tl.getX()-1;
-            updateColumn();
+            updateColumn((int)tl.getX()-1,(int)tl.getY());
         }else if (br.getX()-cameraPosition.getX()<STORED_WIDTH+1){
             u = adjustValue(u+1,STORED_WIDTH);
-            mod = br.getX()+1;
-            updateColumn();
+            updateColumn((int)br.getX()+1,(int)tl.getY());
         }
         if(cameraPosition.getY()<=tl.getY()){
             v = adjustValue(v-1,STORED_HEIGHT);
-            mod = tl.getY() - 1;
-            updateRow();
+            updateRow((int)tl.getY() - 1,(int)tl.getX());
         }else if (br.getY()-cameraPosition.getY()<STORED_HEIGHT+1){
             v = adjustValue(v+1,STORED_HEIGHT);
-            mod = br.getY() + 1;
-            updateRow();
+            updateRow((int) br.getY() + 1,(int)tl.getX());
         }
     }
-    private void updateRow(){
+    private void updateRow(int mod,int x){
         int i = u;
         do{
-            chunksLoaded[i][v] = generateChunk(i,(int)mod);
+            chunksLoaded[i][v] = generateChunk(x++,mod);
             i = adjustValue(i+1,STORED_WIDTH);
         }while(i != u);
     }
 
-    private void updateColumn(){
+    private void updateColumn(int mod,int y){
         int j = v;
         do{
-            chunksLoaded[u][j] = generateChunk((int)mod,j);
+            chunksLoaded[u][j] = generateChunk(mod,y++);
             j = adjustValue(j+1,STORED_HEIGHT);
         }while(j != v);
     }
