@@ -11,12 +11,15 @@ import states.Renderable;
  */
 abstract class Tile implements Renderable{
 
-    static final int TILE_WIDTH = 32,NORTH = 0, EAST = 1,SOUTH = 2, LEFT = 3; //cheeky temp 32
-    private Chunk parent;
-    private SpriteSheet spriteSheet;
+    static final int TILE_WIDTH = 32; //cheeky temp 32
 
-    public Tile(Chunk parent){
+    private TileChunk parent;
+    private SpriteSheet spriteSheet;
+    private Point location;
+
+    public Tile(TileChunk parent, Point location){
         this.parent = parent;
+        this.location = location;
     }
 
     public boolean isPassable(){
@@ -24,8 +27,12 @@ abstract class Tile implements Renderable{
         return true;
     }
 
-    public Tile getAdjacentTile(int direction){
-        return null;
+    Tile getAdjacentTile(Point direction){
+        Point adj = new Point(direction.getX()+location.getX(),direction.getY()+location.getY());
+        if(adj.getX()!= 0 || adj.getX()!=1 || adj.getY() != 0 || adj.getY() != 1)
+            return parent.getPos(adj);
+        else
+            return parent.getAdjacent(direction).getPos(new Point(adj.getX()%2,adj.getY()%2));
     }
 
     public void render(Graphics graphics, Point offset){

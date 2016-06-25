@@ -27,5 +27,16 @@ public class RenderingWorld implements Renderable, Updatable{
 
     }
 
-    private void generateElement(Chunk parent, Point pos){}
+    private void generateElement(Chunk parent, Point pos){
+
+    }
+
+    /*
+    LIST OF THINGS TO DO
+    Make sure everything has a parent except the top level, getAdjacent method should create a non-existent parent in
+    the event of an out of bounds call being made to a parentless child.
+    Create the 2D cyclic queue
+    Think of a generating algorithm
+    Get a global coordinate producer
+     */
 }
