@@ -45,5 +45,4 @@ public class GameState extends BasicGameState {
         return cameraPosition;
     }
 
-
 }
