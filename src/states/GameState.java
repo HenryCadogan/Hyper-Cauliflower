@@ -26,7 +26,7 @@ public class GameState extends BasicGameState {
 
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         cameraPosition = new Point(0,0); //Change to being loaded from a file
-        RenderingWorld r = new RenderingWorld(0,cameraPosition);
+        RenderingWorld r = new RenderingWorld(0);
         renderables = new ArrayList<Renderable>();
         renderables.add(r);
         updatables = new ArrayList<Updatable>();
@@ -40,6 +40,8 @@ public class GameState extends BasicGameState {
     }
 
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+        cameraPosition.setX(cameraPosition.getX()+1);
+        //cameraPosition.setY(cameraPosition.getY()+2);
         for (Updatable u : updatables) {
             u.update(this);
         }

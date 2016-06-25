@@ -9,10 +9,9 @@ import org.newdawn.slick.SlickException;
 public class Main {
 
     private static final int FPS = 60;
-    public static final int INTERNAL_HEIGHT = 1080, INTERNAL_WIDTH = 1920;
+    public static final int INTERNAL_HEIGHT = 400, INTERNAL_WIDTH = 600;
 
     public static void main(String args[]){
-        System.out.println("Welcome to Matt and Henry hacking out a game");
         try {
             AppGameContainer container = new AppGameContainer(new Game());
             container.setDisplayMode(INTERNAL_WIDTH,INTERNAL_HEIGHT,false);

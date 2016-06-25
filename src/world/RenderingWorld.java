@@ -16,33 +16,82 @@ public class RenderingWorld implements Renderable, Updatable{
     //maintains and draws the visible and soon-to-be visible tiles
 
     private int seed,u,v;
-    private static final int STORED_WIDTH = 2+(Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT), STORED_HEIGHT = 2+(Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT);
-    private Point location;
+    float mod;
+    private static final int STORED_WIDTH = 2+(Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = 2+(Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT);
     private Chunk[][] chunksLoaded;
 
-    public RenderingWorld(int seed, Point location){
+    public RenderingWorld(int seed){
         this.seed = seed;
-        this.location = location;
+        u=v=0;
         chunksLoaded = new Chunk[STORED_WIDTH][STORED_HEIGHT];
-        for(int i = 0;i<STORED_WIDTH;i++){
-            for(int j = 0;j<STORED_HEIGHT;j++){
-                chunksLoaded[i][j]= new Chunk(Chunk.ChunkType.NORMAL);
+        for(int i = 0;i<STORED_WIDTH;i++) {
+            for (int j = 0; j < STORED_HEIGHT; j++) {
+                chunksLoaded[i][j] = generateChunk(i,j);
             }
         }
-
     }
 
     public void render(Graphics graphics, Point offset) {
-        for(int i = 0;i<STORED_WIDTH;i++){
-            for(int j = 0;j<STORED_HEIGHT;j++){
+        int i = u;
+        do{
+            int j = v;
+            do{
                 chunksLoaded[i][j].render(graphics,new Point(offset.getX()+(i<<Chunk.CHUNK_SHIFT),offset.getY()+(j<<Chunk.CHUNK_SHIFT)));
-            }
-        }
+                j = adjustValue(j+1, STORED_HEIGHT);
+            }while(j!=v);
+            i = adjustValue(i+1, STORED_WIDTH);
+        }while(i!=u);
     }
 
     public void update(GameState game) {
-
+        Point cameraPosition = new Point((int)game.getCameraPosition().getX()<<Chunk.CHUNK_SHIFT,(int)game.getCameraPosition().getY()<<Chunk.CHUNK_SHIFT);
+        Point tl = chunksLoaded[u][v].getLocation();
+        Point br = chunksLoaded[adjustValue(u-1,STORED_WIDTH)][adjustValue(v-1,STORED_HEIGHT)].getLocation();
+        if(cameraPosition.getX()<=tl.getX()){
+            u = adjustValue(u-1,STORED_WIDTH);
+            mod = tl.getX()-1;
+            updateColumn();
+        }else if (br.getX()-cameraPosition.getX()<STORED_WIDTH+1){
+            u = adjustValue(u+1,STORED_WIDTH);
+            mod = br.getX()+1;
+            updateColumn();
+        }
+        if(cameraPosition.getY()<=tl.getY()){
+            v = adjustValue(v-1,STORED_HEIGHT);
+            mod = tl.getY() - 1;
+            updateRow();
+        }else if (br.getY()-cameraPosition.getY()<STORED_HEIGHT+1){
+            v = adjustValue(v+1,STORED_HEIGHT);
+            mod = br.getY() + 1;
+            updateRow();
+        }
     }
+    private void updateRow(){
+        int i = u;
+        do{
+            chunksLoaded[i][v] = generateChunk(i,(int)mod);
+            i = adjustValue(i+1,STORED_WIDTH);
+        }while(i != u);
+    }
+
+    private void updateColumn(){
+        int j = v;
+        do{
+            chunksLoaded[u][j] = generateChunk((int)mod,j);
+            j = adjustValue(j+1,STORED_HEIGHT);
+        }while(j != v);
+    }
+
+    private Chunk generateChunk(int x, int y){
+        return new Chunk(Chunk.ChunkType.NORMAL, new Point(x, y));
+    }
+
+    private int adjustValue(int val, int comp){
+        if(val==comp)return 0;
+        else if(val==-1)return comp-1;
+        else return val;
+    }
+
     private Tile getTileAt(Point location){
         return null;
     }
