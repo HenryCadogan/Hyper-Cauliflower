@@ -8,6 +8,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import world.RenderingWorld;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,8 +25,11 @@ public class GameState extends BasicGameState {
     }
 
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        RenderingWorld r = new RenderingWorld();
+        cameraPosition = new Point(0,0); //Change to being loaded from a file
+        RenderingWorld r = new RenderingWorld(0,cameraPosition);
+        renderables = new ArrayList<Renderable>();
         renderables.add(r);
+        updatables = new ArrayList<Updatable>();
         updatables.add(r);
     }
 

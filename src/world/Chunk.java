@@ -1,36 +1,35 @@
 package world;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Point;
+import states.Renderable;
 
 /**
- * Created by Matt on 24/06/2016.
+ * Created by Matt on 25/06/2016.
  */
-abstract class Chunk<T> {//stores a 2^n by 2^n grid of tiles
+public class Chunk implements Renderable{
 
+    static final int CHUNK_SHIFT = 6, CHUNK_WIDTH = 1<<CHUNK_SHIFT;
 
-    protected T[][] elems;
-    abstract void save();
-    private Chunk<Chunk> parent;
-    private Point location;
+    enum ChunkType{NORMAL}
+    private ChunkType chunkType;
+    private Tile[][] tiles;
 
-    public Chunk(ChunkChunk parent, Point location){
-        this.parent = parent;
-        this.location = location;
+    Chunk(ChunkType chunkType){
+        this.chunkType = chunkType;
+        tiles = new Tile[CHUNK_WIDTH][CHUNK_WIDTH];
+        for(int i = 0;i<CHUNK_WIDTH;i++){
+            for(int j = 0;j<CHUNK_WIDTH;j++){
+                tiles[i][j] = new PlainTile();
+            }
+        }
     }
 
-    T getPos(Point pos){
-        return elems[(int)pos.getX()][(int)pos.getY()];
-    }
-
-    void setPos(Point pos, T elem){
-        elems[(int)pos.getX()][(int)pos.getY()] = elem;
-    }
-
-    public Chunk<T> getAdjacent(Point direction) {
-        Point adj = new Point(direction.getX()+location.getX(),direction.getY()+location.getY());
-        if(adj.getX()!= 0 || adj.getX()!=1 || adj.getY() != 0 || adj.getY() != 1)
-            return parent.getPos(adj);
-        else
-            return parent.getAdjacent(direction).getPos(new Point(adj.getX()%2,adj.getY()%2));
+    public void render(Graphics graphics, Point offset) {
+        for(int i = 0;i<CHUNK_WIDTH;i++){
+            for(int j = 0;j<CHUNK_WIDTH;j++){
+                tiles[i][j].render(graphics,new Point(offset.getX()+(i<<Tile.TILE_SHIFT),offset.getY()+(j<<Tile.TILE_SHIFT)));
+            }
+        }
     }
 }

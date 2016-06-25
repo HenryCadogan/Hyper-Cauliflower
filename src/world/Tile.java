@@ -1,6 +1,7 @@
 package world;
 
 import entities.Entity;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Point;
@@ -11,15 +12,13 @@ import states.Renderable;
  */
 abstract class Tile implements Renderable{
 
-    static final int TILE_WIDTH = 32; //cheeky temp 32
+    static final int TILE_SHIFT = 5,TILE_WIDTH = 1<<TILE_SHIFT; //cheeky temp 32
 
-    private TileChunk parent;
     private SpriteSheet spriteSheet;
     private Point location;
 
-    public Tile(TileChunk parent, Point location){
-        this.parent = parent;
-        this.location = location;
+    public Tile(){
+
     }
 
     public boolean isPassable(){
@@ -27,16 +26,11 @@ abstract class Tile implements Renderable{
         return true;
     }
 
-    Tile getAdjacentTile(Point direction){
-        Point adj = new Point(direction.getX()+location.getX(),direction.getY()+location.getY());
-        if(adj.getX()!= 0 || adj.getX()!=1 || adj.getY() != 0 || adj.getY() != 1)
-            return parent.getPos(adj);
-        else
-            return parent.getAdjacent(direction).getPos(new Point(adj.getX()%2,adj.getY()%2));
-    }
-
     public void render(Graphics graphics, Point offset){
-
+        graphics.setColor(Color.green);
+        graphics.fillRect(offset.getX(),offset.getY(),TILE_WIDTH,TILE_WIDTH);
+        graphics.setColor(Color.cyan);
+        graphics.drawRect(offset.getX(),offset.getY(),TILE_WIDTH,TILE_WIDTH);
     }
 
     public void onSteppedOn(Entity entity){

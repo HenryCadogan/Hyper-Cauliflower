@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Noise">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../Lib/noise-develop/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../../Lib/noise-develop/src/test/java" />
+    </SOURCES>
+  </library>
+</component>
