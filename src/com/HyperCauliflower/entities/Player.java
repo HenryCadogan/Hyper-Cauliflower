@@ -1,13 +1,12 @@
-package entities;
+package com.HyperCauliflower.entities;
 
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Point;
-import states.GameState;
+import com.HyperCauliflower.states.GameState;
 
 /**
  * Created by Matt on 24/06/2016.
  */
-public class Player extends Entity implements states.Renderable,states.Updatable{
+public class Player extends Entity implements com.HyperCauliflower.states.Renderable, com.HyperCauliflower.states.Updatable{
 
     public Player(SpriteSheet spriteSheet){
         super(spriteSheet);

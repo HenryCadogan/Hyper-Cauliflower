@@ -1,4 +1,4 @@
-package world;
+package com.HyperCauliflower.world;
 
 import org.newdawn.slick.geom.Point;
 

@@ -1,8 +1,8 @@
-package world;
+package com.HyperCauliflower.world;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Point;
-import states.Renderable;
+import com.HyperCauliflower.states.Renderable;
 
 /**
  * Created by Matt on 25/06/2016.

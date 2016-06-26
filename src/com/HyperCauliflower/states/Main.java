@@ -1,4 +1,4 @@
-package states;
+package com.HyperCauliflower.states;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;

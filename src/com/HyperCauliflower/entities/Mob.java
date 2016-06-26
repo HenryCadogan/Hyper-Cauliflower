@@ -1,4 +1,4 @@
-package entities;
+package com.HyperCauliflower.entities;
 
 import org.newdawn.slick.SpriteSheet;
 

@@ -1,4 +1,4 @@
-package states;
+package com.HyperCauliflower.states;
 
 /**
  * Created by Matt on 24/06/2016.

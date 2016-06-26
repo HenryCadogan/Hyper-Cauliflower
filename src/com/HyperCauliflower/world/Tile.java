@@ -1,11 +1,11 @@
-package world;
+package com.HyperCauliflower.world;
 
-import entities.Entity;
+import com.HyperCauliflower.entities.Entity;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Point;
-import states.Renderable;
+import com.HyperCauliflower.states.Renderable;
 
 /**
  * Created by Matt on 24/06/2016.

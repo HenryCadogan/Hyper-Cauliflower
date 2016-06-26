@@ -1,10 +1,10 @@
-package entities;
+package com.HyperCauliflower.entities;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Point;
-import states.Renderable;
-import states.Updatable;
+import com.HyperCauliflower.states.Renderable;
+import com.HyperCauliflower.states.Updatable;
 
 /**
  * Created by Matt on 24/06/2016.
