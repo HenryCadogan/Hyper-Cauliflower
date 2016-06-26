@@ -29,6 +29,8 @@ abstract class Tile implements Renderable{
     public void render(Graphics graphics, Point offset){
         graphics.setColor(Color.green);
         graphics.fillRect(offset.getX(),offset.getY(),TILE_WIDTH,TILE_WIDTH);
+        graphics.setColor(Color.cyan);
+        graphics.drawRect(offset.getX(),offset.getY(),TILE_WIDTH,TILE_WIDTH);
     }
 
     public void onSteppedOn(Entity entity){
