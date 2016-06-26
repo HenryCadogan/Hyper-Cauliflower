@@ -17,8 +17,8 @@ public abstract class Entity implements Renderable, Updatable{
     protected static final int CURRENT = 0, BASE = 1, SCALING = 2, ITEM = 3, SKILL = 4, BUFF = 5, MAXHP = 0, ARMOUR = 1, STR = 2, DEX = 3, INT = 4, MODCOUNT = 6, STATCOUNT = 5;
     protected float[][] stats;
 
-    public Entity(SpriteSheet spriteSheet){
-        this.spriteSheet = spriteSheet;
+    public Entity(String JsonObject){
+        //this.spriteSheet =
         stats = new float[MODCOUNT][STATCOUNT];
     }
 
