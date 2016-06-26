@@ -8,9 +8,8 @@ import com.HyperCauliflower.states.GameState;
  */
 public class Player extends Entity implements com.HyperCauliflower.states.Renderable, com.HyperCauliflower.states.Updatable{
 
-    public Player(SpriteSheet spriteSheet){
+    public Player(String spriteSheet){
         super(spriteSheet);
-
     }
 
     public void move(){

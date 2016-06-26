@@ -7,10 +7,9 @@ import org.newdawn.slick.SpriteSheet;
  */
 public abstract class Mob extends Entity{
 
-    public Mob(SpriteSheet spriteSheet){
-        super(spriteSheet);
-
-
+    public Mob(String JsonObject,SpriteSheet spriteSheet){
+        super(JsonObject);
     }
+
 
 }

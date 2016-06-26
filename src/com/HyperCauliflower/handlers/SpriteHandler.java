@@ -1,7 +1,7 @@
 package com.HyperCauliflower.handlers;
 
 import org.newdawn.slick.SpriteSheet;
-
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -28,14 +28,4 @@ public class SpriteHandler {
         }
         return null;
     }
-
-    public void loadtoHash(String Path){
-        //load com.HyperCauliflower.items from JSON file
-        //get Spritesheet, check if already in Spritemap
-        //if not add it
-    }
-
-
-
-
 }
