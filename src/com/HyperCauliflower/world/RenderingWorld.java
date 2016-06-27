@@ -91,7 +91,7 @@ public class RenderingWorld implements Renderable, Updatable{
         return null;
     }
 
-    /*
+    /*Todo
     LIST OF THINGS TO DO
     Create the 2D cyclic queue
     Make a new child when empty being accessed
@@ -99,8 +99,6 @@ public class RenderingWorld implements Renderable, Updatable{
 
     I THINK THIS CREATES A VARIABLE ORIGIN, CREATE FIX IF NECESSARY
     Get a global coordinate producer
-
-
 
      */
 }
