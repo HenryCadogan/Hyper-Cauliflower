@@ -22,8 +22,7 @@ public class SpriteHandler {
 
     private HashMap<String, SpriteSheet> spriteMap = new HashMap<>();
 
-    public SpriteHandler() {
-
+    public SpriteHandler(){
     }
 
     public SpriteSheet getSpriteSheet(String name) {
