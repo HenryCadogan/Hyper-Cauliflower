@@ -8,4 +8,9 @@ import org.newdawn.slick.geom.Point;
  */
 class WaterTile extends Tile {
     WaterTile(Point location, SpriteSheet spriteSheet, TileData tileData){super(location, spriteSheet,tileData);}
+
+    @Override
+    public boolean isLiquid(){
+        return true;
+    }
 }

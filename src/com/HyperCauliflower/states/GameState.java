@@ -1,6 +1,7 @@
 package com.HyperCauliflower.states;
 
 import com.HyperCauliflower.entities.Player;
+import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteHandler;
 import com.HyperCauliflower.world.RenderingWorld;
 import org.newdawn.slick.*;
@@ -26,8 +27,9 @@ public class GameState extends BasicGameState {
 
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         SpriteHandler spriteHandler = new SpriteHandler();
-        cameraPosition = new Point(1024,1024); //Change to being loaded from a file
-        RenderingWorld r = new RenderingWorld(14, spriteHandler);
+        SaveData s = new SaveHandler().get("test");
+        cameraPosition = s.getLocation(); //Change to being loaded from a file
+        RenderingWorld r = new RenderingWorld(s.getSeed(), spriteHandler);
         renderables = new ArrayList<Renderable>();
         renderables.add(r);
         updatables = new ArrayList<Updatable>();

@@ -32,6 +32,10 @@ abstract class Tile implements Renderable{
         return true;
     }
 
+    public boolean isLiquid(){
+        return false;
+    }
+
     public void render(Graphics graphics, Point offset){
         if(new Rectangle(-TILE_WIDTH,-TILE_WIDTH, Main.INTERNAL_WIDTH+2*TILE_WIDTH, Main.INTERNAL_HEIGHT+2*TILE_WIDTH).contains(offset)) {
             graphics.drawImage(spriteSheet.getSprite(spriteStart+RenderingWorld.getWorldFrame()/framesToAdvance,row),offset.getX(),offset.getY());

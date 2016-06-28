@@ -17,9 +17,12 @@ public class TownChunk extends Chunk {
             makeWall(0,i,spriteSheet,tileHandler);
             makeWall(CHUNK_WIDTH-1,i,spriteSheet,tileHandler);
         }
+        tiles[0][CHUNK_WIDTH/2] = new BasicTile(new Point(0,CHUNK_WIDTH/2),spriteSheet,tileHandler.get("grass"));
+        tiles[0][CHUNK_WIDTH/2+1] = new BasicTile(new Point(0,CHUNK_WIDTH/2),spriteSheet,tileHandler.get("grass"));
     }
 
     private void makeWall(int i, int j, SpriteSheet spriteSheet, TileHandler tileHandler){
-        tiles[i][j] = new WallTile(new Point(i,j), spriteSheet, tileHandler.get("town wall"));
+        if(!tiles[i][j].isLiquid())
+            tiles[i][j] = new WallTile(new Point(i,j), spriteSheet, tileHandler.get("town wall"));
     }
 }
