@@ -15,15 +15,22 @@ import java.util.HashMap;
 /**
  * Created by Henry on 25/06/2016.
  */
+
 public class SpriteHandler {
 
     private HashMap<String, SpriteSheet> spriteMap = new HashMap<>();
 
-    public SpriteHandler(){
+    public SpriteHandler() {
+        try {
+            loadSpriteSheets("res/JSON/test.JSON");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public SpriteSheet getSpriteSheet(String name) {
-
         try {
             if (spriteMap.get(name) != null) {
                 return spriteMap.get(name);
@@ -36,32 +43,12 @@ public class SpriteHandler {
         return null;
     }
 
-    private SpriteSheet loadImage(String path,int width, int height, int spacing) throws SlickException {
-        return new SpriteSheet(path,width,height,spacing);
+    private SpriteSheet loadImage(String path, int width, int height, int spacing) throws SlickException {
+        return new SpriteSheet(path, width, height, spacing);
     }
 
     //todo for each element in the json file
-    public void loadSpriteSheets(String path) throws IOException, ParseException{
-        JSONParser parser = new JSONParser();
-        try {
-            JSONObject jsonObject;
-            Object obj = parser.parse(new FileReader(path));
-
-            jsonObject = (JSONObject) obj;
-            JSONArray sprites = (JSONArray)jsonObject.get("sprites");
-            for(Object j:sprites){
-                jsonObject = (JSONObject) j;
-                this.spriteMap.put((String)jsonObject.get("name"),loadImage((String)jsonObject.get(path),(int)jsonObject.get("width"),(int)jsonObject.get("height"),(int)jsonObject.get("spacing")));
-            }
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Miguel probably did something wrong, go shout at him \n" +
-                    "but seriously, no sprite file found at: " + path );
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-
-    }
+    public void loadSpriteSheets(String path) throws IOException, ParseException {
+        JSONHandler spritehandler = new JSONHandler();
+        spritehandler.LoadSprites();
 }

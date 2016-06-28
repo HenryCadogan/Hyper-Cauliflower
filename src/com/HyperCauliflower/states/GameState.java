@@ -1,5 +1,6 @@
 package com.HyperCauliflower.states;
 
+import com.HyperCauliflower.handlers.SpriteHandler;
 import com.HyperCauliflower.world.RenderingWorld;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -32,6 +33,7 @@ public class GameState extends BasicGameState {
         renderables.add(r);
         updatables = new ArrayList<Updatable>();
         updatables.add(r);
+        SpriteHandler spriteHandler = new SpriteHandler();
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {

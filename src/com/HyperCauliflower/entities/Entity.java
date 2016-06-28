@@ -18,7 +18,6 @@ public abstract class Entity implements Renderable, Updatable{
     protected float[][] stats;
 
     public Entity(String JsonObject){
-        //this.spriteSheet =
         stats = new float[MODCOUNT][STATCOUNT];
     }
 
