@@ -3,8 +3,8 @@ package com.HyperCauliflower.states;
 import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SpriteHandler;
 import com.HyperCauliflower.world.RenderingWorld;
+import com.flowpowered.noise.module.source.Perlin;
 import org.newdawn.slick.*;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -26,14 +26,14 @@ public class GameState extends BasicGameState {
     }
 
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        SpriteHandler spriteHandler = new SpriteHandler();
         cameraPosition = new Point(0,0); //Change to being loaded from a file
-        RenderingWorld r = new RenderingWorld(0);
+        RenderingWorld r = new RenderingWorld(Perlin.DEFAULT_PERLIN_SEED, spriteHandler);
         renderables = new ArrayList<Renderable>();
         renderables.add(r);
         updatables = new ArrayList<Updatable>();
         updatables.add(r);
-        SpriteHandler spriteHandler = new SpriteHandler();
-        player = new Player(spriteHandler,"player");
+        //player = new Player(spriteHandler,"player");
 
     }
 
@@ -48,13 +48,19 @@ public class GameState extends BasicGameState {
 
 
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        cameraPosition.setX(cameraPosition.getX()+1);
-        //cameraPosition.setY(cameraPosition.getY()+2);
+        int speed = 10;
         if (gameContainer.getInput().isKeyDown(Input.KEY_W)){
-            player.move(0);
-            System.out.println("Matt is a faggot");
+            cameraPosition.setY(cameraPosition.getY()-speed);
         }
-
+        if (gameContainer.getInput().isKeyDown(Input.KEY_S)){
+            cameraPosition.setY(cameraPosition.getY()+speed);
+        }
+        if (gameContainer.getInput().isKeyDown(Input.KEY_A)){
+            cameraPosition.setX(cameraPosition.getX()-speed);
+        }
+        if (gameContainer.getInput().isKeyDown(Input.KEY_D)){
+            cameraPosition.setX(cameraPosition.getX()+speed);
+        }
         for (Updatable u : updatables) {
             u.update(this);
         }

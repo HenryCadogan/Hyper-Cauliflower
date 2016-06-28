@@ -14,7 +14,7 @@ public class Main {
     public static void main(String args[]){
         try {
             AppGameContainer container = new AppGameContainer(new Game());
-            container.setDisplayMode(INTERNAL_WIDTH,INTERNAL_HEIGHT,true);
+            container.setDisplayMode(INTERNAL_WIDTH,INTERNAL_HEIGHT,false);
             container.setTargetFrameRate(FPS);
             container.start();
         } catch (SlickException e){

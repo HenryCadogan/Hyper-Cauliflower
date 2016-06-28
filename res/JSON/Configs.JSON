@@ -1,7 +1,7 @@
 {
  "sprites":[
-   {"name":"player",
-     "path":"res/sprites/player.png",
+   {"name":"tiles",
+     "path":"res/sprites/tiles.png",
      "height":32,
      "width":32
    }

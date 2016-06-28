@@ -1,9 +1,11 @@
 package com.HyperCauliflower.world;
 
+import com.HyperCauliflower.handlers.SpriteHandler;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Main;
 import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
+import com.flowpowered.noise.module.source.Perlin;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Point;
 
@@ -17,11 +19,15 @@ public class RenderingWorld implements Renderable, Updatable{
 
     private int seed,u,v;
     private static final int BUFFER = 6, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
-    //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 1, STORED_WIDTH = 6, STORED_HEIGHT = 3;
+    //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 2, STORED_WIDTH = 8, STORED_HEIGHT = 8;
     private Chunk[][] chunksLoaded;
-
-    public RenderingWorld(int seed){
-        this.seed = seed;
+    private Perlin noiseGen;
+    private SpriteHandler spriteHandler;
+    public RenderingWorld(int seed, SpriteHandler spriteHandler){
+        this.spriteHandler = spriteHandler;
+        noiseGen = new Perlin();
+        noiseGen.setOctaveCount(6);
+        noiseGen.setSeed(seed);
         u=v=0;
         chunksLoaded = new Chunk[STORED_WIDTH][STORED_HEIGHT];
         for(int i = 0;i<STORED_WIDTH;i++) {
@@ -91,7 +97,7 @@ public class RenderingWorld implements Renderable, Updatable{
     }
 
     private Chunk generateChunk(int x, int y){
-        return new Chunk(Chunk.ChunkType.NORMAL, new Point(x, y));
+        return new Chunk(Chunk.ChunkType.NORMAL, new Point(x, y),noiseGen, spriteHandler);
     }
 
     private int adjustValue(int val, int comp){
@@ -103,15 +109,4 @@ public class RenderingWorld implements Renderable, Updatable{
     private Tile getTileAt(Point location){
         return null;
     }
-
-    /*Todo
-    LIST OF THINGS TO DO
-    Create the 2D cyclic queue
-    Make a new child when empty being accessed
-    Think of a generating algorithm
-
-    I THINK THIS CREATES A VARIABLE ORIGIN, CREATE FIX IF NECESSARY
-    Get a global coordinate producer
-
-     */
 }
