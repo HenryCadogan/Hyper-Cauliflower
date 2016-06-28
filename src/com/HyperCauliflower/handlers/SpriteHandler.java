@@ -10,8 +10,6 @@ public class SpriteHandler extends JSONHandler<SpriteSheet> {
 
     public SpriteHandler(String name){
         super(name);
-
-
     }
 
     @Override
