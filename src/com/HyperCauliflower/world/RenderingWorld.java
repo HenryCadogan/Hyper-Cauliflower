@@ -16,7 +16,7 @@ public class RenderingWorld implements Renderable, Updatable{
 
     private int seed,u,v;
     //private static final int STORED_WIDTH = 5+(Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = 5+(Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT);
-    private static final int STORED_WIDTH = 3, STORED_HEIGHT = 2;
+    private static final int STORED_WIDTH = 4, STORED_HEIGHT = 3;
     private Chunk[][] chunksLoaded;
 
     public RenderingWorld(int seed){

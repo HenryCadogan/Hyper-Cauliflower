@@ -11,13 +11,13 @@ import java.util.HashMap;
  * Created by Henry on 28/06/2016.
  */
 
-public abstract class JSONHandler<T> {
+abstract class JSONHandler<T> {
 
     private static String PATH = "MIGUEL PUT THE PATH HERE";
-    JSONArray obj;
-    HashMap<String,T> shit;
+    private JSONArray obj;
+    private HashMap<String,T> shit;
 
-    public JSONHandler(String name) throws Exception{ //todo: don't leave this like this
+    JSONHandler(String name) throws Exception{ //todo: don't leave this like this
         obj = (JSONArray)((JSONObject)new JSONParser().parse(new FileReader(PATH))).get(name);
         shit = new HashMap<String, T>();
         for (Object j:obj){
