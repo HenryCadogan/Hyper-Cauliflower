@@ -16,7 +16,7 @@ public class RenderingWorld implements Renderable, Updatable{
 
     private int seed,u,v;
     //private static final int STORED_WIDTH = 5+(Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = 5+(Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT);
-    private static final int STORED_WIDTH = 2, STORED_HEIGHT = 2;
+    private static final int STORED_WIDTH = 3, STORED_HEIGHT = 2;
     private Chunk[][] chunksLoaded;
 
     public RenderingWorld(int seed){
@@ -35,7 +35,7 @@ public class RenderingWorld implements Renderable, Updatable{
         do{
             int j = v;
             do{
-                chunksLoaded[i][j].render(graphics,new Point(offset.getX()+(i<<Chunk.CHUNK_SHIFT),offset.getY()+(j<<Chunk.CHUNK_SHIFT)));
+                chunksLoaded[i][j].render(graphics,new Point(offset.getX()+(i<<Chunk.CHUNK_SHIFT<<Tile.TILE_SHIFT),offset.getY()+(j<<Chunk.CHUNK_SHIFT<<Tile.TILE_SHIFT)));
                 j = adjustValue(j+1, STORED_HEIGHT);
             }while(j!=v);
             i = adjustValue(i+1, STORED_WIDTH);

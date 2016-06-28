@@ -45,10 +45,10 @@ public class GameState extends BasicGameState {
 
 
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        //cameraPosition.setX(cameraPosition.getX()-1);
+        cameraPosition.setX(cameraPosition.getX()+1);
         //cameraPosition.setY(cameraPosition.getY()+2);
         for (Updatable u : updatables) {
-        //    u.update(this);
+            u.update(this);
         }
     }
 
