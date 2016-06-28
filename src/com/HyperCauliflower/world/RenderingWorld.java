@@ -1,6 +1,7 @@
 package com.HyperCauliflower.world;
 
 import com.HyperCauliflower.states.GameState;
+import com.HyperCauliflower.states.Main;
 import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
 import org.newdawn.slick.Graphics;
@@ -15,8 +16,8 @@ public class RenderingWorld implements Renderable, Updatable{
     //maintains and draws the visible and soon-to-be visible tiles
 
     private int seed,u,v;
-    //private static final int STORED_WIDTH = 5+(Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = 5+(Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT);
-    private static final int STORED_WIDTH = 4, STORED_HEIGHT = 3;
+    private static final int BUFFER = 6, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
+    //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 1, STORED_WIDTH = 6, STORED_HEIGHT = 3;
     private Chunk[][] chunksLoaded;
 
     public RenderingWorld(int seed){
@@ -35,30 +36,42 @@ public class RenderingWorld implements Renderable, Updatable{
         do{
             int j = v;
             do{
-                chunksLoaded[i][j].render(graphics,new Point(offset.getX()+(i<<Chunk.CHUNK_SHIFT<<Tile.TILE_SHIFT),offset.getY()+(j<<Chunk.CHUNK_SHIFT<<Tile.TILE_SHIFT)));
+                Chunk c = chunksLoaded[i][j];
+                c.render(graphics,new Point(offset.getX()+(((int)c.getLocation().getX())*Chunk.CHUNK_WIDTH*Tile.TILE_WIDTH),offset.getY()+(((int)c.getLocation().getY())*Chunk.CHUNK_WIDTH*Tile.TILE_WIDTH)));
                 j = adjustValue(j+1, STORED_HEIGHT);
             }while(j!=v);
             i = adjustValue(i+1, STORED_WIDTH);
         }while(i!=u);
     }
 
+    private Point getTL(){
+        return chunksLoaded[u][v].getLocation();
+    }
+
+    private Point getBR(){
+        return chunksLoaded[adjustValue(u-1,STORED_WIDTH)][adjustValue(v-1,STORED_HEIGHT)].getLocation();
+    }
     public void update(GameState game) {
-        Point cameraPosition = new Point((int)game.getCameraPosition().getX()<<Chunk.CHUNK_SHIFT,(int)game.getCameraPosition().getY()<<Chunk.CHUNK_SHIFT);
-        Point tl = chunksLoaded[u][v].getLocation();
-        Point br = chunksLoaded[adjustValue(u-1,STORED_WIDTH)][adjustValue(v-1,STORED_HEIGHT)].getLocation();
-        if(cameraPosition.getX()<=tl.getX()+1){
+        Point cameraPosition = new Point((int)game.getCameraPosition().getX()/Chunk.CHUNK_WIDTH/Tile.TILE_WIDTH,(int)game.getCameraPosition().getY()/Chunk.CHUNK_WIDTH/Tile.TILE_WIDTH);
+        if(cameraPosition.getX()-getTL().getX()< (SCREEN_WIDTH/2)+2){
+            Point tl = getTL();
             u = adjustValue(u-1,STORED_WIDTH);
             updateColumn((int)tl.getX()-1,(int)tl.getY());
-        }else if (br.getX()-cameraPosition.getX()<STORED_WIDTH-2){
-            u = adjustValue(u+1,STORED_WIDTH);
-            updateColumn((int)br.getX()+1,(int)tl.getY());
+        }else if (getBR().getX()-cameraPosition.getX()< (SCREEN_WIDTH/2)+1) {
+            Point tl = getTL();
+            Point br = getBR();
+            updateColumn((int) br.getX() + 1, (int) tl.getY());
+            u = adjustValue(u + 1, STORED_WIDTH);
         }
-        if(cameraPosition.getY()<=tl.getY()){
+        if(cameraPosition.getY()-getTL().getY()< (SCREEN_HEIGHT/2)+2){
+            Point tl = getTL();
             v = adjustValue(v-1,STORED_HEIGHT);
             updateRow((int)tl.getY() - 1,(int)tl.getX());
-        }else if (br.getY()-cameraPosition.getY()<STORED_HEIGHT+1){
-            v = adjustValue(v+1,STORED_HEIGHT);
+        }else if (getBR().getY()-cameraPosition.getY()< (SCREEN_HEIGHT/2)+1){
+            Point br = getBR();
+            Point tl = getTL();
             updateRow((int) br.getY() + 1,(int)tl.getX());
+            v = adjustValue(v+1,STORED_HEIGHT);
         }
     }
     private void updateRow(int mod,int x){

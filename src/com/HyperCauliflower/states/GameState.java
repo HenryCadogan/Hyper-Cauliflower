@@ -38,7 +38,7 @@ public class GameState extends BasicGameState {
         graphics.setColor(Color.black);
         graphics.fillRect(0,0,Main.INTERNAL_WIDTH,Main.INTERNAL_HEIGHT);
         for (Renderable r : renderables) {
-            r.render(graphics, new Point(-cameraPosition.getX(), -cameraPosition.getY()));
+            r.render(graphics, new Point((Main.INTERNAL_WIDTH/2)-cameraPosition.getX(), (Main.INTERNAL_HEIGHT/2)-cameraPosition.getY()));
         }
     }
 
@@ -46,7 +46,7 @@ public class GameState extends BasicGameState {
 
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         cameraPosition.setX(cameraPosition.getX()+1);
-        //cameraPosition.setY(cameraPosition.getY()+2);
+        cameraPosition.setY(cameraPosition.getY()+1);
         for (Updatable u : updatables) {
             u.update(this);
         }

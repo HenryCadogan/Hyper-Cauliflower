@@ -10,7 +10,7 @@ import org.newdawn.slick.geom.Point;
  */
 public class Chunk implements Renderable{
 
-    static final int CHUNK_SHIFT = 1, CHUNK_WIDTH = 1<<CHUNK_SHIFT;
+    static final int CHUNK_SHIFT = 4, CHUNK_WIDTH = 1<<CHUNK_SHIFT;
 
     enum ChunkType{NORMAL}
     private ChunkType chunkType;

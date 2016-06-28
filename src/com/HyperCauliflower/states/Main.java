@@ -8,13 +8,13 @@ import org.newdawn.slick.SlickException;
  */
 public class Main {
 
-    private static final int FPS = 10;
-    public static final int INTERNAL_HEIGHT = 400, INTERNAL_WIDTH = 600;
+    private static final int FPS = 60;
+    public static final int INTERNAL_HEIGHT = 1080, INTERNAL_WIDTH = 1920;
 
     public static void main(String args[]){
         try {
             AppGameContainer container = new AppGameContainer(new Game());
-            container.setDisplayMode(INTERNAL_WIDTH,INTERNAL_HEIGHT,false);
+            container.setDisplayMode(INTERNAL_WIDTH,INTERNAL_HEIGHT,true);
             container.setTargetFrameRate(FPS);
             container.start();
         } catch (SlickException e){
