@@ -14,28 +14,46 @@ import static com.HyperCauliflower.world.Tile.TILE_SHIFT;
 /**
  * Created by Matt on 25/06/2016.
  */
-public class Chunk implements Renderable{
+public abstract class Chunk implements Renderable{
 
     static final int CHUNK_SHIFT = 6, CHUNK_WIDTH = 1<<CHUNK_SHIFT, CHUNK_ABS_WIDTH = CHUNK_WIDTH<<TILE_SHIFT;
 
     protected Tile[][] tiles;
-    private Point location;//chunk coords
+    private Point location;
 
-    Chunk(Point location, Perlin noiseGen, SpriteSheet spriteSheet, TileHandler tileHandler){
+    protected Chunk(Point location, Tile[][] tiles){
+        this.tiles = tiles;
         this.location = location;
-        tiles = new Tile[CHUNK_WIDTH][CHUNK_WIDTH];
+    }
+
+
+    static Chunk makeChunk(Point location, Perlin noiseGen, SpriteSheet spriteSheet, TileHandler tileHandler, boolean town){
+        Tile[][] r = new Tile[CHUNK_WIDTH][CHUNK_WIDTH];
         for(int i = 0;i<CHUNK_WIDTH;i++){
             for(int j = 0;j<CHUNK_WIDTH;j++){
                 double tileVal = noiseGen.getValue((double)(location.getX()*CHUNK_WIDTH+i)/1000,(double)(location.getY()*CHUNK_WIDTH+j)/1000,0);
                 if (tileVal>0.6 || (tileVal>0.075 && tileVal < 0.1))
-                    tiles[i][j] = new WaterTile(new Point(i,j),spriteSheet, tileHandler.get("water"));
+                    r[i][j] = new WaterTile(new Point(i,j),spriteSheet, tileHandler.get("water"));
                 else if(tileVal > 0.50 || tileVal <-0.8)
-                    tiles[i][j] = new BasicTile(new Point(i,j),spriteSheet, tileHandler.get("sand"));
+                    r[i][j] = new BasicTile(new Point(i,j),spriteSheet, tileHandler.get("sand"));
                 else
-                    tiles[i][j] = new BasicTile(new Point(i,j), spriteSheet, tileHandler.get("grass"));
+                    r[i][j] = new BasicTile(new Point(i,j), spriteSheet, tileHandler.get("grass"));
             }
         }
+        boolean liquid = false;
+        for(Tile[] ta:r)
+            for(Tile t:ta)
+                liquid = liquid || t.isLiquid();
+        if(!liquid)
+            return new TownChunk(location, r, spriteSheet, tileHandler);
+        else
+            return new BasicChunk(location, r);
     }
+
+
+
+
+
 
     public void render(Graphics graphics, Point offset) {
         if(new Rectangle(-CHUNK_ABS_WIDTH,-CHUNK_ABS_WIDTH, Main.INTERNAL_WIDTH+(CHUNK_ABS_WIDTH<<2), Main.INTERNAL_HEIGHT+(CHUNK_ABS_WIDTH<<2)).contains(offset)) {

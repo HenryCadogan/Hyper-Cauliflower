@@ -1,6 +1,5 @@
 package com.HyperCauliflower.world;
 
-import com.flowpowered.noise.module.source.Perlin;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Point;
 
@@ -9,8 +8,8 @@ import org.newdawn.slick.geom.Point;
  */
 public class TownChunk extends Chunk {
 
-    TownChunk(Point location, Perlin noiseGen, SpriteSheet spriteSheet, TileHandler tileHandler) {
-        super(location, noiseGen, spriteSheet, tileHandler);
+    TownChunk(Point location, Tile[][] tiles, SpriteSheet spriteSheet, TileHandler tileHandler) {
+        super(location, tiles);
         for(int i = 0; i<CHUNK_WIDTH; i++){
             makeWall(i,0,spriteSheet,tileHandler);
             makeWall(i,CHUNK_WIDTH-1,spriteSheet,tileHandler);
