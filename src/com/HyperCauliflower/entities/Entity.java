@@ -14,6 +14,7 @@ import com.HyperCauliflower.states.Updatable;
 public abstract class Entity implements Renderable, Updatable{
     protected Point location;
     private SpriteSheet spriteSheet;
+    public int moveSpeed;
 
     private int level;
     protected static final int CURRENT = 0, BASE = 1, SCALING = 2, ITEM = 3, SKILL = 4, BUFF = 5, MAXHP = 0, ARMOUR = 1, STR = 2, DEX = 3, INT = 4, MODCOUNT = 6, STATCOUNT = 5;

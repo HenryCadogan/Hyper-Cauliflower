@@ -14,14 +14,33 @@ public class Player extends Entity{
 
     public Player(SpriteHandler spriteHandler, String name) {
         super(spriteHandler,name);
+        this.movementModifier =1;
+        this.moveSpeed = 1;
 
     }
 
     public void move(int dir){
         if (dir == 0){
-            this.location.setX(this.location.getX() + 1*movementModifier);
+            this.location.setY(this.location.getY() - (this.moveSpeed * movementModifier));
+        }
+        if (dir == 1){
+            this.location.setX(this.location.getX() + (this.moveSpeed * movementModifier));
+        }
+        if (dir == 2){
+            this.location.setY(this.location.getY() + (this.moveSpeed * movementModifier));
+        }
+        if (dir == 3){
+            this.location.setX(this.location.getX() - (this.moveSpeed * movementModifier));
         }
 
+    }
+
+    public void setPlayerMoveSpeed(int speed){
+        this.moveSpeed = speed;
+    }
+
+    public void setPlayerSpeedModifier(int mod){
+        this.movementModifier = mod;
     }
 
     public void update(GameState game) {

@@ -49,18 +49,18 @@ public class GameState extends BasicGameState {
 
 
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        int speed = 10;
+
         if (gameContainer.getInput().isKeyDown(Input.KEY_W)){
-            cameraPosition.setY(cameraPosition.getY()-speed);
+            player.move(0);
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_S)){
-            cameraPosition.setY(cameraPosition.getY()+speed);
+            player.move(2);
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_A)){
-            cameraPosition.setX(cameraPosition.getX()-speed);
+            player.move(4);
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_D)){
-            cameraPosition.setX(cameraPosition.getX()+speed);
+            player.move(1);
         }
         for (Updatable u : updatables) {
             u.update(this);
