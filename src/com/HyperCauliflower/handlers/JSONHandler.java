@@ -3,54 +3,29 @@ package com.HyperCauliflower.handlers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.newdawn.slick.SlickException;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Henry on 28/06/2016.
  */
 
-public class JSONHandler {
-    ArrayList<String> paths = new ArrayList<>();
+public class JSONHandler<T> {
 
-    public JSONHandler(){
-        paths = loadPaths();
-    }
+    private static String PATH = "MIGUEL PUT THE PATH HERE";
+    JSONArray obj;
+    HashMap<String,T> shit;
 
-    private ArrayList<String> loadPaths(){
-        return null;
-    }
-
-
-    public void LoadSprites(String path) {
-        JSONParser parser = new JSONParser();
-        try {
-            JSONObject jsonObject;
-            Object obj = parser.parse(new FileReader(path));
-
-            jsonObject = (JSONObject) obj;
-            JSONArray sprites = (JSONArray) jsonObject.get("sprites");
-            for (Object j : sprites) {
-                jsonObject = (JSONObject) j;
-                this.spriteMap.put((String) jsonObject.get("name"), SpriteHandler.((String) jsonObject.get(path), (int) jsonObject.get("width"), (int) jsonObject.get("height"), (int) jsonObject.get("spacing")));
-                System.out.println((String) jsonObject.get("name"));
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Matt probably did something wrong, go shout at him \n" +
-                    "but seriously, no sprite file found at: " + path);
-        } catch (SlickException e) {
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
-        } catch (ParseException e){
-            e.printStackTrace();
+    public JSONHandler(String name, Loadable<T> func) throws Exception{ //todo: don't leave this like this
+        obj = (JSONArray)((JSONObject)new JSONParser().parse(new FileReader(PATH))).get(name);
+        shit = new HashMap<String, T>();
+        for (Object j:obj){
+            shit.put((String)((JSONObject) j).get("name"),func.load((JSONObject) j));
         }
+    }
 
+    public T get(String key){
+        return shit.get(key);
     }
 }
