@@ -32,7 +32,7 @@ public abstract class Item implements Renderable {
             //epic
         }else if(rand >= 57){
             rarity = 4;
-            //Sheep
+            //legendary
 
         }
             //todo Throw error for invalid rarity
