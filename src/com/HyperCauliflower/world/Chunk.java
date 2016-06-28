@@ -16,21 +16,18 @@ import static com.HyperCauliflower.world.Tile.TILE_SHIFT;
  */
 public class Chunk implements Renderable{
 
-    static final int CHUNK_SHIFT = 5, CHUNK_WIDTH = 1<<CHUNK_SHIFT, CHUNK_ABS_WIDTH = CHUNK_WIDTH<<TILE_SHIFT;
+    static final int CHUNK_SHIFT = 6, CHUNK_WIDTH = 1<<CHUNK_SHIFT, CHUNK_ABS_WIDTH = CHUNK_WIDTH<<TILE_SHIFT;
 
-    enum ChunkType{NORMAL}
-    private ChunkType chunkType;
-    private Tile[][] tiles;
+    protected Tile[][] tiles;
     private Point location;//chunk coords
 
-    Chunk(ChunkType chunkType, Point location, Perlin noiseGen, SpriteSheet spriteSheet, TileHandler tileHandler){
+    Chunk(Point location, Perlin noiseGen, SpriteSheet spriteSheet, TileHandler tileHandler){
         this.location = location;
-        this.chunkType = chunkType;
         tiles = new Tile[CHUNK_WIDTH][CHUNK_WIDTH];
         for(int i = 0;i<CHUNK_WIDTH;i++){
             for(int j = 0;j<CHUNK_WIDTH;j++){
                 double tileVal = noiseGen.getValue((double)(location.getX()*CHUNK_WIDTH+i)/1000,(double)(location.getY()*CHUNK_WIDTH+j)/1000,0);
-                if (tileVal>0.6 || (tileVal>0 && tileVal < 0.1))
+                if (tileVal>0.6 || (tileVal>0.075 && tileVal < 0.1))
                     tiles[i][j] = new WaterTile(new Point(i,j),spriteSheet, tileHandler.get("water"));
                 else if(tileVal > 0.50 || tileVal <-0.8)
                     tiles[i][j] = new BasicTile(new Point(i,j),spriteSheet, tileHandler.get("sand"));

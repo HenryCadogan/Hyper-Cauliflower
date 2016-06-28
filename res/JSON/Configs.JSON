@@ -25,5 +25,11 @@
       "endFrame":5,
       "row":0
     }
+    {
+      "name":"town wall",
+      "startFrame":0,
+      "endFrame":0,
+      "row":1
+    }
   ]
 }

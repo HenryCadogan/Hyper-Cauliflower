@@ -3,7 +3,6 @@ package com.HyperCauliflower.states;
 import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SpriteHandler;
 import com.HyperCauliflower.world.RenderingWorld;
-import com.flowpowered.noise.module.source.Perlin;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.BasicGameState;
@@ -27,8 +26,8 @@ public class GameState extends BasicGameState {
 
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         SpriteHandler spriteHandler = new SpriteHandler();
-        cameraPosition = new Point(0,0); //Change to being loaded from a file
-        RenderingWorld r = new RenderingWorld(Perlin.DEFAULT_PERLIN_SEED, spriteHandler);
+        cameraPosition = new Point(1024,1024); //Change to being loaded from a file
+        RenderingWorld r = new RenderingWorld(14, spriteHandler);
         renderables = new ArrayList<Renderable>();
         renderables.add(r);
         updatables = new ArrayList<Updatable>();

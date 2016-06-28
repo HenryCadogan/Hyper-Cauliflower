@@ -104,7 +104,10 @@ public class RenderingWorld implements Renderable, Updatable{
     }
 
     private Chunk generateChunk(int x, int y){
-        return new Chunk(Chunk.ChunkType.NORMAL, new Point(x, y),noiseGen, spriteHandler.get("tiles"), tileHandler);
+        if (x==0 && y==0)
+            return new TownChunk(new Point(x, y),noiseGen, spriteHandler.get("tiles"), tileHandler);
+        else
+            return new Chunk(new Point(x, y),noiseGen, spriteHandler.get("tiles"), tileHandler);
     }
 
     private int adjustValue(int val, int comp){
