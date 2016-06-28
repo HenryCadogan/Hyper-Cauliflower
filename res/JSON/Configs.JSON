@@ -5,5 +5,25 @@
      "height":32,
      "width":32
    }
- ]
+ ],
+  "tiles":[
+    {
+      "name":"grass",
+      "startFrame":0,
+      "endFrame":0,
+      "row":0
+    },
+    {
+      "name":"water",
+      "startFrame":1,
+      "endFrame":4,
+      "row":0
+    },
+    {
+      "name":"sand",
+      "startFrame":5,
+      "endFrame":5,
+      "row":0
+    }
+  ]
 }

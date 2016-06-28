@@ -4,7 +4,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.newdawn.slick.SlickException;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,13 +13,13 @@ import java.util.HashMap;
  * Created by Henry on 28/06/2016.
  */
 
-abstract class JSONHandler<T> {
+public abstract class JSONHandler<T> {
 
     private static String PATH = "res/JSON/Configs.JSON";
     private JSONArray obj;
     private HashMap<String,T> map;
 
-    JSONHandler(String name){
+    public JSONHandler(String name){
         try {
             obj = (JSONArray) ((JSONObject) new JSONParser().parse(new FileReader(PATH))).get(name);
             map = new HashMap<String, T>();

@@ -23,8 +23,12 @@ public class RenderingWorld implements Renderable, Updatable{
     private Chunk[][] chunksLoaded;
     private Perlin noiseGen;
     private SpriteHandler spriteHandler;
+    private TileHandler tileHandler;
+    private static int worldFrame;
+    static final int WORLD_FRAME_MAX = 64;
     public RenderingWorld(int seed, SpriteHandler spriteHandler){
         this.spriteHandler = spriteHandler;
+        tileHandler = new TileHandler();
         noiseGen = new Perlin();
         noiseGen.setOctaveCount(6);
         noiseGen.setSeed(seed);
@@ -36,6 +40,8 @@ public class RenderingWorld implements Renderable, Updatable{
             }
         }
     }
+
+    static int getWorldFrame(){return worldFrame;}
 
     public void render(Graphics graphics, Point offset) {
         int i = u;
@@ -58,6 +64,7 @@ public class RenderingWorld implements Renderable, Updatable{
         return chunksLoaded[adjustValue(u-1,STORED_WIDTH)][adjustValue(v-1,STORED_HEIGHT)].getLocation();
     }
     public void update(GameState game) {
+        worldFrame = adjustValue(worldFrame+1, WORLD_FRAME_MAX);
         Point cameraPosition = new Point((int)game.getCameraPosition().getX()/Chunk.CHUNK_WIDTH/Tile.TILE_WIDTH,(int)game.getCameraPosition().getY()/Chunk.CHUNK_WIDTH/Tile.TILE_WIDTH);
         if(cameraPosition.getX()-getTL().getX()< (SCREEN_WIDTH/2)+2){
             Point tl = getTL();
@@ -97,7 +104,7 @@ public class RenderingWorld implements Renderable, Updatable{
     }
 
     private Chunk generateChunk(int x, int y){
-        return new Chunk(Chunk.ChunkType.NORMAL, new Point(x, y),noiseGen, spriteHandler);
+        return new Chunk(Chunk.ChunkType.NORMAL, new Point(x, y),noiseGen, spriteHandler.get("tiles"), tileHandler);
     }
 
     private int adjustValue(int val, int comp){
