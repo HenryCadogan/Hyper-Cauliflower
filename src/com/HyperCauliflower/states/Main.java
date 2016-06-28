@@ -8,7 +8,7 @@ import org.newdawn.slick.SlickException;
  */
 public class Main {
 
-    private static final int FPS = 60;
+    private static final int FPS = 2;
     public static final int INTERNAL_HEIGHT = 400, INTERNAL_WIDTH = 600;
 
     public static void main(String args[]){

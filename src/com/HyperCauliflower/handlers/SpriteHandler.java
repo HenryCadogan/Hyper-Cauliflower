@@ -1,18 +1,15 @@
 package com.HyperCauliflower.handlers;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.PackedSpriteSheet;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import org.json.simple.parser.JSONParser;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 
 /**
@@ -51,12 +48,16 @@ public class SpriteHandler {
             Object obj = parser.parse(new FileReader(path));
 
             jsonObject = (JSONObject) obj;
-            if (jsonObject.keySet().contains("Name")){
-                this.spriteMap.put("Name",loadImage((String)jsonObject.get(path),(int)jsonObject.get("width"),(int)jsonObject.get("height"),(int)jsonObject.get("spacing")));
+            JSONArray sprites = (JSONArray)jsonObject.get("sprites");
+            for(Object j:sprites){
+                jsonObject = (JSONObject) j;
+                this.spriteMap.put((String)jsonObject.get("name"),loadImage((String)jsonObject.get(path),(int)jsonObject.get("width"),(int)jsonObject.get("height"),(int)jsonObject.get("spacing")));
             }
+
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            System.out.println("Matt probably did something wrong, go shout at him \n" +
+            System.out.println("Miguel probably did something wrong, go shout at him \n" +
                     "but seriously, no sprite file found at: " + path );
         } catch (SlickException e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.HyperCauliflower.states;
 
+import com.HyperCauliflower.world.RenderingWorld;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -7,7 +8,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import com.HyperCauliflower.world.RenderingWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +45,10 @@ public class GameState extends BasicGameState {
 
 
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        //cameraPosition.setX(cameraPosition.getX()+1);
+        //cameraPosition.setX(cameraPosition.getX()-1);
         //cameraPosition.setY(cameraPosition.getY()+2);
         for (Updatable u : updatables) {
-            u.update(this);
+        //    u.update(this);
         }
     }
 

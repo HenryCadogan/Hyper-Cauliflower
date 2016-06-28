@@ -1,11 +1,10 @@
 package com.HyperCauliflower.world;
 
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Point;
 import com.HyperCauliflower.states.GameState;
-import com.HyperCauliflower.states.Main;
 import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Point;
 
 /**
  * Created by Matt on 24/06/2016.
@@ -16,7 +15,8 @@ public class RenderingWorld implements Renderable, Updatable{
     //maintains and draws the visible and soon-to-be visible tiles
 
     private int seed,u,v;
-    private static final int STORED_WIDTH = 5+(Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = 5+(Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT);
+    //private static final int STORED_WIDTH = 5+(Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = 5+(Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT);
+    private static final int STORED_WIDTH = 2, STORED_HEIGHT = 2;
     private Chunk[][] chunksLoaded;
 
     public RenderingWorld(int seed){
@@ -46,10 +46,10 @@ public class RenderingWorld implements Renderable, Updatable{
         Point cameraPosition = new Point((int)game.getCameraPosition().getX()<<Chunk.CHUNK_SHIFT,(int)game.getCameraPosition().getY()<<Chunk.CHUNK_SHIFT);
         Point tl = chunksLoaded[u][v].getLocation();
         Point br = chunksLoaded[adjustValue(u-1,STORED_WIDTH)][adjustValue(v-1,STORED_HEIGHT)].getLocation();
-        if(cameraPosition.getX()<=tl.getX()){
+        if(cameraPosition.getX()<=tl.getX()+1){
             u = adjustValue(u-1,STORED_WIDTH);
             updateColumn((int)tl.getX()-1,(int)tl.getY());
-        }else if (br.getX()-cameraPosition.getX()<STORED_WIDTH+1){
+        }else if (br.getX()-cameraPosition.getX()<STORED_WIDTH-2){
             u = adjustValue(u+1,STORED_WIDTH);
             updateColumn((int)br.getX()+1,(int)tl.getY());
         }
