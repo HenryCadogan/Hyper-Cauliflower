@@ -15,19 +15,19 @@ abstract class JSONHandler<T> {
 
     private static String PATH = "MIGUEL PUT THE PATH HERE";
     private JSONArray obj;
-    private HashMap<String,T> shit;
+    private HashMap<String,T> map;
 
     JSONHandler(String name) throws Exception{ //todo: don't leave this like this
         obj = (JSONArray)((JSONObject)new JSONParser().parse(new FileReader(PATH))).get(name);
-        shit = new HashMap<String, T>();
+        map = new HashMap<String, T>();
         for (Object j:obj){
-            shit.put((String)((JSONObject) j).get("name"),load((JSONObject) j));
+            map.put((String)((JSONObject) j).get("name"),load((JSONObject) j));
         }
     }
 
     protected abstract T load(JSONObject j);
 
     public T get(String key){
-        return shit.get(key);
+        return map.get(key);
     }
 }
