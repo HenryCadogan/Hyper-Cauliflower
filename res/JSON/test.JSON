@@ -1,8 +1,0 @@
-{
-  "sprites":[
-    {"name":"test",
-    "path":"/res/sprites/test.png",
-    "spacing":"0",
-    "width":"32",
-    "height":"32"}]
-}

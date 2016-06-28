@@ -1,0 +1,9 @@
+{
+ "sprites":[
+   {"name":"player",
+     "path":"res/sprites/player.png",
+     "height":32,
+     "width":32
+   }
+ ]
+}

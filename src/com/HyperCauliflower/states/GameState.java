@@ -1,10 +1,10 @@
 package com.HyperCauliflower.states;
 
+import com.HyperCauliflower.entities.Player;
+import com.HyperCauliflower.handlers.SpriteHandler;
 import com.HyperCauliflower.world.RenderingWorld;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -20,7 +20,7 @@ public class GameState extends BasicGameState {
     private List<Renderable> renderables;
     private List<Updatable> updatables;
     private Point cameraPosition;
-
+    private Player player;
     public int getID() {
         return Game.State.GAME.ordinal();
     }
@@ -32,6 +32,9 @@ public class GameState extends BasicGameState {
         renderables.add(r);
         updatables = new ArrayList<Updatable>();
         updatables.add(r);
+        SpriteHandler spriteHandler = new SpriteHandler();
+        player = new Player(spriteHandler,"player");
+
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
@@ -46,7 +49,12 @@ public class GameState extends BasicGameState {
 
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         cameraPosition.setX(cameraPosition.getX()+1);
-        cameraPosition.setY(cameraPosition.getY()+1);
+        //cameraPosition.setY(cameraPosition.getY()+2);
+        if (gameContainer.getInput().isKeyDown(Input.KEY_W)){
+            player.move(0);
+            System.out.println("Matt is a faggot");
+        }
+
         for (Updatable u : updatables) {
             u.update(this);
         }
