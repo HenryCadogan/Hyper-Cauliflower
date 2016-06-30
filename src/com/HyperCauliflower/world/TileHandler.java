@@ -14,6 +14,7 @@ public class TileHandler extends JSONHandler<TileData> {
 
     @Override
     protected TileData load(JSONObject j) {
+        //todo add error catching (DO IT PROPERLY MATT)
         return new TileData(toIntExact((long)j.get("startFrame")),toIntExact((long)j.get("endFrame")),toIntExact((long)j.get("row")));
     }
 }

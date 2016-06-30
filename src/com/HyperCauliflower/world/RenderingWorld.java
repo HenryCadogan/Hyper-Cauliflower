@@ -1,6 +1,6 @@
 package com.HyperCauliflower.world;
 
-import com.HyperCauliflower.handlers.SpriteHandler;
+import com.HyperCauliflower.handlers.SpriteSheetHandler;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Main;
 import com.HyperCauliflower.states.Renderable;
@@ -22,12 +22,12 @@ public class RenderingWorld implements Renderable, Updatable{
     //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 2, STORED_WIDTH = 8, STORED_HEIGHT = 8;
     private Chunk[][] chunksLoaded;
     private Perlin noiseGen;
-    private SpriteHandler spriteHandler;
+    private SpriteSheetHandler spriteSheetHandler;
     private TileHandler tileHandler;
     private static int worldFrame;
     static final int WORLD_FRAME_MAX = 64;
-    public RenderingWorld(int seed, SpriteHandler spriteHandler){
-        this.spriteHandler = spriteHandler;
+    public RenderingWorld(int seed, SpriteSheetHandler spriteSheetHandler){
+        this.spriteSheetHandler = spriteSheetHandler;
         tileHandler = new TileHandler();
         noiseGen = new Perlin();
         noiseGen.setOctaveCount(6);
@@ -105,9 +105,9 @@ public class RenderingWorld implements Renderable, Updatable{
 
     private Chunk generateChunk(int x, int y){
         if (x==0 && y==0)
-            return Chunk.makeChunk(new Point(x, y),noiseGen, spriteHandler.get("tiles"), tileHandler, true);
+            return Chunk.makeChunk(new Point(x, y),noiseGen, spriteSheetHandler.get("tiles"), tileHandler, true);
         else
-            return Chunk.makeChunk(new Point(x, y),noiseGen, spriteHandler.get("tiles"), tileHandler, false);
+            return Chunk.makeChunk(new Point(x, y),noiseGen, spriteSheetHandler.get("tiles"), tileHandler, false);
     }
 
     private int adjustValue(int val, int comp){

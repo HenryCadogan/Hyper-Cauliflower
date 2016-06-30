@@ -8,9 +8,9 @@ import org.newdawn.slick.SpriteSheet;
 /**
  * Created by Henry on 28/06/2016.
  */
-public class SpriteHandler extends JSONHandler<SpriteSheet> {
+public class SpriteSheetHandler extends JSONHandler<SpriteSheet> {
 
-    public SpriteHandler() {
+    public SpriteSheetHandler() {
         super("sprites");
     }
 

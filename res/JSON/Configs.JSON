@@ -8,11 +8,25 @@
     }
   ],
  "sprites":[
-   {"name":"tiles",
-     "path":"res/sprites/tiles.png",
-     "height":32,
-     "width":32
+   {
+     "name": "tiles",
+     "path": "res/sprites/tiles.png",
+     "height": 32,
+     "width": 32,
+     "startFrame":0,
+     "endFrame":0,
+     "row":0
+   },
+   {
+     "name":"player",
+     "path": "res/sprites/player.png",
+     "height": 32,
+     "width": 32,
+     "startFrame":0,
+     "endFrame":0,
+     "row":0
    }
+
  ],
   "tiles":[
     {

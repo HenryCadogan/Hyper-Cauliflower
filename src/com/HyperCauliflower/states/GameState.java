@@ -2,7 +2,7 @@ package com.HyperCauliflower.states;
 
 import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SaveHandler;
-import com.HyperCauliflower.handlers.SpriteHandler;
+import com.HyperCauliflower.handlers.SpriteSheetHandler;
 import com.HyperCauliflower.world.RenderingWorld;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Point;
@@ -26,16 +26,18 @@ public class GameState extends BasicGameState {
     }
 
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        SpriteHandler spriteHandler = new SpriteHandler();
+        SpriteSheetHandler spriteSheetHandler = new SpriteSheetHandler();
         SaveData s = new SaveHandler().get("test");
         cameraPosition = s.getLocation(); //Change to being loaded from a file
-        RenderingWorld r = new RenderingWorld(s.getSeed(), spriteHandler);
+        RenderingWorld r = new RenderingWorld(s.getSeed(), spriteSheetHandler);
         renderables = new ArrayList<Renderable>();
         renderables.add(r);
         updatables = new ArrayList<Updatable>();
         updatables.add(r);
-        //player = new Player(spriteHandler,"player");
-
+        player = new Player(spriteSheetHandler,"player");
+        player.setPlayerMoveSpeed(5);
+        this.renderables.add(player);
+        this.updatables.add(player);
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
@@ -57,7 +59,7 @@ public class GameState extends BasicGameState {
             player.move(2);
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_A)){
-            player.move(4);
+            player.move(3);
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_D)){
             player.move(1);
@@ -65,6 +67,7 @@ public class GameState extends BasicGameState {
         for (Updatable u : updatables) {
             u.update(this);
         }
+        this.cameraPosition = player.getLocation();
     }
 
     public Point getCameraPosition() {
