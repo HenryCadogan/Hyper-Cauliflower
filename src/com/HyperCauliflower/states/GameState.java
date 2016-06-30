@@ -34,7 +34,7 @@ public class GameState extends BasicGameState {
         renderables.add(r);
         updatables = new ArrayList<Updatable>();
         updatables.add(r);
-        player = new Player(spriteSheetHandler,"player");
+        player = new Player(spriteSheetHandler,"player",gameContainer.getInput());
         player.setPlayerMoveSpeed(5);
         this.renderables.add(player);
         this.updatables.add(player);
@@ -73,5 +73,6 @@ public class GameState extends BasicGameState {
     public Point getCameraPosition() {
         return cameraPosition;
     }
+
 
 }
