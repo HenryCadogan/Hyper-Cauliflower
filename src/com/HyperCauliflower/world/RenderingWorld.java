@@ -18,7 +18,7 @@ public class RenderingWorld implements Renderable, Updatable{
     //maintains and draws the visible and soon-to-be visible tiles
 
     private int seed,u,v;
-    private static final int BUFFER = 6, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
+    private static final int BUFFER = 4, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
     //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 2, STORED_WIDTH = 8, STORED_HEIGHT = 8;
     private Chunk[][] chunksLoaded;
     private Perlin noiseGen;

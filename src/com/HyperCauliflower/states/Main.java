@@ -9,7 +9,7 @@ import org.newdawn.slick.SlickException;
 public class Main {
 
     private static final int FPS = 60;
-    public static final int INTERNAL_HEIGHT = 1080, INTERNAL_WIDTH = 1920;
+    public static final int INTERNAL_HEIGHT = 720, INTERNAL_WIDTH = 1280;
 
     public static void main(String args[]){
         try {
