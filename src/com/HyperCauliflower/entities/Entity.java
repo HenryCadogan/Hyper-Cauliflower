@@ -1,11 +1,11 @@
 package com.HyperCauliflower.entities;
 
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
+import com.HyperCauliflower.states.Renderable;
+import com.HyperCauliflower.states.Updatable;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Point;
-import com.HyperCauliflower.states.Renderable;
-import com.HyperCauliflower.states.Updatable;
 
 /**
  * Created by Matt on 24/06/2016.
@@ -19,10 +19,10 @@ public abstract class Entity implements Renderable, Updatable{
     protected static final int CURRENT = 0, BASE = 1, SCALING = 2, ITEM = 3, SKILL = 4, BUFF = 5, MAXHP = 0, ARMOUR = 1, STR = 2, DEX = 3, INT = 4, MODCOUNT = 6, STATCOUNT = 5;
     protected float[][] stats;
 
-    public Entity(SpriteSheetHandler spriteSheetHandler, String name){
+    public Entity(SpriteSheetHandler spriteSheetHandler, String name, Point location){
         stats = new float[MODCOUNT][STATCOUNT];
         this.spriteSheet = spriteSheetHandler.get(name);
-        this.location = new Point(0,0);
+        this.location = location;
 
     }
 

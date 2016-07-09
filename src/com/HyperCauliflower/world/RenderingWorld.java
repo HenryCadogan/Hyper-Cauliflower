@@ -1,6 +1,5 @@
 package com.HyperCauliflower.world;
 
-import com.HyperCauliflower.handlers.SpriteSheetHandler;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Main;
 import com.HyperCauliflower.states.Renderable;
@@ -18,17 +17,12 @@ public class RenderingWorld implements Renderable, Updatable{
     //maintains and draws the visible and soon-to-be visible tiles
 
     private int seed,u,v;
-    private static final int BUFFER = 4, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT>>Tile.TILE_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
+    private static final int BUFFER = 10, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
     //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 2, STORED_WIDTH = 8, STORED_HEIGHT = 8;
     private Chunk[][] chunksLoaded;
     private Perlin noiseGen;
-    private SpriteSheetHandler spriteSheetHandler;
-    private TileHandler tileHandler;
-    private static int worldFrame;
-    static final int WORLD_FRAME_MAX = 64;
-    public RenderingWorld(int seed, SpriteSheetHandler spriteSheetHandler){
-        this.spriteSheetHandler = spriteSheetHandler;
-        tileHandler = new TileHandler();
+
+    public RenderingWorld(int seed){
         noiseGen = new Perlin();
         noiseGen.setOctaveCount(6);
         noiseGen.setSeed(seed);
@@ -41,19 +35,10 @@ public class RenderingWorld implements Renderable, Updatable{
         }
     }
 
-    static int getWorldFrame(){return worldFrame;}
-
     public void render(Graphics graphics, Point offset) {
-        int i = u;
-        do{
-            int j = v;
-            do{
-                Chunk c = chunksLoaded[i][j];
-                c.render(graphics,new Point(offset.getX()+(((int)c.getLocation().getX())*Chunk.CHUNK_WIDTH*Tile.TILE_WIDTH),offset.getY()+(((int)c.getLocation().getY())*Chunk.CHUNK_WIDTH*Tile.TILE_WIDTH)));
-                j = adjustValue(j+1, STORED_HEIGHT);
-            }while(j!=v);
-            i = adjustValue(i+1, STORED_WIDTH);
-        }while(i!=u);
+        for(Chunk[] ca:chunksLoaded)
+            for(Chunk c:ca)
+                c.render(graphics,offset);
     }
 
     private Point getTL(){
@@ -64,8 +49,7 @@ public class RenderingWorld implements Renderable, Updatable{
         return chunksLoaded[adjustValue(u-1,STORED_WIDTH)][adjustValue(v-1,STORED_HEIGHT)].getLocation();
     }
     public void update(GameState game) {
-        worldFrame = adjustValue(worldFrame+1, WORLD_FRAME_MAX);
-        Point cameraPosition = new Point((int)game.getCameraPosition().getX()/Chunk.CHUNK_WIDTH/Tile.TILE_WIDTH,(int)game.getCameraPosition().getY()/Chunk.CHUNK_WIDTH/Tile.TILE_WIDTH);
+        Point cameraPosition = new Point((int)game.getCameraPosition().getX()/Chunk.CHUNK_WIDTH,(int)game.getCameraPosition().getY()/Chunk.CHUNK_WIDTH);
         if(cameraPosition.getX()-getTL().getX()< (SCREEN_WIDTH/2)+2){
             Point tl = getTL();
             u = adjustValue(u-1,STORED_WIDTH);
@@ -104,19 +88,12 @@ public class RenderingWorld implements Renderable, Updatable{
     }
 
     private Chunk generateChunk(int x, int y){
-        if (x==0 && y==0)
-            return Chunk.makeChunk(new Point(x, y),noiseGen, spriteSheetHandler.get("tiles"), tileHandler, true);
-        else
-            return Chunk.makeChunk(new Point(x, y),noiseGen, spriteSheetHandler.get("tiles"), tileHandler, false);
+        return new Chunk(new Point(x, y),noiseGen);
     }
 
     private int adjustValue(int val, int comp){
         if(val==comp)return 0;
         else if(val==-1)return comp-1;
         else return val;
-    }
-
-    private Tile getTileAt(Point location){
-        return null;
     }
 }

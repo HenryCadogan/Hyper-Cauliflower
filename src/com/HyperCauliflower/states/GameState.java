@@ -29,12 +29,12 @@ public class GameState extends BasicGameState {
         SpriteSheetHandler spriteSheetHandler = new SpriteSheetHandler();
         SaveData s = new SaveHandler().get("test");
         cameraPosition = s.getLocation(); //Change to being loaded from a file
-        RenderingWorld r = new RenderingWorld(s.getSeed(), spriteSheetHandler);
+        RenderingWorld r = new RenderingWorld(s.getSeed());
         renderables = new ArrayList<Renderable>();
         renderables.add(r);
         updatables = new ArrayList<Updatable>();
         updatables.add(r);
-        player = new Player(spriteSheetHandler,"player",gameContainer.getInput());
+        player = new Player(spriteSheetHandler,"player",gameContainer.getInput(), cameraPosition);
         player.setPlayerMoveSpeed(5);
         this.renderables.add(player);
         this.updatables.add(player);

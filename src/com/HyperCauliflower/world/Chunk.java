@@ -3,68 +3,43 @@ package com.HyperCauliflower.world;
 import com.HyperCauliflower.states.Main;
 import com.HyperCauliflower.states.Renderable;
 import com.flowpowered.noise.module.source.Perlin;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.geom.Point;
-import org.newdawn.slick.geom.Rectangle;
-
-import static com.HyperCauliflower.world.Tile.TILE_SHIFT;
 
 /**
  * Created by Matt on 25/06/2016.
  */
-public abstract class Chunk implements Renderable{
+public class Chunk implements Renderable{
 
-    static final int CHUNK_SHIFT = 6, CHUNK_WIDTH = 1<<CHUNK_SHIFT, CHUNK_ABS_WIDTH = CHUNK_WIDTH<<TILE_SHIFT;
+    static final int CHUNK_SHIFT = 3, CHUNK_WIDTH = 1<<CHUNK_SHIFT;
 
-    protected Tile[][] tiles;
     private Point location;
+    private Image image;
+    private static final int ZOOM = 10000;
 
-    protected Chunk(Point location, Tile[][] tiles){
-        this.tiles = tiles;
+    Chunk(Point location, Perlin noiseGen){
         this.location = location;
-    }
-
-
-    static Chunk makeChunk(Point location, Perlin noiseGen, SpriteSheet spriteSheet, TileHandler tileHandler, boolean town){
-        Tile[][] r = new Tile[CHUNK_WIDTH][CHUNK_WIDTH];
-        for(int i = 0;i<CHUNK_WIDTH;i++){
-            for(int j = 0;j<CHUNK_WIDTH;j++){
-                double tileVal = noiseGen.getValue((double)(location.getX()*CHUNK_WIDTH+i)/1000,(double)(location.getY()*CHUNK_WIDTH+j)/1000,0);
-                if (tileVal>0.6 || (tileVal>0.075 && tileVal < 0.1))
-                    r[i][j] = new WaterTile(new Point(i,j),spriteSheet, tileHandler.get("water"));
-                else if(tileVal > 0.50 || tileVal <-0.8)
-                    r[i][j] = new BasicTile(new Point(i,j),spriteSheet, tileHandler.get("sand"));
+        ImageBuffer img = new ImageBuffer(CHUNK_WIDTH,CHUNK_WIDTH);
+        for(int i = 0; i < CHUNK_WIDTH;i++) {
+            for (int j = 0; j < CHUNK_WIDTH; j++) {
+                double pixelVal = noiseGen.getValue((i + location.getX()*CHUNK_WIDTH) / ZOOM, (j + location.getY()*CHUNK_WIDTH) / ZOOM, 0);
+                if (pixelVal > 0.6 || (pixelVal > 0.075 && pixelVal < 0.1))
+                    img.setRGBA(i, j, 0, 0, 255, 255);
+                else if (pixelVal > 0.50 || pixelVal < -0.8)
+                    img.setRGBA(i, j, 255, 250, 205, 255);
                 else
-                    r[i][j] = new BasicTile(new Point(i,j), spriteSheet, tileHandler.get("grass"));
+                    img.setRGBA(i, j, 0, 255, 0, 255);
             }
         }
-        boolean liquid = false;
-        for(Tile[] ta:r)
-            for(Tile t:ta)
-                liquid = liquid || t.isLiquid();
-        if(!liquid)
-            return new TownChunk(location, r, spriteSheet, tileHandler);
-        else
-            return new BasicChunk(location, r);
+        image = img.getImage();
     }
-
-
-
-
-
 
     public void render(Graphics graphics, Point offset) {
-        if(new Rectangle(-CHUNK_ABS_WIDTH,-CHUNK_ABS_WIDTH, Main.INTERNAL_WIDTH+(CHUNK_ABS_WIDTH<<2), Main.INTERNAL_HEIGHT+(CHUNK_ABS_WIDTH<<2)).contains(offset)) {
-            for (int i = 0; i < CHUNK_WIDTH; i++) {
-                for (int j = 0; j < CHUNK_WIDTH; j++) {
-                    tiles[i][j].render(graphics, new Point(offset.getX() + (i << Tile.TILE_SHIFT), offset.getY() + (j << Tile.TILE_SHIFT)));
-                }
-            }
-        }
-        graphics.setColor(Color.red);
-        graphics.drawRect(offset.getX(),offset.getY(),CHUNK_WIDTH<<Tile.TILE_SHIFT,CHUNK_WIDTH<<Tile.TILE_SHIFT);
+        Point drawLocation = new Point(location.getX()*CHUNK_WIDTH + offset.getX(),location.getY()*CHUNK_WIDTH + offset.getY());
+        if(drawLocation.getX()>-CHUNK_WIDTH && drawLocation.getX()<Main.INTERNAL_WIDTH && drawLocation.getY()>-CHUNK_WIDTH&&drawLocation.getY()<Main.INTERNAL_HEIGHT)
+        graphics.drawImage(image, drawLocation.getX(),drawLocation.getY());
     }
 
     Point getLocation(){

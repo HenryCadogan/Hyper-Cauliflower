@@ -1,12 +1,12 @@
 package com.HyperCauliflower.entities;
-import com.HyperCauliflower.handlers.SpriteSheetHandler;
 
+import com.HyperCauliflower.handlers.SpriteSheetHandler;
 import com.HyperCauliflower.states.GameState;
-import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Line;
+import org.newdawn.slick.Animation;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Point;
-import org.newdawn.slick.geom.Shape;
-import org.newdawn.slick.geom.Vector2f;
 
 
 /**
@@ -25,8 +25,8 @@ public class Player extends Entity{
 
 
 
-    public Player(SpriteSheetHandler spriteSheetHandler, String name,Input containerInput) {
-        super(spriteSheetHandler,name);
+    public Player(SpriteSheetHandler spriteSheetHandler, String name,Input containerInput, Point location) {
+        super(spriteSheetHandler,name, location);
         this.movementModifier =1;
         this.moveSpeed = 1;
         this.spriteHandler = new SpriteHandler();
