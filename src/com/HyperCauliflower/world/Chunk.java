@@ -13,7 +13,7 @@ import org.newdawn.slick.geom.Point;
  */
 public class Chunk implements Renderable{
 
-    static final int CHUNK_SHIFT = 3, CHUNK_WIDTH = 1<<CHUNK_SHIFT;
+    static final int CHUNK_SHIFT = 4, CHUNK_WIDTH = 1<<CHUNK_SHIFT;
 
     private Point location;
     private Image image;
