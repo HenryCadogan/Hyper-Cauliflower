@@ -1,12 +1,17 @@
 package com.HyperCauliflower.entities;
-
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
+
 import com.HyperCauliflower.states.GameState;
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
+import org.newdawn.slick.*;
+
 import org.newdawn.slick.geom.Point;
+
+import org.newdawn.slick.particles.ConfigurableEmitter;
+import org.newdawn.slick.particles.Particle;
+import org.newdawn.slick.particles.ParticleIO;
+import org.newdawn.slick.particles.ParticleSystem;
+
+import java.io.File;
 
 
 /**
@@ -22,11 +27,15 @@ public class Player extends Entity{
     private int experience;
     private Input containerInput;
     private double angleToTurn;
+    private ParticleSystem pSystem;
+    private ConfigurableEmitter emitter;
 
 
 
-    public Player(SpriteSheetHandler spriteSheetHandler, String name,Input containerInput, Point location) {
-        super(spriteSheetHandler,name, location);
+
+
+    public Player(SpriteSheetHandler spriteSheetHandler, String name,Input containerInput,Point location) {
+        super(spriteSheetHandler,name,location);
         this.movementModifier =1;
         this.moveSpeed = 1;
         this.spriteHandler = new SpriteHandler();
@@ -40,9 +49,28 @@ public class Player extends Entity{
         this.containerInput = containerInput;
         Animation walking = new Animation(this.getSpriteSheet(),4);
         walking.setLooping(true);
+
+        //test particle code
+        try {
+            Image particle = this.getImage(this.getAnimationFrame());
+            this.pSystem = new ParticleSystem(particle, 1400);
+            File particleXml = new File("res/sprites/Particles/footsteps.xml");
+            emitter = ParticleIO.loadEmitter(particleXml);
+            emitter.setEnabled(true);
+            pSystem.addEmitter(this.emitter);
+            pSystem.setVisible(true);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            System.exit(2);
+        }
+        pSystem.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
     }
 
+
+
     public void move(int dir){
+
         if (dir == 0){
             this.location.setY(this.location.getCenterY() - (this.moveSpeed * movementModifier));
         }
@@ -77,16 +105,20 @@ public class Player extends Entity{
     public void update(GameState game) {
         this.mX = this.containerInput.getMouseX();
         this.mY = this.containerInput.getMouseY();
+        pSystem.update(60);
     }
 
     public void render(Graphics graphics, Point offset){
         float centerY = this.getLocation().getY() - this.height/2;
         float centerX = this.getLocation().getX() - this.width/2;
         graphics.pushTransform();
-        angleToTurn = Math.atan2(this.mY - ((centerY + offset.getCenterY()) + this.height/2), this.mX - ((centerX +offset.getCenterX()+ this.height/2)));
+        angleToTurn = Math.atan2(this.mY - (centerY + offset.getCenterY() + this.height/2), this.mX - ((centerX +offset.getCenterX()+ this.height/2)));
         graphics.rotate(centerX + offset.getCenterX() + this.width/2,centerY + offset.getCenterY()+ this.height/2,(float)Math.toDegrees(this.angleToTurn));
         graphics.drawImage(getImage(getAnimationFrame()),centerX + offset.getCenterX(),centerY + offset.getCenterY());
         graphics.popTransform();
+        emitter.setPosition(0,0);
+        pSystem.setPosition(centerX +offset.getCenterX()+ this.height/2,centerY + offset.getCenterY() + this.height/2);
+        pSystem.render();
     }
 
     public int getAnimationFrame() {
