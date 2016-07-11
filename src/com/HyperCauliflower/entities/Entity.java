@@ -1,10 +1,10 @@
 package com.HyperCauliflower.entities;
 
-import com.HyperCauliflower.handlers.SpriteSheetHandler;
+import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Point;
 
 /**
@@ -12,17 +12,20 @@ import org.newdawn.slick.geom.Point;
  */
 public abstract class Entity implements Renderable, Updatable{
     protected Point location;
-    private SpriteSheet spriteSheet;
+    private SpriteSheetData spriteSheetData;
     public int moveSpeed;
+    private String name;
+
 
     private int level;
     protected static final int CURRENT = 0, BASE = 1, SCALING = 2, ITEM = 3, SKILL = 4, BUFF = 5, MAXHP = 0, ARMOUR = 1, STR = 2, DEX = 3, INT = 4, MODCOUNT = 6, STATCOUNT = 5;
     protected float[][] stats;
 
-    public Entity(SpriteSheetHandler spriteSheetHandler, String name, Point location){
+    public Entity(SpriteSheetData spriteSheetData, String name, Point location){
         stats = new float[MODCOUNT][STATCOUNT];
-        this.spriteSheet = spriteSheetHandler.get(name);
+        this.spriteSheetData = spriteSheetData;
         this.location = location;
+        this.name = name;
     }
 
     public void update(){
@@ -37,9 +40,15 @@ public abstract class Entity implements Renderable, Updatable{
     }
     public abstract void move(int dir);
 
-    public SpriteSheet getSpriteSheet(){
-        return this.spriteSheet;
+    public int getWidth(){
+        return spriteSheetData.getWidth();
     }
 
+    public int getHeight(){
+        return spriteSheetData.getHeight();
+    }
 
+    protected Image getImage(int frame) {
+        return spriteSheetData.getImage(name, frame);
+    }
 }

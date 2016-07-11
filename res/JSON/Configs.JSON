@@ -7,28 +7,21 @@
       "y":20
     }
   ],
- "sprites":[
+ "spritesheets":[
    {
      "name": "tiles",
      "path": "res/sprites/tiles.png",
      "height": 32,
-     "width": 32,
-     "startFrame":0,
-     "endFrame":0,
-     "row":0
+     "width": 32
    },
    {
-     "name":"player",
+     "name":"entities",
      "path": "res/sprites/player.png",
      "height": 32,
-     "width": 32,
-     "startFrame":0,
-     "endFrame":0,
-     "row":0
+     "width": 32
    }
-
- ],
-  "tiles":[
+  ],
+  "tilesData":[
     {
       "name":"grass",
       "startFrame":0,
@@ -46,12 +39,14 @@
       "startFrame":5,
       "endFrame":5,
       "row":0
-    },
+    }
+  ],
+  "entitiesData":[
     {
-      "name":"town wall",
+      "name":"player",
       "startFrame":0,
       "endFrame":0,
-      "row":1
+      "row":0
     }
   ]
 }

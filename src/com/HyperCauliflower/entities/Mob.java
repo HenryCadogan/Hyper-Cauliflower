@@ -1,6 +1,6 @@
 package com.HyperCauliflower.entities;
 
-import com.HyperCauliflower.handlers.SpriteSheetHandler;
+import com.HyperCauliflower.handlers.SpriteSheetData;
 import org.newdawn.slick.geom.Point;
 
 /**
@@ -8,8 +8,8 @@ import org.newdawn.slick.geom.Point;
  */
 public abstract class Mob extends Entity{
 
-    public Mob(SpriteSheetHandler spriteSheetHandler, String name,Point location){
-        super(spriteSheetHandler,"mob", location);
+    public Mob(SpriteSheetData spriteSheetData, String name, Point location){
+        super(spriteSheetData,"mob", location);
     }
 
 }

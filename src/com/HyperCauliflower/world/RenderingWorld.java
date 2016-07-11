@@ -1,13 +1,13 @@
 package com.HyperCauliflower.world;
 
-import com.HyperCauliflower.entities.EntitySpriteDataHandler;
+import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Main;
 import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
 import com.flowpowered.noise.module.source.Perlin;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Point;
 
 /**
@@ -21,14 +21,19 @@ public class RenderingWorld implements Renderable, Updatable{
     private int seed,u,v;
     private static final int BUFFER = 4, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
     //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 2, STORED_WIDTH = 8, STORED_HEIGHT = 8;
+    static final int GRASS = 0, WATER = 1, SAND = 2, COUNT = 3;
     private Chunk[][] chunksLoaded;
     private Perlin noiseGen;
-    private EntitySpriteDataHandler entitySpriteDataHandler;
-    private SpriteSheet spriteSheet;
+    private SpriteSheetData spriteSheetData;
+    private Image[] tiles;
 
-    public RenderingWorld(int seed, EntitySpriteDataHandler entitySpriteDataHandler, SpriteSheet spriteSheet){
-        this.entitySpriteDataHandler = entitySpriteDataHandler;
-        this.spriteSheet = spriteSheet;
+
+    public RenderingWorld(int seed, SpriteSheetData spriteSheetData){
+        tiles = new Image[COUNT];
+        tiles[0] = spriteSheetData.getImage("grass",0);
+        tiles[1] = spriteSheetData.getImage("water",0);
+        tiles[2] = spriteSheetData.getImage("sand",0);
+        this.spriteSheetData = spriteSheetData;
         noiseGen = new Perlin();
         noiseGen.setOctaveCount(6);
         noiseGen.setSeed(seed);
@@ -45,6 +50,10 @@ public class RenderingWorld implements Renderable, Updatable{
         for(Chunk[] ca:chunksLoaded)
             for(Chunk c:ca)
                 c.render(graphics,offset);
+    }
+
+    Image getTileImage(int id){
+        return tiles[id];
     }
 
     private Point getTL(){
@@ -94,7 +103,7 @@ public class RenderingWorld implements Renderable, Updatable{
     }
 
     private Chunk generateChunk(int x, int y){
-        return new Chunk(new Point(x, y),noiseGen, entitySpriteDataHandler,spriteSheet);
+        return new Chunk(new Point(x, y),noiseGen, this);
     }
 
     private int adjustValue(int val, int comp){

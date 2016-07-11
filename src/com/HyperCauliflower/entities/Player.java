@@ -1,13 +1,12 @@
 package com.HyperCauliflower.entities;
-import com.HyperCauliflower.handlers.SpriteSheetHandler;
 
+import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.states.GameState;
-import org.newdawn.slick.*;
-
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Point;
-
 import org.newdawn.slick.particles.ConfigurableEmitter;
-import org.newdawn.slick.particles.Particle;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 
@@ -20,39 +19,24 @@ import java.io.File;
 public class Player extends Entity{
 
     private float movementModifier;
-    private EntitySpriteDataHandler entitySpriteDataHandler;
-    private EntitySpriteData entitySpriteData;
     //load in all values from json to avoid further reads thus being more efficient
-    private int row,width,height,startFrame,endFrame,mX,mY = 0;
+    private int mX,mY = 0;
     private int experience;
     private Input containerInput;
     private double angleToTurn;
     private ParticleSystem pSystem;
     private ConfigurableEmitter emitter;
 
-
-
-
-
-    public Player(SpriteSheetHandler spriteSheetHandler, String name,Input containerInput,Point location) {
-        super(spriteSheetHandler,name,location);
+    public Player(SpriteSheetData spriteSheetData, String name, Input containerInput, Point location) {
+        super(spriteSheetData,name,location);
         this.movementModifier =1;
         this.moveSpeed = 1;
-        this.entitySpriteDataHandler = new EntitySpriteDataHandler();
-        this.entitySpriteData = entitySpriteDataHandler.get("player");
-        this.row = entitySpriteData.getRow();
-        this.width = entitySpriteData.getWidth();
-        this.height = entitySpriteData.getHeight();
-        this.startFrame = entitySpriteData.getStartFrame();
-        this.endFrame = entitySpriteData.getEndFrame();
         this.experience =0;
         this.containerInput = containerInput;
-        Animation walking = new Animation(this.getSpriteSheet(),4);
-        walking.setLooping(true);
 
         //test particle code
         try {
-            Image particle = this.getImage(this.getAnimationFrame());
+            Image particle = this.getImage(0);
             this.pSystem = new ParticleSystem(particle, 1400);
             File particleXml = new File("res/sprites/Particles/footsteps.xml");
             emitter = ParticleIO.loadEmitter(particleXml);
@@ -86,10 +70,6 @@ public class Player extends Entity{
 
     }
 
-    private Image getImage(int animFrame){
-        return getSpriteSheet().getSubImage(animFrame,row,this.width,this.height);
-    }
-
     public void setPlayerMoveSpeed(int speed){
         this.moveSpeed = speed;
     }
@@ -109,21 +89,21 @@ public class Player extends Entity{
     }
 
     public void render(Graphics graphics, Point offset){
-        float centerY = this.getLocation().getY() - this.height/2;
-        float centerX = this.getLocation().getX() - this.width/2;
+        float centerY = this.getLocation().getY() - this.getHeight()/2;
+        float centerX = this.getLocation().getX() - this.getWidth() /2;
         graphics.pushTransform();
-        angleToTurn = Math.atan2(this.mY - (centerY + offset.getCenterY() + this.height/2), this.mX - ((centerX +offset.getCenterX()+ this.height/2)));
-        graphics.rotate(centerX + offset.getCenterX() + this.width/2,centerY + offset.getCenterY()+ this.height/2,(float)Math.toDegrees(this.angleToTurn));
-        graphics.drawImage(getImage(getAnimationFrame()),centerX + offset.getCenterX(),centerY + offset.getCenterY());
+        angleToTurn = Math.atan2(this.mY - (centerY + offset.getCenterY() + this.getHeight()/2), this.mX - ((centerX +offset.getCenterX()+ this.getHeight()/2)));
+        graphics.rotate(centerX + offset.getCenterX() + this.getWidth() /2,centerY + offset.getCenterY()+ this.getHeight()/2,(float)Math.toDegrees(this.angleToTurn));
+        graphics.drawImage(getImage(getAnimationFrame()),centerX + offset.getCenterX(),centerY + offset.getCenterY());//todo:: not sure dude, but I think this is wrong
         graphics.popTransform();
         emitter.setPosition(0,0);
-        pSystem.setPosition(centerX +offset.getCenterX()+ this.height/2,centerY + offset.getCenterY() + this.height/2);
+        pSystem.setPosition(centerX +offset.getCenterX()+ this.getHeight()/2,centerY + offset.getCenterY() + this.getHeight()/2);
         pSystem.render();
     }
 
     public int getAnimationFrame() {
         //todo work out animation rates
-        return 1;
+        return 0;
     }
 
     public void slow(int slowMod, int duration){
