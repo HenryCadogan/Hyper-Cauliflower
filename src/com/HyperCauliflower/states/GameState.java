@@ -7,6 +7,7 @@ import com.HyperCauliflower.handlers.SpriteSheetHandler;
 import com.HyperCauliflower.world.RenderingWorld;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Point;
+import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -22,6 +23,7 @@ public class GameState extends BasicGameState {
     private List<Updatable> updatables;
     private Point cameraPosition;
     private Player player;
+    private ParticleSystem pSystem;
     public int getID() {
         return Game.State.GAME.ordinal();
     }
@@ -38,6 +40,8 @@ public class GameState extends BasicGameState {
         updatables.add(r);
         player = new Player(spriteSheetHandler,"player",gameContainer.getInput(), cameraPosition);
         player.setPlayerMoveSpeed(5);
+
+
         this.renderables.add(player);
         this.updatables.add(player);
     }
@@ -52,7 +56,7 @@ public class GameState extends BasicGameState {
 
 
 
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
 
         if (gameContainer.getInput().isKeyDown(Input.KEY_W)){
             player.move(0);
