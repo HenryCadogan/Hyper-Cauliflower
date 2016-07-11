@@ -15,8 +15,8 @@ import org.newdawn.slick.geom.Point;
 public class Player extends Entity{
 
     private float movementModifier;
-    private SpriteHandler spriteHandler;
-    private SpriteData spriteData;
+    private EntitySpriteDataHandler entitySpriteDataHandler;
+    private EntitySpriteData entitySpriteData;
     //load in all values from json to avoid further reads thus being more efficient
     private int row,width,height,startFrame,endFrame,mX,mY = 0;
     private int experience;
@@ -29,13 +29,13 @@ public class Player extends Entity{
         super(spriteSheetHandler,name, location);
         this.movementModifier =1;
         this.moveSpeed = 1;
-        this.spriteHandler = new SpriteHandler();
-        this.spriteData = spriteHandler.get("player");
-        this.row = spriteData.getRow();
-        this.width = spriteData.getWidth();
-        this.height = spriteData.getHeight();
-        this.startFrame = spriteData.getStartFrame();
-        this.endFrame = spriteData.getEndFrame();
+        this.entitySpriteDataHandler = new EntitySpriteDataHandler();
+        this.entitySpriteData = entitySpriteDataHandler.get("player");
+        this.row = entitySpriteData.getRow();
+        this.width = entitySpriteData.getWidth();
+        this.height = entitySpriteData.getHeight();
+        this.startFrame = entitySpriteData.getStartFrame();
+        this.endFrame = entitySpriteData.getEndFrame();
         this.experience =0;
         this.containerInput = containerInput;
         Animation walking = new Animation(this.getSpriteSheet(),4);

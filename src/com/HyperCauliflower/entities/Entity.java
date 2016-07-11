@@ -23,7 +23,6 @@ public abstract class Entity implements Renderable, Updatable{
         stats = new float[MODCOUNT][STATCOUNT];
         this.spriteSheet = spriteSheetHandler.get(name);
         this.location = location;
-
     }
 
     public void update(){

@@ -1,5 +1,6 @@
 package com.HyperCauliflower.states;
 
+import com.HyperCauliflower.entities.EntitySpriteDataHandler;
 import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
@@ -29,7 +30,8 @@ public class GameState extends BasicGameState {
         SpriteSheetHandler spriteSheetHandler = new SpriteSheetHandler();
         SaveData s = new SaveHandler().get("test");
         cameraPosition = s.getLocation(); //Change to being loaded from a file
-        RenderingWorld r = new RenderingWorld(s.getSeed());
+        EntitySpriteDataHandler entitySpriteDataHandler = new EntitySpriteDataHandler();
+        RenderingWorld r = new RenderingWorld(s.getSeed(), entitySpriteDataHandler, spriteSheetHandler.get("tiles"));
         renderables = new ArrayList<Renderable>();
         renderables.add(r);
         updatables = new ArrayList<Updatable>();

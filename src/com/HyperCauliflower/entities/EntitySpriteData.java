@@ -3,11 +3,11 @@ package com.HyperCauliflower.entities;
 /**
  * Created by Henry on 30/06/2016.
  */
-public class SpriteData {
+public class EntitySpriteData {
 
     private int startFrame, endFrame, row,width,height;
 
-    SpriteData(int startFrame, int endFrame, int row,int width,int height){
+    EntitySpriteData(int startFrame, int endFrame, int row, int width, int height){
         this.startFrame = startFrame;
         this.endFrame = endFrame;
         this.row = row;
