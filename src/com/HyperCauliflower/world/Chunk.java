@@ -16,7 +16,7 @@ public class Chunk implements Renderable{
     static final int CHUNK_SHIFT = 5, CHUNK_WIDTH = 1<<CHUNK_SHIFT;
     private Point location;
     private Image image;
-    private static final int ZOOM = 1000;
+    private static final int ZOOM = 10000;
 
     Chunk(Point location, Perlin noiseGen, RenderingWorld world){
         this.location = location;

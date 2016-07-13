@@ -6,12 +6,10 @@ import com.HyperCauliflower.handlers.SpriteSheetHandler;
 import com.HyperCauliflower.world.RenderingWorld;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Point;
-import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +42,7 @@ public class GameState extends BasicGameState {
 
         player = new Player(spriteSheetHandler.get("entities"),"player",cameraPosition);
         player.setPlayerMoveSpeed(5);
+        updatables.add(player);
 
         pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png");
         pSystem.usePoints();

@@ -6,8 +6,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
+
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by Matt on 24/06/2016.
@@ -16,8 +16,8 @@ public class Player extends Entity {
 
     private float movementModifier;
     //load in all values from json to avoid further reads thus being more efficient
-    private Point mousePos = new Point(0,0);
-    private Point playerAbsPos = new Point(0,0);
+    private Point mousePos = new Point(500,0);
+    private Point playerAbsPos;
     private int experience;
     private double angleToTurn;
     public ConfigurableEmitter footsteps;
