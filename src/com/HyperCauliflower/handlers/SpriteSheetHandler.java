@@ -10,6 +10,7 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class SpriteSheetHandler extends JSONHandler<SpriteSheetData> {
 
+
     public SpriteSheetHandler() {
         super("spritesheets");
     }

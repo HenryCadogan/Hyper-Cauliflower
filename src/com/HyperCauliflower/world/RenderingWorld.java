@@ -10,6 +10,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Point;
 
+import static com.HyperCauliflower.world.Chunk.CHUNK_WIDTH;
+
 /**
  * Created by Matt on 24/06/2016.
  */
@@ -19,20 +21,31 @@ public class RenderingWorld implements Renderable, Updatable{
     //maintains and draws the visible and soon-to-be visible tiles
 
     private int seed,u,v;
-    private static final int BUFFER = 4, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
+    private static final int BUFFER = 20, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
     //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 2, STORED_WIDTH = 8, STORED_HEIGHT = 8;
     static final int GRASS = 0, WATER = 1, SAND = 2, COUNT = 3;
     private Chunk[][] chunksLoaded;
     private Perlin noiseGen;
     private SpriteSheetData spriteSheetData;
-    private Image[] tiles;
-
+    private int [][][][] pixels;
 
     public RenderingWorld(int seed, SpriteSheetData spriteSheetData){
-        tiles = new Image[COUNT];
+        Image[] tiles = new Image[COUNT];
         tiles[0] = spriteSheetData.getImage("grass",0);
         tiles[1] = spriteSheetData.getImage("water",0);
         tiles[2] = spriteSheetData.getImage("sand",0);
+
+        pixels = new int[COUNT][CHUNK_WIDTH][CHUNK_WIDTH][3];
+        for(int i = 0; i < COUNT; i++){
+            for(int j = 0; j <CHUNK_WIDTH; j++)
+                for(int k = 0;k<CHUNK_WIDTH; k++){
+                    pixels[i][j][k][0] = tiles[i].getColor(j,k).getRed();
+                    pixels[i][j][k][1] = tiles[i].getColor(j,k).getGreen();
+                    pixels[i][j][k][2] = tiles[i].getColor(j,k).getBlue();
+                }
+
+        }
+
         this.spriteSheetData = spriteSheetData;
         noiseGen = new Perlin();
         noiseGen.setOctaveCount(6);
@@ -52,8 +65,8 @@ public class RenderingWorld implements Renderable, Updatable{
                 c.render(graphics,offset);
     }
 
-    Image getTileImage(int id){
-        return tiles[id];
+    int getPixelColor(int type, int x, int y, int color){
+        return pixels[type][x][y][color];
     }
 
     private Point getTL(){
@@ -64,7 +77,7 @@ public class RenderingWorld implements Renderable, Updatable{
         return chunksLoaded[adjustValue(u-1,STORED_WIDTH)][adjustValue(v-1,STORED_HEIGHT)].getLocation();
     }
     public void update(GameState game) {
-        Point cameraPosition = new Point((int)game.getCameraPosition().getX()/Chunk.CHUNK_WIDTH,(int)game.getCameraPosition().getY()/Chunk.CHUNK_WIDTH);
+        Point cameraPosition = new Point((int)game.getCameraPosition().getX()/ CHUNK_WIDTH,(int)game.getCameraPosition().getY()/ CHUNK_WIDTH);
         if(cameraPosition.getX()-getTL().getX()< (SCREEN_WIDTH/2)+2){
             Point tl = getTL();
             u = adjustValue(u-1,STORED_WIDTH);

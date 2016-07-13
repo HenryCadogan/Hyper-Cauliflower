@@ -2,7 +2,7 @@
   "saves":[
     {
       "name":"test",
-      "seed":694660,
+      "seed":69420,
       "x":20,
       "y":20
     }
@@ -19,34 +19,35 @@
      "path": "res/sprites/player.png",
      "height": 32,
      "width": 32
+
    }
   ],
-  "tilesData":[
+  "tilesData": [
     {
-      "name":"grass",
-      "startFrame":0,
-      "endFrame":0,
-      "row":0
+      "name": "grass",
+      "startFrame": 0,
+      "endFrame": 0,
+      "row": 0
     },
     {
-      "name":"water",
-      "startFrame":1,
-      "endFrame":4,
-      "row":0
+      "name": "water",
+      "startFrame": 1,
+      "endFrame": 4,
+      "row": 0
     },
     {
-      "name":"sand",
-      "startFrame":5,
-      "endFrame":5,
-      "row":0
+      "name": "sand",
+      "startFrame": 5,
+      "endFrame": 5,
+      "row": 0
     }
-  ],
+    ],
   "entitiesData":[
-    {
-      "name":"player",
-      "startFrame":0,
-      "endFrame":0,
-      "row":0
-    }
-  ]
+  {
+    "name":"player",
+    "startFrame":0,
+    "endFrame":0,
+    "row":0
+  }
+]
 }
