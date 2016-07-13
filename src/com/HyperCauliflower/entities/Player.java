@@ -16,7 +16,7 @@ public class Player extends Entity {
 
     private float movementModifier;
     //load in all values from json to avoid further reads thus being more efficient
-    private Point mousePos = new Point(500,0);
+    private Point mousePos = new Point(0,0);
     private Point playerAbsPos;
     private int experience;
     private double angleToTurn;
@@ -68,7 +68,7 @@ public class Player extends Entity {
     public void update(GameState game) {
         this.mousePos = game.getMousePosition();
         footsteps.update(game.pSystem,game.getDelta());
-        footsteps.usePoints(game.pSystem); //todo dont think this should be called every update
+
     }
 
     public void render(Graphics graphics, Point offset) {

@@ -33,7 +33,6 @@ public abstract class Item implements Renderable {
         }else if(rand >= 57){
             rarity = 4;
             //legendary
-
         }
             //todo Throw error for invalid rarity
         return rarity;

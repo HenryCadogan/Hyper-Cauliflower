@@ -46,10 +46,10 @@ public class GameState extends BasicGameState {
 
         pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png");
         pSystem.usePoints();
-        this.renderables.add(player);
+        renderables.add(player);
         pSystem.addEmitter(player.footsteps);
         pSystem.setVisible(true);
-
+        pSystem.setPosition(0,0);
         player.enableFootsteps();
         pSystem.setBlendingMode(ParticleSystem.BLEND_COMBINE);
     }
@@ -60,6 +60,8 @@ public class GameState extends BasicGameState {
         for (Renderable r : renderables) {
             r.render(graphics, new Point((Main.INTERNAL_WIDTH/2)-cameraPosition.getX(), (Main.INTERNAL_HEIGHT/2)-cameraPosition.getY()));
         }
+
+        pSystem.render();
     }
 
 
@@ -84,8 +86,8 @@ public class GameState extends BasicGameState {
         for (Updatable u : updatables) {
             u.update(this);
         }
+
         pSystem.update(delta);
-        pSystem.setPosition(player.getLocation().getX(),player.getLocation().getY());
 
 
     }

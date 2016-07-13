@@ -1,8 +1,8 @@
-<emitter imageName="" name="Footsteps">
+<emitter imageName="" name="footsteps">
     <spawnInterval enabled="true" max="150.0" min="150.0"/>
     <spawnCount enabled="true" max="2.0" min="2.0"/>
     <initialLife enabled="true" max="1000.0" min="1000.0"/>
-    <initialSize enabled="true" max="0.1" min="0.01"/>
+    <initialSize enabled="true" max="0.8" min="0.01"/>
     <xOffset enabled="true" max="0.0" min="0.0"/>
     <yOffset enabled="true" max="0.0" min="0.0"/>
     <initialDistance enabled="true" max="0.0" min="0.0"/>
@@ -17,8 +17,8 @@
     <startAlpha type="simple" value="255.0"/>
     <endAlpha type="simple" value="0.0"/>
     <color>
-        <step b="0.3" g="0.5" offset="0.0" r="1"/>
-        <step b="0.0" g="0.7" offset="0.5" r="0.0"/>
+        <step b="255" g="0.0" offset="0.0" r="255"/>
+        <step b="255" g="0.7" offset="0.5" r="255"/>
         <step b="0.9" g="0.3" offset="1.0" r="0.2"/>
     </color>
 </emitter>
