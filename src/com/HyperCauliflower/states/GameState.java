@@ -42,16 +42,19 @@ public class GameState extends BasicGameState {
 
         player = new Player(spriteSheetHandler.get("entities"),"player",cameraPosition);
         player.setPlayerMoveSpeed(5);
+
         updatables.add(player);
+        renderables.add(player);
 
         pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png",2000);
         pSystem.usePoints();
-        renderables.add(player);
         pSystem.addEmitter(player.footsteps);
         pSystem.setVisible(true);
         pSystem.setPosition(0,0);
         player.enableFootsteps();
-        pSystem.setBlendingMode(ParticleSystem.BLEND_COMBINE);
+        pSystem.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
+
+
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
@@ -60,7 +63,7 @@ public class GameState extends BasicGameState {
         for (Renderable r : renderables) {
             r.render(graphics, new Point((Main.INTERNAL_WIDTH/2)-cameraPosition.getX(), (Main.INTERNAL_HEIGHT/2)-cameraPosition.getY()));
         }
-
+        graphics.drawString(String.valueOf(pSystem.getParticleCount()),20,30);
         pSystem.render();
     }
 
@@ -68,27 +71,38 @@ public class GameState extends BasicGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
         this.mousePos = new Point(gameContainer.getInput().getMouseX(),gameContainer.getInput().getMouseY());
         this.cameraPosition = player.getLocation();
-
+        boolean moving = false;
         this.delta = delta;
 
         if (gameContainer.getInput().isKeyDown(Input.KEY_W)){
             player.move(0);
+            //todo fix this shit
+            moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_S)){
             player.move(2);
+            moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_A)){
             player.move(3);
+            moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_D)){
             player.move(1);
+            moving = true;
         }
         for (Updatable u : updatables) {
             u.update(this);
         }
+
         pSystem.setPosition(-cameraPosition.getX(),-cameraPosition.getY());
         pSystem.update(delta);
         pSystem.setPosition(Main.INTERNAL_WIDTH/2-cameraPosition.getX(),Main.INTERNAL_HEIGHT/2-cameraPosition.getY());
+
+        if (!moving){
+            player.disableFootsteps();
+            pSystem.getEmitter(0).resetState();
+        }
 
     }
 
@@ -99,6 +113,7 @@ public class GameState extends BasicGameState {
     public Point getMousePosition(){
         return this.mousePos;
     }
+
     public int getDelta(){
         return delta;
     }

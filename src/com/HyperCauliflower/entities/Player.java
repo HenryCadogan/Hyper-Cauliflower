@@ -38,7 +38,7 @@ public class Player extends Entity {
 
 
     public void move(int dir) {
-
+        enableFootsteps();
         if (dir == 0) {
             this.location.setY(this.location.getCenterY() - (this.moveSpeed * movementModifier));
         }
@@ -68,7 +68,6 @@ public class Player extends Entity {
     public void update(GameState game) {
         this.mousePos = game.getMousePosition();
         footsteps.update(game.pSystem,game.getDelta());
-
     }
 
     public void render(Graphics graphics, Point offset) {
@@ -97,6 +96,7 @@ public class Player extends Entity {
     public void enableFootsteps(){
         footsteps.setEnabled(true);
     }
+
     public void disableFootsteps(){
         footsteps.setEnabled(false);
     }
