@@ -73,7 +73,7 @@ public class Player extends Entity {
 
     public void render(Graphics graphics, Point offset) {
         rotatePlayer(graphics, offset);
-        footsteps.setPosition(this.getLocation().getX() + offset.getX() + this.getWidth() / 2, this.getLocation().getY() + offset.getY() + this.getHeight() / 2);
+        footsteps.setPosition(this.getLocation().getX() + this.getWidth() / 2, this.getLocation().getY() + this.getHeight() / 2);
     }
 
     public int getAnimationFrame() {

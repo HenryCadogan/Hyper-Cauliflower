@@ -88,7 +88,7 @@ public class GameState extends BasicGameState {
         }
 
         pSystem.update(delta);
-
+        pSystem.setPosition(Main.INTERNAL_WIDTH/2-cameraPosition.getX(),Main.INTERNAL_HEIGHT/2-cameraPosition.getY());
 
     }
 
