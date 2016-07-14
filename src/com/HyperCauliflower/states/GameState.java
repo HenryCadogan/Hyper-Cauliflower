@@ -44,7 +44,7 @@ public class GameState extends BasicGameState {
         player.setPlayerMoveSpeed(5);
         updatables.add(player);
 
-        pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png");
+        pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png",2000);
         pSystem.usePoints();
         renderables.add(player);
         pSystem.addEmitter(player.footsteps);
@@ -86,7 +86,7 @@ public class GameState extends BasicGameState {
         for (Updatable u : updatables) {
             u.update(this);
         }
-
+        pSystem.setPosition(-cameraPosition.getX(),-cameraPosition.getY());
         pSystem.update(delta);
         pSystem.setPosition(Main.INTERNAL_WIDTH/2-cameraPosition.getX(),Main.INTERNAL_HEIGHT/2-cameraPosition.getY());
 
