@@ -38,7 +38,7 @@ public class Player extends Entity {
 
 
     public void move(int dir) {
-
+        enableFootsteps();
         if (dir == 0) {
             this.location.setY(this.location.getCenterY() - (this.moveSpeed * movementModifier));
         }

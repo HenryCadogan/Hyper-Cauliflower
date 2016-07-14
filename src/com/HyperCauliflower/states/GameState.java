@@ -71,6 +71,8 @@ public class GameState extends BasicGameState {
 
         this.delta = delta;
 
+
+        player.disableFootsteps();
         if (gameContainer.getInput().isKeyDown(Input.KEY_W)){
             player.move(0);
         }
