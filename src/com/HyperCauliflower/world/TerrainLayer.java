@@ -1,49 +1,71 @@
 package com.HyperCauliflower.world;
 
-import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Main;
 import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
 import com.flowpowered.noise.module.source.Perlin;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Point;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.HyperCauliflower.world.Chunk.CHUNK_WIDTH;
 
 /**
  * Created by Matt on 24/06/2016.
  */
-public class RenderingWorld implements Renderable, Updatable{
+public class TerrainLayer implements Renderable, Updatable{
 
     private int seed,u,v;
+    private static final String PATH = "res/JSON/terrain.json";
     private static final int BUFFER = 20, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
     //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 2, STORED_WIDTH = 8, STORED_HEIGHT = 8;
     static final int GRASS = 0, WATER = 1, SAND = 2, COUNT = 3;
     private Chunk[][] chunksLoaded;
     private Perlin noiseGen;
-    private SpriteSheetData spriteSheetData;
     private int [][][][] pixels;
+    private ArrayList<Boundary> generator;
+    private double min = -5;
 
-    public RenderingWorld(int seed, SpriteSheetData spriteSheetData){
-        Image[] tiles = new Image[COUNT];
-        tiles[0] = spriteSheetData.getImage("grass",0);
-        tiles[1] = spriteSheetData.getImage("water",0);
-        tiles[2] = spriteSheetData.getImage("sand",0);
+    public TerrainLayer(int seed){
+        try {
+            JSONObject j = (JSONObject) new JSONParser().parse(new FileReader(PATH));
+            int width = Math.toIntExact((long)j.get("width"));
+            SpriteSheet spriteSheet = new SpriteSheet((String)j.get("path"),width, width);
 
-        pixels = new int[COUNT][CHUNK_WIDTH][CHUNK_WIDTH][3];
-        for(int i = 0; i < COUNT; i++){
-            for(int j = 0; j <CHUNK_WIDTH; j++)
-                for(int k = 0;k<CHUNK_WIDTH; k++){
-                    pixels[i][j][k][0] = tiles[i].getColor(j,k).getRed();
-                    pixels[i][j][k][1] = tiles[i].getColor(j,k).getGreen();
-                    pixels[i][j][k][2] = tiles[i].getColor(j,k).getBlue();
-                }
+            HashMap<String, Terrain> map = new HashMap<String, Terrain>();
+            ((JSONArray)j.get("types")).forEach(o ->{
+                JSONObject json = (JSONObject)o;
+                map.put((String)json.get("name"),new Terrain(json, width, spriteSheet));
+            });
 
+            //it may eventually become a good idea to store the boundaries in a tree structure
+            generator = new ArrayList<Boundary>();
+            ((JSONArray)j.get("generator")).forEach(o->{
+                JSONObject json = (JSONObject) o;
+                double max = ((Number)json.get("boundary")).doubleValue();
+                generator.add(new Boundary(min, max, map.get(json.get("type"))));
+                min = max;
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (SlickException e){
+            e.printStackTrace();
         }
 
-        this.spriteSheetData = spriteSheetData;
         noiseGen = new Perlin();
         noiseGen.setOctaveCount(6);
         noiseGen.setSeed(seed);
@@ -60,10 +82,6 @@ public class RenderingWorld implements Renderable, Updatable{
         for(Chunk[] ca:chunksLoaded)
             for(Chunk c:ca)
                 c.render(graphics,offset);
-    }
-
-    int getPixelColor(int type, int x, int y, int color){
-        return pixels[type][x][y][color];
     }
 
     private Point getTL(){
@@ -113,12 +131,12 @@ public class RenderingWorld implements Renderable, Updatable{
     }
 
     private Chunk generateChunk(int x, int y){
-        return new Chunk(new Point(x, y),noiseGen, this);
+        return new Chunk(new Point(x, y),noiseGen, generator);
     }
 
     private int adjustValue(int val, int comp){
-        if(val==comp)return 0;
-        else if(val==-1)return comp-1;
+        if(val>=comp)return val-comp;
+        else if(val<0)return comp+val;
         else return val;
     }
 }

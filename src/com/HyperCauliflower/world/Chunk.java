@@ -8,6 +8,8 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.geom.Point;
 
+import java.util.ArrayList;
+
 /**
  * Created by Matt on 25/06/2016.
  */
@@ -17,22 +19,23 @@ public class Chunk implements Renderable{
     private Point location;
     private Image image;
     private static final int ZOOM = 10000;
+    private boolean[][] walkable;
+    private Terrain t;
 
-    Chunk(Point location, Perlin noiseGen, RenderingWorld world){
+
+    Chunk(Point location, Perlin noiseGen, ArrayList<Boundary> generator){
         this.location = location;
+        walkable = new boolean[32][32];
         ImageBuffer img = new ImageBuffer(CHUNK_WIDTH,CHUNK_WIDTH);
         for(int i = 0; i < CHUNK_WIDTH;i++) {
             for (int j = 0; j < CHUNK_WIDTH; j++) {
                 double pixelVal = noiseGen.getValue((i + location.getX()*CHUNK_WIDTH) / ZOOM, (j + location.getY()*CHUNK_WIDTH) / ZOOM, 0);
-                int t;
-                if (pixelVal > 0.6 || (pixelVal > 0.075 && pixelVal < 0.1))
-                    t = RenderingWorld.WATER;
-                else if (pixelVal > 0.50 || pixelVal < -0.8)
-                    t = RenderingWorld.SAND;
-                else {
-                    t = RenderingWorld.GRASS;
-                }
-                img.setRGBA(i, j,world.getPixelColor(t,i,j,0), world.getPixelColor(t,i,j,1), world.getPixelColor(t,i,j,2), 255);
+                generator.forEach(boundary->{
+                    if(boundary.inBoundary(pixelVal))
+                        t = boundary.getTerrain();
+                });
+                walkable[i][j] = t.getWalkable();
+                img.setRGBA(i, j,t.getColor(i,j,Terrain.RED), t.getColor(i,j,Terrain.GREEN), t.getColor(i,j,Terrain.BLUE), 255);
             }
         }
         image = img.getImage();
