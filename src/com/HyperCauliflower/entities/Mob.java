@@ -1,7 +1,7 @@
 package com.HyperCauliflower.entities;
 
 import com.HyperCauliflower.handlers.SpriteSheetData;
-import org.newdawn.slick.geom.Point;
+import com.HyperCauliflower.states.Point;
 
 /**
  * Created by Matt on 24/06/2016.

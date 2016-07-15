@@ -1,6 +1,5 @@
 package com.HyperCauliflower.states;
 
-import org.newdawn.slick.geom.Point;
 
 /**
  * Created by Matt on 28/06/2016.
@@ -13,10 +12,10 @@ public class SaveData {
         location = new Point(x,y);
     }
 
-    public int getSeed(){
+    int getSeed(){
         return seed;
     }
-    public Point getLocation(){
+    Point getLocation(){
         return location;
     }
 }

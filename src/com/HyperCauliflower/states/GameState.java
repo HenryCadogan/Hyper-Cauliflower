@@ -3,9 +3,8 @@ package com.HyperCauliflower.states;
 import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
-import com.HyperCauliflower.world.RenderingWorld;
+import com.HyperCauliflower.world.TerrainLayer;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -23,8 +22,9 @@ public class GameState extends BasicGameState {
     private Point cameraPosition;
     private Player player;
     public ParticleSystem pSystem;
-    public Point mousePos;
+    private Point mousePos;
     private int delta;
+    private TerrainLayer r;
 
     public int getID() {
         return Game.State.GAME.ordinal();
@@ -34,7 +34,7 @@ public class GameState extends BasicGameState {
         SpriteSheetHandler spriteSheetHandler = new SpriteSheetHandler();
         SaveData s = new SaveHandler().get("test");
         cameraPosition = s.getLocation(); //Change to being loaded from a file
-        RenderingWorld r = new RenderingWorld(s.getSeed(), spriteSheetHandler.get("tiles"));
+        r = new TerrainLayer(s.getSeed(),cameraPosition.translate(new Point(-Main.INTERNAL_WIDTH/2,-Main.INTERNAL_HEIGHT/2)));
         renderables = new ArrayList<Renderable>();
         renderables.add(r);
         updatables = new ArrayList<Updatable>();
@@ -42,19 +42,16 @@ public class GameState extends BasicGameState {
 
         player = new Player(spriteSheetHandler.get("entities"),"player",cameraPosition);
         player.setPlayerMoveSpeed(5);
-
         updatables.add(player);
-        renderables.add(player);
 
         pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png",2000);
         pSystem.usePoints();
+        renderables.add(player);
         pSystem.addEmitter(player.footsteps);
         pSystem.setVisible(true);
         pSystem.setPosition(0,0);
         player.enableFootsteps();
-        pSystem.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
-
-
+        pSystem.setBlendingMode(ParticleSystem.BLEND_COMBINE);
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
@@ -63,7 +60,7 @@ public class GameState extends BasicGameState {
         for (Renderable r : renderables) {
             r.render(graphics, new Point((Main.INTERNAL_WIDTH/2)-cameraPosition.getX(), (Main.INTERNAL_HEIGHT/2)-cameraPosition.getY()));
         }
-        graphics.drawString(String.valueOf(pSystem.getParticleCount()),20,30);
+
         pSystem.render();
     }
 
@@ -71,49 +68,44 @@ public class GameState extends BasicGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
         this.mousePos = new Point(gameContainer.getInput().getMouseX(),gameContainer.getInput().getMouseY());
         this.cameraPosition = player.getLocation();
-        boolean moving = false;
+
+
+        //System.out.println(r.getWalkable(player.getLocation().getX(),player.getLocation().getY()));
+
         this.delta = delta;
 
+
+        player.disableFootsteps();
         if (gameContainer.getInput().isKeyDown(Input.KEY_W)){
             player.move(0);
-            //todo fix this shit
-            moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_S)){
             player.move(2);
-            moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_A)){
             player.move(3);
-            moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_D)){
             player.move(1);
-            moving = true;
         }
         for (Updatable u : updatables) {
             u.update(this);
         }
-
         pSystem.setPosition(-cameraPosition.getX(),-cameraPosition.getY());
         pSystem.update(delta);
         pSystem.setPosition(Main.INTERNAL_WIDTH/2-cameraPosition.getX(),Main.INTERNAL_HEIGHT/2-cameraPosition.getY());
-
-        if (!moving){
-            player.disableFootsteps();
-            pSystem.getEmitter(0).resetState();
-        }
 
     }
 
     public Point getCameraPosition() {
         return cameraPosition;
     }
-
+    public boolean isWalkable(Point p){
+        return r.getWalkable(p.getX(),p.getY());
+    }
     public Point getMousePosition(){
         return this.mousePos;
     }
-
     public int getDelta(){
         return delta;
     }

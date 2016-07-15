@@ -1,49 +1,67 @@
 package com.HyperCauliflower.world;
 
-import com.HyperCauliflower.handlers.SpriteSheetData;
-import com.HyperCauliflower.states.GameState;
-import com.HyperCauliflower.states.Main;
-import com.HyperCauliflower.states.Renderable;
-import com.HyperCauliflower.states.Updatable;
+import com.HyperCauliflower.states.*;
 import com.flowpowered.noise.module.source.Perlin;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Point;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.HyperCauliflower.world.Chunk.CHUNK_WIDTH;
 
 /**
  * Created by Matt on 24/06/2016.
  */
-public class RenderingWorld implements Renderable, Updatable{
+public class TerrainLayer implements Renderable, Updatable{
 
     private int seed,u,v;
+    private static final String PATH = "res/JSON/terrain.json";
     private static final int BUFFER = 20, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
     //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 2, STORED_WIDTH = 8, STORED_HEIGHT = 8;
     static final int GRASS = 0, WATER = 1, SAND = 2, COUNT = 3;
     private Chunk[][] chunksLoaded;
     private Perlin noiseGen;
-    private SpriteSheetData spriteSheetData;
     private int [][][][] pixels;
+    private ArrayList<Boundary> generator;
+    private double min = -5;
 
-    public RenderingWorld(int seed, SpriteSheetData spriteSheetData){
-        Image[] tiles = new Image[COUNT];
-        tiles[0] = spriteSheetData.getImage("grass",0);
-        tiles[1] = spriteSheetData.getImage("water",0);
-        tiles[2] = spriteSheetData.getImage("sand",0);
+    public TerrainLayer(int seed, Point spawn){
+        try {
+            JSONObject j = (JSONObject) new JSONParser().parse(new FileReader(PATH));
+            int width = Math.toIntExact((long)j.get("width"));
+            SpriteSheet spriteSheet = new SpriteSheet((String)j.get("path"),width, width);
 
-        pixels = new int[COUNT][CHUNK_WIDTH][CHUNK_WIDTH][3];
-        for(int i = 0; i < COUNT; i++){
-            for(int j = 0; j <CHUNK_WIDTH; j++)
-                for(int k = 0;k<CHUNK_WIDTH; k++){
-                    pixels[i][j][k][0] = tiles[i].getColor(j,k).getRed();
-                    pixels[i][j][k][1] = tiles[i].getColor(j,k).getGreen();
-                    pixels[i][j][k][2] = tiles[i].getColor(j,k).getBlue();
-                }
+            HashMap<String, Terrain> map = new HashMap<String, Terrain>();
+            ((JSONArray)j.get("types")).forEach(o ->{
+                JSONObject json = (JSONObject)o;
+                map.put((String)json.get("name"),new Terrain(json, width, spriteSheet));
+            });
 
+            //it may eventually become a good idea to store the boundaries in a tree structure
+            generator = new ArrayList<Boundary>();
+            ((JSONArray)j.get("generator")).forEach(o->{
+                JSONObject json = (JSONObject) o;
+                double max = ((Number)json.get("boundary")).doubleValue();
+                generator.add(new Boundary(min, max, map.get(json.get("type"))));
+                min = max;
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (SlickException e){
+            e.printStackTrace();
         }
 
-        this.spriteSheetData = spriteSheetData;
         noiseGen = new Perlin();
         noiseGen.setOctaveCount(6);
         noiseGen.setSeed(seed);
@@ -51,7 +69,7 @@ public class RenderingWorld implements Renderable, Updatable{
         chunksLoaded = new Chunk[STORED_WIDTH][STORED_HEIGHT];
         for(int i = 0;i<STORED_WIDTH;i++) {
             for (int j = 0; j < STORED_HEIGHT; j++) {
-                chunksLoaded[i][j] = generateChunk(i,j);
+                chunksLoaded[i][j] = generateChunk(i-BUFFER/2+spawn.getX()/CHUNK_WIDTH,j-BUFFER/2+spawn.getY()/CHUNK_WIDTH);
             }
         }
     }
@@ -62,10 +80,6 @@ public class RenderingWorld implements Renderable, Updatable{
                 c.render(graphics,offset);
     }
 
-    int getPixelColor(int type, int x, int y, int color){
-        return pixels[type][x][y][color];
-    }
-
     private Point getTL(){
         return chunksLoaded[u][v].getLocation();
     }
@@ -74,25 +88,25 @@ public class RenderingWorld implements Renderable, Updatable{
         return chunksLoaded[adjustValue(u-1,STORED_WIDTH)][adjustValue(v-1,STORED_HEIGHT)].getLocation();
     }
     public void update(GameState game) {
-        Point cameraPosition = new Point((int)game.getCameraPosition().getX()/ CHUNK_WIDTH,(int)game.getCameraPosition().getY()/ CHUNK_WIDTH);
+        Point cameraPosition = new Point(game.getCameraPosition().getX()/ CHUNK_WIDTH,game.getCameraPosition().getY()/ CHUNK_WIDTH);
         if(cameraPosition.getX()-getTL().getX()< (SCREEN_WIDTH/2)+2){
             Point tl = getTL();
             u = adjustValue(u-1,STORED_WIDTH);
-            updateColumn((int)tl.getX()-1,(int)tl.getY());
+            updateColumn(tl.getX()-1,tl.getY());
         }else if (getBR().getX()-cameraPosition.getX()< (SCREEN_WIDTH/2)+1) {
             Point tl = getTL();
             Point br = getBR();
-            updateColumn((int) br.getX() + 1, (int) tl.getY());
+            updateColumn( br.getX() + 1,  tl.getY());
             u = adjustValue(u + 1, STORED_WIDTH);
         }
         if(cameraPosition.getY()-getTL().getY()< (SCREEN_HEIGHT/2)+2){
             Point tl = getTL();
             v = adjustValue(v-1,STORED_HEIGHT);
-            updateRow((int)tl.getY() - 1,(int)tl.getX());
+            updateRow(tl.getY() - 1,tl.getX());
         }else if (getBR().getY()-cameraPosition.getY()< (SCREEN_HEIGHT/2)+1){
             Point br = getBR();
             Point tl = getTL();
-            updateRow((int) br.getY() + 1,(int)tl.getX());
+            updateRow(br.getY() + 1,tl.getX());
             v = adjustValue(v+1,STORED_HEIGHT);
         }
     }
@@ -113,12 +127,16 @@ public class RenderingWorld implements Renderable, Updatable{
     }
 
     private Chunk generateChunk(int x, int y){
-        return new Chunk(new Point(x, y),noiseGen, this);
+        return new Chunk(new Point(x, y),noiseGen, generator);
+    }
+
+    public boolean getWalkable(int x, int y){
+        return chunksLoaded[adjustValue(x/CHUNK_WIDTH+u-getTL().getX(), STORED_WIDTH)][adjustValue(y/CHUNK_WIDTH+v-getTL().getY(), STORED_HEIGHT)].getWalkable(adjustValue(x%CHUNK_WIDTH,CHUNK_WIDTH),adjustValue(y%CHUNK_WIDTH,CHUNK_WIDTH));
     }
 
     private int adjustValue(int val, int comp){
-        if(val==comp)return 0;
-        else if(val==-1)return comp-1;
+        if(val>=comp)return val-comp;
+        else if(val<0)return comp+val;
         else return val;
     }
 }

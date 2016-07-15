@@ -1,7 +1,6 @@
 package com.HyperCauliflower.states;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Point;
 
 /**
  * Created by Matt on 24/06/2016.
