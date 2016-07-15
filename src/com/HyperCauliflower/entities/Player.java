@@ -98,6 +98,7 @@ public class Player extends Entity {
         footsteps.setEnabled(true);
     }
     public void disableFootsteps(){
+        footsteps.resetState();
         footsteps.setEnabled(false);
     }
 }

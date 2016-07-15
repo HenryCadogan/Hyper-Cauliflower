@@ -68,26 +68,33 @@ public class GameState extends BasicGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
         this.mousePos = new Point(gameContainer.getInput().getMouseX(),gameContainer.getInput().getMouseY());
         this.cameraPosition = player.getLocation();
-
-
+        boolean moving = false;
+        player.enableFootsteps();
         //System.out.println(r.getWalkable(player.getLocation().getX(),player.getLocation().getY()));
 
         this.delta = delta;
 
-
-        player.disableFootsteps();
         if (gameContainer.getInput().isKeyDown(Input.KEY_W)){
             player.move(0);
+            moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_S)){
             player.move(2);
+            moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_A)){
             player.move(3);
+            moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_D)){
             player.move(1);
+            moving = true;
         }
+
+        if (!moving){
+            player.disableFootsteps();
+        }
+
         for (Updatable u : updatables) {
             u.update(this);
         }
