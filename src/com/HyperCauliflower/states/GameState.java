@@ -5,7 +5,6 @@ import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
 import com.HyperCauliflower.world.TerrainLayer;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -23,8 +22,9 @@ public class GameState extends BasicGameState {
     private Point cameraPosition;
     private Player player;
     public ParticleSystem pSystem;
-    public Point mousePos;
+    private Point mousePos;
     private int delta;
+    private TerrainLayer r;
 
     public int getID() {
         return Game.State.GAME.ordinal();
@@ -34,7 +34,7 @@ public class GameState extends BasicGameState {
         SpriteSheetHandler spriteSheetHandler = new SpriteSheetHandler();
         SaveData s = new SaveHandler().get("test");
         cameraPosition = s.getLocation(); //Change to being loaded from a file
-        TerrainLayer r = new TerrainLayer(s.getSeed());
+        r = new TerrainLayer(s.getSeed(),cameraPosition.translate(new Point(-Main.INTERNAL_WIDTH/2,-Main.INTERNAL_HEIGHT/2)));
         renderables = new ArrayList<Renderable>();
         renderables.add(r);
         updatables = new ArrayList<Updatable>();
@@ -69,6 +69,9 @@ public class GameState extends BasicGameState {
         this.mousePos = new Point(gameContainer.getInput().getMouseX(),gameContainer.getInput().getMouseY());
         this.cameraPosition = player.getLocation();
 
+
+        //System.out.println(r.getWalkable(player.getLocation().getX(),player.getLocation().getY()));
+
         this.delta = delta;
 
 
@@ -97,7 +100,9 @@ public class GameState extends BasicGameState {
     public Point getCameraPosition() {
         return cameraPosition;
     }
-
+    public boolean isWalkable(Point p){
+        return r.getWalkable(p.getX(),p.getY());
+    }
     public Point getMousePosition(){
         return this.mousePos;
     }

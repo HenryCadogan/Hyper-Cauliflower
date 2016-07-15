@@ -2,8 +2,8 @@ package com.HyperCauliflower.entities;
 
 import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.states.GameState;
+import com.HyperCauliflower.states.Point;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 
@@ -19,8 +19,8 @@ public class Player extends Entity {
     private Point mousePos = new Point(0,0);
     private Point playerAbsPos;
     private int experience;
-    private double angleToTurn;
     public ConfigurableEmitter footsteps;
+    Point moveVector = new Point(0,0);
 
     public Player(SpriteSheetData spriteSheetData, String name, Point location) {
         super(spriteSheetData, name, location);
@@ -39,18 +39,25 @@ public class Player extends Entity {
 
     public void move(int dir) {
         enableFootsteps();
+        double direction = 0;
         if (dir == 0) {
-            this.location.setY(this.location.getCenterY() - (this.moveSpeed * movementModifier));
+            direction=facing;
         }
         if (dir == 1) {
-            this.location.setX(this.location.getCenterX() + (this.moveSpeed * movementModifier));
+            direction=(facing+Math.PI/2);
         }
         if (dir == 2) {
-            this.location.setY(this.location.getCenterY() + (this.moveSpeed * movementModifier));
+            direction = (facing+Math.PI);
         }
-        if (dir == 3) {
-            this.location.setX(this.location.getCenterX() - (this.moveSpeed * movementModifier));
+        if(dir == 3) {
+            direction = (facing-Math.PI/2);
         }
+
+        moveVector = moveVector.translate(new Point(Math.cos(direction), Math.sin(direction)));
+    }
+
+    private float getSpeed(){
+        return moveSpeed*movementModifier;
     }
 
     public void setPlayerMoveSpeed(int speed) {
@@ -61,19 +68,21 @@ public class Player extends Entity {
         this.movementModifier = mod;
     }
 
-    public Point getLocation() {
-        return this.location;
-    }
-
     public void update(GameState game) {
-        this.mousePos = game.getMousePosition();
+        mousePos = game.getMousePosition();
         footsteps.update(game.pSystem,game.getDelta());
-
+        moveVector.normalise();
+        moveVector.scale(getSpeed());
+        Point newLocation = getLocation().translate(moveVector);
+        //if(game.isWalkable(newLocation))
+            getLocation().setPosition(newLocation);
+        moveVector = new Point(0,0);
     }
 
     public void render(Graphics graphics, Point offset) {
-        rotatePlayer(graphics, offset);
-        footsteps.setPosition(this.getLocation().getX() + this.getWidth() / 2, this.getLocation().getY() + this.getHeight() / 2);
+        rotatePlayer(offset);
+        super.render(graphics, offset);
+        footsteps.setPosition(this.getLocation().getX(), this.getLocation().getY());
     }
 
     public int getAnimationFrame() {
@@ -81,17 +90,8 @@ public class Player extends Entity {
         return 0;
     }
 
-    private void rotatePlayer(Graphics g, Point p) {
-        g.pushTransform();
-        angleToTurn = Math.atan2(this.mousePos.getY() - (this.getLocation().getY() + p.getCenterY() + this.getHeight() / 2), this.mousePos.getX() - ((this.getLocation().getX() + p.getCenterX() + this.getHeight() / 2)));
-        g.rotate(this.getLocation().getX() + p.getX() + this.getWidth() / 2, this.getLocation().getY() + p.getY() + this.getHeight() / 2, (float) Math.toDegrees(this.angleToTurn));
-        g.drawImage(getImage(getAnimationFrame()), this.getLocation().getX() + p.getX(), this.getLocation().getY() + p.getY());
-        g.popTransform();
-    }
-
-
-    public void slow(int slowMod, int duration) {
-        setPlayerSpeedModifier(this.moveSpeed * slowMod);
+    private void rotatePlayer(Point p) {
+        facing = Math.atan2(this.mousePos.getY() - (this.getLocation().getY() + p.getY()), this.mousePos.getX() - ((this.getLocation().getX() + p.getX())));
     }
 
     public void enableFootsteps(){

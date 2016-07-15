@@ -3,8 +3,8 @@
     {
       "name":"test",
       "seed":69420,
-      "x":20,
-      "y":20
+      "x":0,
+      "y":0
     }
   ],
  "spritesheets":[

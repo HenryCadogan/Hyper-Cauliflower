@@ -1,9 +1,6 @@
 package com.HyperCauliflower.world;
 
-import com.HyperCauliflower.states.GameState;
-import com.HyperCauliflower.states.Main;
-import com.HyperCauliflower.states.Renderable;
-import com.HyperCauliflower.states.Updatable;
+import com.HyperCauliflower.states.*;
 import com.flowpowered.noise.module.source.Perlin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,7 +9,6 @@ import org.json.simple.parser.ParseException;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Point;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -37,7 +33,7 @@ public class TerrainLayer implements Renderable, Updatable{
     private ArrayList<Boundary> generator;
     private double min = -5;
 
-    public TerrainLayer(int seed){
+    public TerrainLayer(int seed, Point spawn){
         try {
             JSONObject j = (JSONObject) new JSONParser().parse(new FileReader(PATH));
             int width = Math.toIntExact((long)j.get("width"));
@@ -73,7 +69,7 @@ public class TerrainLayer implements Renderable, Updatable{
         chunksLoaded = new Chunk[STORED_WIDTH][STORED_HEIGHT];
         for(int i = 0;i<STORED_WIDTH;i++) {
             for (int j = 0; j < STORED_HEIGHT; j++) {
-                chunksLoaded[i][j] = generateChunk(i,j);
+                chunksLoaded[i][j] = generateChunk(i-BUFFER/2+spawn.getX()/CHUNK_WIDTH,j-BUFFER/2+spawn.getY()/CHUNK_WIDTH);
             }
         }
     }
@@ -92,25 +88,25 @@ public class TerrainLayer implements Renderable, Updatable{
         return chunksLoaded[adjustValue(u-1,STORED_WIDTH)][adjustValue(v-1,STORED_HEIGHT)].getLocation();
     }
     public void update(GameState game) {
-        Point cameraPosition = new Point((int)game.getCameraPosition().getX()/ CHUNK_WIDTH,(int)game.getCameraPosition().getY()/ CHUNK_WIDTH);
+        Point cameraPosition = new Point(game.getCameraPosition().getX()/ CHUNK_WIDTH,game.getCameraPosition().getY()/ CHUNK_WIDTH);
         if(cameraPosition.getX()-getTL().getX()< (SCREEN_WIDTH/2)+2){
             Point tl = getTL();
             u = adjustValue(u-1,STORED_WIDTH);
-            updateColumn((int)tl.getX()-1,(int)tl.getY());
+            updateColumn(tl.getX()-1,tl.getY());
         }else if (getBR().getX()-cameraPosition.getX()< (SCREEN_WIDTH/2)+1) {
             Point tl = getTL();
             Point br = getBR();
-            updateColumn((int) br.getX() + 1, (int) tl.getY());
+            updateColumn( br.getX() + 1,  tl.getY());
             u = adjustValue(u + 1, STORED_WIDTH);
         }
         if(cameraPosition.getY()-getTL().getY()< (SCREEN_HEIGHT/2)+2){
             Point tl = getTL();
             v = adjustValue(v-1,STORED_HEIGHT);
-            updateRow((int)tl.getY() - 1,(int)tl.getX());
+            updateRow(tl.getY() - 1,tl.getX());
         }else if (getBR().getY()-cameraPosition.getY()< (SCREEN_HEIGHT/2)+1){
             Point br = getBR();
             Point tl = getTL();
-            updateRow((int) br.getY() + 1,(int)tl.getX());
+            updateRow(br.getY() + 1,tl.getX());
             v = adjustValue(v+1,STORED_HEIGHT);
         }
     }
@@ -132,6 +128,10 @@ public class TerrainLayer implements Renderable, Updatable{
 
     private Chunk generateChunk(int x, int y){
         return new Chunk(new Point(x, y),noiseGen, generator);
+    }
+
+    public boolean getWalkable(int x, int y){
+        return chunksLoaded[adjustValue(x/CHUNK_WIDTH+u-getTL().getX(), STORED_WIDTH)][adjustValue(y/CHUNK_WIDTH+v-getTL().getY(), STORED_HEIGHT)].getWalkable(adjustValue(x%CHUNK_WIDTH,CHUNK_WIDTH),adjustValue(y%CHUNK_WIDTH,CHUNK_WIDTH));
     }
 
     private int adjustValue(int val, int comp){
