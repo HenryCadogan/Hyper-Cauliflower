@@ -5,6 +5,9 @@
       <root url="jar://$PROJECT_DIR$/../../Lib/Slick/lib/slick.jar!/" />
       <root url="jar://$PROJECT_DIR$/../../Lib/Slick/lib/lwjgl.jar!/" />
       <root url="jar://$PROJECT_DIR$/../../Lib/Slick/lib/jinput.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../slick/lib/lwjgl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../slick/lib/slick.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../slick/lib/jinput.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

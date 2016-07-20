@@ -41,7 +41,6 @@ public class GameState extends BasicGameState {
         updatables.add(r);
 
         player = new Player(spriteSheetHandler.get("entities"),"player",cameraPosition);
-        player.setPlayerMoveSpeed(5);
         updatables.add(player);
 
         pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png",2000);

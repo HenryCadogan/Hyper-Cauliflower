@@ -42,7 +42,7 @@ class Chunk implements Renderable{
     }
 
     public void render(Graphics graphics, Point offset) {
-        Point drawLocation = new Point(location.getX()*CHUNK_WIDTH + offset.getX(),location.getY()*CHUNK_WIDTH + offset.getY());
+        Point drawLocation = new Point((location.getX())*CHUNK_WIDTH + offset.getX(),(location.getY()-1)*CHUNK_WIDTH + offset.getY());
         if(drawLocation.getX()>-CHUNK_WIDTH && drawLocation.getX()<Main.INTERNAL_WIDTH && drawLocation.getY()>-CHUNK_WIDTH&&drawLocation.getY()<Main.INTERNAL_HEIGHT)
         graphics.drawImage(image, drawLocation.getX(),drawLocation.getY());
     }

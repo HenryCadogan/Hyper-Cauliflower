@@ -14,18 +14,15 @@ import java.io.IOException;
  */
 public class Player extends Entity {
 
-    private float movementModifier;
     //load in all values from json to avoid further reads thus being more efficient
     private Point mousePos = new Point(0,0);
     private Point playerAbsPos;
     private int experience;
     public ConfigurableEmitter footsteps;
-    Point moveVector = new Point(0,0);
 
     public Player(SpriteSheetData spriteSheetData, String name, Point location) {
         super(spriteSheetData, name, location);
-        this.movementModifier = 1;
-        this.moveSpeed = 1;
+        setMoveSpeed(5);
         this.experience = 0;
         try {
             footsteps = ParticleIO.loadEmitter("/res/sprites/Particles/footsteps.xml");
@@ -56,27 +53,11 @@ public class Player extends Entity {
         moveVector = moveVector.translate(new Point(Math.cos(direction), Math.sin(direction)));
     }
 
-    private float getSpeed(){
-        return moveSpeed*movementModifier;
-    }
-
-    public void setPlayerMoveSpeed(int speed) {
-        this.moveSpeed = speed;
-    }
-
-    private void setPlayerSpeedModifier(int mod) {
-        this.movementModifier = mod;
-    }
-
     public void update(GameState game) {
+        super.update(game);
         mousePos = game.getMousePosition();
         footsteps.update(game.pSystem,game.getDelta());
-        moveVector.normalise();
-        moveVector.scale(getSpeed());
-        Point newLocation = getLocation().translate(moveVector);
-        //if(game.isWalkable(newLocation))
-            getLocation().setPosition(newLocation);
-        moveVector = new Point(0,0);
+
     }
 
     public void render(Graphics graphics, Point offset) {

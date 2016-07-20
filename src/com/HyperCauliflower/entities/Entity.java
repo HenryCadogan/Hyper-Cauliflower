@@ -1,6 +1,7 @@
 package com.HyperCauliflower.entities;
 
 import com.HyperCauliflower.handlers.SpriteSheetData;
+import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
 import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
@@ -12,11 +13,12 @@ import org.newdawn.slick.Image;
  */
 public abstract class Entity implements Renderable, Updatable{
     private Point location;
-    protected int moveSpeed;
+    private int moveSpeed;
     private SpriteSheetData spriteSheetData;
     private String name;
     protected double facing;
 
+    Point moveVector = new Point(0,0);
     private int level;
     protected static final int CURRENT = 0, BASE = 1, SCALING = 2, ITEM = 3, SKILL = 4, BUFF = 5, MAXHP = 0, ARMOUR = 1, STR = 2, DEX = 3, INT = 4, MODCOUNT = 6, STATCOUNT = 5;
     protected float[][] stats;
@@ -28,10 +30,18 @@ public abstract class Entity implements Renderable, Updatable{
         this.name = name;
     }
 
-    public void update(){
+    public void update(GameState game){
         for(int i = 0; i<STATCOUNT; i++)
             stats[CURRENT][i] = stats[BASE][i]+stats[SCALING][i]*level+stats[ITEM][i]+stats[SKILL][i]+stats[BUFF][i];
-
+        int speed = (int)getSpeed(1);
+        Point newLocation;
+        do {
+            moveVector.normalise();
+            moveVector.scale(speed--);
+            newLocation = getLocation().translate(moveVector);
+        }while(speed != -1 && !game.isWalkable(newLocation));
+        getLocation().setPosition(newLocation);
+        moveVector = new Point(0,0);
     }
 
     public void render(Graphics graphics, Point offset) {
@@ -41,7 +51,6 @@ public abstract class Entity implements Renderable, Updatable{
         graphics.popTransform();
 
     }
-    public abstract void move(int dir);
 
     public Point getLocation(){
         return location;
@@ -54,6 +63,12 @@ public abstract class Entity implements Renderable, Updatable{
     public int getHeight(){
         return spriteSheetData.getHeight();
     }
+
+    private float getSpeed(float movementModifier){
+        return moveSpeed*movementModifier;
+    }
+
+    public void setMoveSpeed(int speed) {moveSpeed = speed;}
 
     protected Image getImage(int frame) {
         return spriteSheetData.getImage(name, frame);
