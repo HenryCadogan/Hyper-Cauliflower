@@ -16,6 +16,7 @@ public abstract class Entity implements Renderable, Updatable{
     private int moveSpeed;
     private SpriteSheetData spriteSheetData;
     private String name;
+    private int health;
     protected double facing;
 
     Point moveVector = new Point(0,0);
@@ -72,5 +73,9 @@ public abstract class Entity implements Renderable, Updatable{
 
     protected Image getImage(int frame) {
         return spriteSheetData.getImage(name, frame);
+    }
+
+    private void takeDamage(int damageValue){
+        // todo make this line work this.health - (damageValue - this.inventory.getTotalArmorValue());
     }
 }

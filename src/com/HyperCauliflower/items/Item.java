@@ -10,6 +10,7 @@ import java.util.Random;
 public abstract class Item implements Renderable {
     private int value;
     private int rarity =-1;
+    private String type;
 
     public Item(int rarityModifier,int value){
         this.rarity = generateRarity(rarityModifier);
