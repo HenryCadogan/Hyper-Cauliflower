@@ -34,7 +34,7 @@ public abstract class Entity implements Renderable, Updatable{
     public void update(GameState game){
         for(int i = 0; i<STATCOUNT; i++)
             stats[CURRENT][i] = stats[BASE][i]+stats[SCALING][i]*level+stats[ITEM][i]+stats[SKILL][i]+stats[BUFF][i];
-        int speed = (int)getSpeed(1);
+        int speed = (int)getSpeed(game.getSpeedMod(getLocation()));
         Point newLocation;
         do {
             moveVector.normalise();

@@ -99,11 +99,11 @@ public class TerrainLayer implements Renderable, Updatable{
             updateColumn( br.getX() + 1,  tl.getY());
             u = adjustValue(u + 1, STORED_WIDTH);
         }
-        if(cameraPosition.getY()-getTL().getY()< (SCREEN_HEIGHT/2)+2){
+        if(cameraPosition.getY()-getTL().getY()< (SCREEN_HEIGHT/2)+1){
             Point tl = getTL();
             v = adjustValue(v-1,STORED_HEIGHT);
             updateRow(tl.getY() - 1,tl.getX());
-        }else if (getBR().getY()-cameraPosition.getY()< (SCREEN_HEIGHT/2)+1){
+        }else if (getBR().getY()-cameraPosition.getY()< (SCREEN_HEIGHT/2)+2){
             Point br = getBR();
             Point tl = getTL();
             updateRow(br.getY() + 1,tl.getX());
@@ -131,8 +131,29 @@ public class TerrainLayer implements Renderable, Updatable{
     }
 
     public boolean getWalkable(int x, int y){
-        return chunksLoaded[adjustValue(x/CHUNK_WIDTH+u-getTL().getX(), STORED_WIDTH)][adjustValue(y/CHUNK_WIDTH+v-getTL().getY(), STORED_HEIGHT)].getWalkable(adjustValue(x%CHUNK_WIDTH,CHUNK_WIDTH),adjustValue(y%CHUNK_WIDTH,CHUNK_WIDTH));
+        int chunkX = adjustValue(x/CHUNK_WIDTH+u-getTL().getX(), STORED_WIDTH),
+                chunkY = adjustValue(y/CHUNK_WIDTH+v-getTL().getY(), STORED_HEIGHT);
+        if(x <= 0){
+            chunkX = adjustValue(chunkX - 1, STORED_WIDTH);
+        }
+        if(y > 0){
+            chunkY = adjustValue(chunkY + 1, STORED_HEIGHT);
+        }
+        return chunksLoaded[chunkX][chunkY].getWalkable(adjustValue(x%CHUNK_WIDTH,CHUNK_WIDTH),adjustValue(y%CHUNK_WIDTH,CHUNK_WIDTH));
     }
+
+    public float getSpeedMod(int x, int y){
+        int chunkX = adjustValue(x/CHUNK_WIDTH+u-getTL().getX(), STORED_WIDTH),
+                chunkY = adjustValue(y/CHUNK_WIDTH+v-getTL().getY(), STORED_HEIGHT);
+        if(x <= 0){
+            chunkX = adjustValue(chunkX - 1, STORED_WIDTH);
+        }
+        if(y > 0){
+            chunkY = adjustValue(chunkY + 1, STORED_HEIGHT);
+        }
+        return chunksLoaded[chunkX][chunkY].getSpeedMod(adjustValue(x%CHUNK_WIDTH,CHUNK_WIDTH),adjustValue(y%CHUNK_WIDTH,CHUNK_WIDTH));
+    }
+
 
     private int adjustValue(int val, int comp){
         if(val>=comp)return val-comp;

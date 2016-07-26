@@ -6,19 +6,22 @@
       "name":"grass",
       "x":0,
       "y":0,
-      "walkable":true
+      "walkable":true,
+      "speed":1
     },
     {
       "name":"water",
       "x":1,
       "y":0,
-      "walkable":false
+      "walkable":true,
+      "speed":0.3
     },
     {
       "name":"sand",
       "x":5,
       "y":0,
-      "walkable":true
+      "walkable":true,
+      "speed":0.8
     }
   ],
   "generator":[

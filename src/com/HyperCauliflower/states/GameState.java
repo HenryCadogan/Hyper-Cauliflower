@@ -109,6 +109,9 @@ public class GameState extends BasicGameState {
     public boolean isWalkable(Point p){
         return r.getWalkable(p.getX(),p.getY());
     }
+    public float getSpeedMod(Point p){
+        return r.getSpeedMod(p.getX(),p.getY());
+    }
     public Point getMousePosition(){
         return this.mousePos;
     }

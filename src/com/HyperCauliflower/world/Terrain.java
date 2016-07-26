@@ -12,9 +12,11 @@ class Terrain {
     private boolean walkable;
     private int[][][] colors;
     static final int RED = 0, GREEN = 1, BLUE = 2;
+    private float speedMod;
     Terrain(JSONObject jsonObject, int width, SpriteSheet spriteSheet){
         colors = new int[width][width][3];
         walkable = (boolean)jsonObject.get("walkable");
+        speedMod = ((Number)jsonObject.get("speed")).floatValue();
         Image img = spriteSheet.getSprite(Math.toIntExact((long)jsonObject.get("x")),Math.toIntExact((long)jsonObject.get("y")));
         for(int i = 0; i < width; i++)
             for(int j = 0; j < width; j++){
@@ -29,6 +31,7 @@ class Terrain {
     boolean getWalkable(){
         return walkable;
     }
+    float getSpeedMod(){return speedMod;}
     int getColor(int x, int y, int color){
         return colors[x][y][color];
     }
