@@ -12,7 +12,7 @@ class Game extends StateBasedGame {
     enum State{GAME} //gives the values for the id of each state
 
     Game(){
-        super("Fuck you Miguel");
+        super("Test");
     }
 
     public void initStatesList(GameContainer gameContainer) throws SlickException {

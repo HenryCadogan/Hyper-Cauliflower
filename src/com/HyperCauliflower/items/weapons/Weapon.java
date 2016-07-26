@@ -8,7 +8,9 @@ import org.newdawn.slick.Graphics;
  * Created by Henry on 21/07/2016.
  */
 public class Weapon extends Item implements Fireable {
+
     private String name;
+    private int damage;
 
     public Weapon(int rarityMod,int value){
         super(rarityMod,value);

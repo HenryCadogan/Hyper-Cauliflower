@@ -7,7 +7,7 @@ import com.HyperCauliflower.items.armor.Armor;
  */
 public class ChestPiece extends Armor {
 
-    public ChestPiece(int rarityModifier, int value) {
-        super(rarityModifier, value);
+    public ChestPiece(int rarityModifier, int value,String name) {
+        super(rarityModifier, value,name);
     }
 }

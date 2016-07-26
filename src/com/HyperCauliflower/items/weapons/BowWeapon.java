@@ -9,11 +9,20 @@ public class BowWeapon extends Weapon {
 
     public BowWeapon(int rarityMod, int value) {
         super(rarityMod, value);
+        //todo generate weapon values from other aspects
     }
 
+    private void generateWeapon(){
+        //generate random weapon here
+    }
 
 
     public void fire(){
 
     }
+
+    private void genRandomWeapon(){
+
+    }
+
 }

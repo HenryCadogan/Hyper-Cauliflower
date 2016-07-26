@@ -8,13 +8,16 @@ import org.newdawn.slick.Graphics;
  * Created by Henry on 21/07/2016.
  */
 public abstract class Armor extends Item {
-
-    public Armor(int rarityModifier, int value) {
+    private String type;
+    public Armor(int rarityModifier, int value,String type) {
         super(rarityModifier, value);
+        this.type = type;
     }
 
     @Override
     public void render(Graphics graphics, Point offset) {
 
     }
+
+    public String getType(){ return this.type;}
 }
