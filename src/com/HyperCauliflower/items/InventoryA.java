@@ -3,7 +3,7 @@ package com.HyperCauliflower.items;
 import com.HyperCauliflower.items.armor.Armor;
 import com.HyperCauliflower.items.armor.BreastPlate;
 import com.HyperCauliflower.items.armor.HeadGear;
-import com.HyperCauliflower.items.armor.legArmor;
+import com.HyperCauliflower.items.armor.legArmorA;
 
 /**
  * Created by Tim on 04/08/2016.
@@ -22,7 +22,7 @@ public class InventoryA {
         } else if (armor instanceof BreastPlate) {
             oldItem = equippedArmor[1];
             equippedArmor[1] = armor;
-        } else if (armor instanceof legArmor) {
+        } else if (armor instanceof legArmorA) {
             oldItem = equippedArmor[2];
             equippedArmor[2] = armor;
         }
