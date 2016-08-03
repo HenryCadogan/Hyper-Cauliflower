@@ -39,7 +39,7 @@ public class InventoryA {
     }
 
     public Item addItem(int index, Item item) {
-        if (index > storedItems.length) {
+        if (index >= storedItems.length) {
             return item;
         }
         Item oldItem = storedItems[index];
