@@ -1,8 +1,6 @@
 package com.HyperCauliflower.items;
 
-import com.HyperCauliflower.items.armor.Armor;
-import com.HyperCauliflower.items.armor.HeadGear;
-import com.sun.corba.se.spi.ior.IORTemplate;
+import com.HyperCauliflower.items.armor.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import java.util.ArrayList;
  */
 public class Inventory {
 
-    private Armor currentHeadgear, currentChest, currentTrinketLeft, getCurrentTrinketRight;
+    private Armor currentHeadgear, currentChest, currentTrinket, currentRing;
     private ArrayList<Item> items;
     private final int MAX_INV_SIZE = 100;
 
@@ -37,10 +35,23 @@ public class Inventory {
         }
     }
 
-    private void setHead(Armor a) {
+    private void setArmorPiece(Armor a) {
         if (a instanceof HeadGear) {
             items.add(currentHeadgear);
             currentHeadgear = a;
+        } else if (a instanceof BreastPlate) {
+            items.add(currentChest);
+            currentChest = a;
+        } else if (a instanceof Trinket) {
+            items.add(currentTrinket);
+            currentTrinket = a;
+        } else if (a instanceof Ring) {
+            items.add(currentRing);
+            currentRing = a;
+        } else if (a instanceof Trinket) {
+            items.add(currentTrinket);
+            currentTrinket = a;
         }
     }
 }
+
