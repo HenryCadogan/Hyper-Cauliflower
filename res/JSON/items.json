@@ -1,0 +1,11 @@
+{
+  "weapons":[
+    {"name":"bow",
+      "damageScale":1.2,
+      "valueScale":1.0
+    }
+  ]
+
+}
+
+
