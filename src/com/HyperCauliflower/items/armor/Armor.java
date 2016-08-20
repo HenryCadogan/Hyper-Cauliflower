@@ -1,5 +1,6 @@
 package com.HyperCauliflower.items.armor;
 
+import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.items.Item;
 import com.HyperCauliflower.states.Point;
 import org.newdawn.slick.Graphics;
@@ -9,9 +10,12 @@ import org.newdawn.slick.Graphics;
  */
 public abstract class Armor extends Item {
     private String type;
+    private int armorRating;
+
     public Armor(int rarityModifier, int value,String type) {
         super(rarityModifier, value);
         this.type = type;
+
     }
 
     @Override
@@ -20,4 +24,8 @@ public abstract class Armor extends Item {
     }
 
     public String getType(){ return this.type;}
+
+    private void generateArmorRating(Player player){
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.HyperCauliflower.entities;
 
 import com.HyperCauliflower.handlers.SpriteSheetData;
+import com.HyperCauliflower.items.Inventory;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
 import org.newdawn.slick.Graphics;
@@ -17,13 +18,15 @@ public class Player extends Entity {
     //load in all values from json to avoid further reads thus being more efficient
     private Point mousePos = new Point(0,0);
     private Point playerAbsPos;
-    private int experience;
     public ConfigurableEmitter footsteps;
+    private Inventory inventory;
 
     public Player(SpriteSheetData spriteSheetData, String name, Point location) {
         super(spriteSheetData, name, location);
         setMoveSpeed(5);
-        this.experience = 0;
+        this.experiencePoints = 0;
+        this.inventory = new Inventory();
+
         try {
             footsteps = ParticleIO.loadEmitter("/res/sprites/Particles/footsteps.xml");
 
@@ -36,6 +39,9 @@ public class Player extends Entity {
 
     public void move(int dir) {
         enableFootsteps();
+        //todo make holding shift run but drain stamina
+        int shiftMod = 0;
+
         double direction = 0;
         if (dir == 0) {
             direction=facing;
@@ -63,11 +69,11 @@ public class Player extends Entity {
     public void render(Graphics graphics, Point offset) {
         rotatePlayer(offset);
         super.render(graphics, offset);
-        footsteps.setPosition(this.getLocation().getX(), this.getLocation().getY());
+        footsteps.setPosition(this.getLocation().getX(), this.getLocation().getY(),true);
     }
 
     public int getAnimationFrame() {
-        //todo work out animation rates
+        //todo work out animation rates and sort actual animations out
         return 0;
     }
 
@@ -76,11 +82,22 @@ public class Player extends Entity {
     }
 
     public void enableFootsteps(){
+
         footsteps.setEnabled(true);
     }
     public void disableFootsteps(){
         footsteps.resetState();
         footsteps.setEnabled(false);
+    }
+
+
+    public void usePrimary(){
+        if (this.inventory.getEquipped() != null) {
+            this.inventory.getEquipped().fire(mousePos);
+
+        } else{
+            //print no primary weapon equipped
+        }
     }
 }
 

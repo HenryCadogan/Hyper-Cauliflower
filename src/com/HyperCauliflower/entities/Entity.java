@@ -16,11 +16,12 @@ public abstract class Entity implements Renderable, Updatable{
     private int moveSpeed;
     private SpriteSheetData spriteSheetData;
     private String name;
-    private int health;
+    private int health,level,stamina;
+    public int experiencePoints;
     protected double facing;
 
     Point moveVector = new Point(0,0);
-    private int level;
+
     protected static final int CURRENT = 0, BASE = 1, SCALING = 2, ITEM = 3, SKILL = 4, BUFF = 5, MAXHP = 0, ARMOUR = 1, STR = 2, DEX = 3, INT = 4, MODCOUNT = 6, STATCOUNT = 5;
     protected float[][] stats;
 
@@ -75,7 +76,23 @@ public abstract class Entity implements Renderable, Updatable{
         return spriteSheetData.getImage(name, frame);
     }
 
+    public int getLevel(){
+        return this.level;
+    }
+
     private void takeDamage(int damageValue){
         // todo make this line work this.health - (damageValue - this.inventory.getTotalArmorValue());
     }
+
+    private int getStamina(){
+        return this.stamina;
+    }
+    private void drainStamina(int drainAmount){
+        if (this.stamina >= drainAmount){
+            this.stamina -= drainAmount;
+        } else{
+
+        }
+    }
+
 }

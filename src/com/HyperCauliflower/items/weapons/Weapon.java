@@ -11,6 +11,7 @@ public abstract class Weapon extends Item implements Fireable {
 
     private String name;
     private int damage;
+    private int reqLvl;
 
     public Weapon(int rarityMod,int value,String name){
         super(rarityMod,value);
@@ -21,7 +22,7 @@ public abstract class Weapon extends Item implements Fireable {
     }
 
     @Override
-    public void fire() {
+    public void fire(Point direction) {
 
     }
 }

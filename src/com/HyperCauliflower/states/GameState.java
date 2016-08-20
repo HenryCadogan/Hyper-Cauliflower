@@ -72,7 +72,9 @@ public class GameState extends BasicGameState {
         //System.out.println(r.getWalkable(player.getLocation().getX(),player.getLocation().getY()));
 
         this.delta = delta;
-
+        if (gameContainer.getInput().isMouseButtonDown(0)){
+            player.usePrimary();
+        }
         if (gameContainer.getInput().isKeyDown(Input.KEY_W)){
             player.move(0);
             moving = true;

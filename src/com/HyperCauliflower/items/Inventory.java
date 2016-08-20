@@ -1,57 +1,54 @@
 package com.HyperCauliflower.items;
 
-import com.HyperCauliflower.items.armor.*;
-
-import java.io.File;
-import java.util.ArrayList;
-
+import com.HyperCauliflower.items.armor.Armor;
+import com.HyperCauliflower.items.armor.BreastPlate;
+import com.HyperCauliflower.items.armor.HeadGear;
+import com.HyperCauliflower.items.armor.LegArmor;
+import com.HyperCauliflower.items.weapons.Weapon;
 
 /**
- * Created by Henry on 21/07/2016.
+ * Created by Tim on 04/08/2016.
  */
 public class Inventory {
 
-    private Armor currentHeadgear, currentChest, currentTrinket, currentRing;
-    private ArrayList<Item> items;
-    private final int MAX_INV_SIZE = 100;
+    private Armor[] equippedArmor = new Armor[3];
+    private Weapon equippedWeapon;
+    private Item[] storedItems = new Item[50];
 
-
-    public Inventory(File file) {
-        //todo get saved inventory from files for saved games
-
-    }
-
-    public Inventory(int maxInvSize) {
-        //generate new inventory
-        items = new ArrayList<>();
-    }
-
-
-    public void addItemToInventory(Item item) {
-        if (items.size() == MAX_INV_SIZE) {
-            //error for not having enough space
-        } else {
-            items.add(item);
+    public Item equipArmor(Armor armor) {
+        Armor oldItem = null;
+        if (armor instanceof HeadGear) {
+            oldItem = equippedArmor[0];
+            equippedArmor[0] = armor;
+        } else if (armor instanceof BreastPlate) {
+            oldItem = equippedArmor[1];
+            equippedArmor[1] = armor;
+        } else if (armor instanceof LegArmor) {
+            oldItem = equippedArmor[2];
+            equippedArmor[2] = armor;
         }
+        return oldItem;
     }
 
-    private void setArmorPiece(Armor a) {
-        if (a instanceof HeadGear) {
-            items.add(currentHeadgear);
-            currentHeadgear = a;
-        } else if (a instanceof BreastPlate) {
-            items.add(currentChest);
-            currentChest = a;
-        } else if (a instanceof Trinket) {
-            items.add(currentTrinket);
-            currentTrinket = a;
-        } else if (a instanceof Ring) {
-            items.add(currentRing);
-            currentRing = a;
-        } else if (a instanceof Trinket) {
-            items.add(currentTrinket);
-            currentTrinket = a;
-        }
+    public void equipWeapon(Weapon w){
+        //return current weapon to backpack
+        this.storedItems[storedItems.length+1] = this.equippedWeapon;
+        //add current weapon to the equipped weapon variable
+        this.equippedWeapon = w;
     }
+
+
+    public Item addItem(int index, Item item) {
+        if (index >= storedItems.length) {
+            return item;
+        }
+        Item oldItem = storedItems[index];
+        storedItems[index] = item;
+        return oldItem;
+    }
+
+    public Weapon getEquipped(){
+        return this.equippedWeapon;
+    }
+
 }
-
