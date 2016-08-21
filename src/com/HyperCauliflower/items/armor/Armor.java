@@ -28,4 +28,8 @@ public abstract class Armor extends Item {
     private void generateArmorRating(Player player){
 
     }
+
+    public int getArmorRating(){
+        return this.armorRating;
+    }
 }

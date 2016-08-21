@@ -21,6 +21,7 @@ public class Player extends Entity {
     private Point playerAbsPos;
     public ConfigurableEmitter footsteps;
     private Inventory inventory;
+    private final int MOVE_MODE = 0;
 
     public Player(SpriteSheetData spriteSheetData, String name, Point location) {
         super(spriteSheetData, name, location);
@@ -41,23 +42,26 @@ public class Player extends Entity {
     public void move(int dir) {
         enableFootsteps();
         //todo make holding shift run but drain stamina
-        int shiftMod = 0;
 
-        double direction = 0;
-        if (dir == 0) {
-            direction = facing;
-        }
-        if (dir == 1) {
-            direction = (facing + Math.PI / 2);
-        }
-        if (dir == 2) {
-            direction = (facing + Math.PI);
-        }
-        if (dir == 3) {
-            direction = (facing - Math.PI / 2);
-        }
+        if (MOVE_MODE == 1) {
+            int shiftMod = 0;
 
-        moveVector = moveVector.translate(new Point(Math.cos(direction), Math.sin(direction)));
+            double direction = 0;
+            if (dir == 0) {
+                direction = facing;
+            }
+            if (dir == 1) {
+                direction = (facing + Math.PI / 2);
+            }
+            if (dir == 2) {
+                direction = (facing + Math.PI);
+            }
+            if (dir == 3) {
+                direction = (facing - Math.PI / 2);
+            }
+
+            moveVector = moveVector.translate(new Point(Math.cos(direction), Math.sin(direction)));
+        }
     }
 
     public void update(GameState game) {
@@ -93,8 +97,8 @@ public class Player extends Entity {
     }
 
     public void usePrimary() {
-        if (this.inventory.getEquipped() != null) {
-            this.inventory.getEquipped().fire(mousePos);
+        if (this.inventory.getEquippedWeapon() != null) {
+            this.inventory.getEquippedWeapon().fire(mousePos);
 
         } else {
             //print no primary weapon equipped

@@ -47,8 +47,16 @@ public class Inventory {
         return oldItem;
     }
 
-    public Weapon getEquipped(){
+    public Weapon getEquippedWeapon(){
         return this.equippedWeapon;
+    }
+
+    public int getTotalArmorRating(){
+        int total = 0;
+        for (Armor a:equippedArmor){
+            total += a.getArmorRating();
+        }
+        return total;
     }
 
 }
