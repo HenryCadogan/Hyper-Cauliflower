@@ -15,8 +15,12 @@ public abstract class Weapon extends Item implements Fireable {
     private float fireRate;
 
     public Weapon(int rarityMod,int value,String name,float fireRate){
+
         super(rarityMod,value);
+        this.fireRate = fireRate;
     }
+
+
     @Override
     public void render(Graphics graphics, Point offset) {
         //todo render the weapon on top of the player
@@ -28,6 +32,7 @@ public abstract class Weapon extends Item implements Fireable {
     }
 
     public float getFireRate(){
+
         return this.fireRate;
     }
 }

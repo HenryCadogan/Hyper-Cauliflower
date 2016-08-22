@@ -3,6 +3,8 @@ package com.HyperCauliflower.states;
 import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
+import com.HyperCauliflower.items.weapons.BowWeapon;
+import com.HyperCauliflower.items.weapons.Weapon;
 import com.HyperCauliflower.world.TerrainLayer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -43,6 +45,12 @@ public class GameState extends BasicGameState {
         player = new Player(spriteSheetHandler.get("entities"),"player",cameraPosition);
         updatables.add(player);
 
+        //temporary weapon
+        BowWeapon testBow = new BowWeapon(0,100,"Test",(float)30);
+
+        player.getInventory().equipWeapon(testBow);
+
+        //stuff for particles
         pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png",2000);
         pSystem.usePoints();
         renderables.add(player);

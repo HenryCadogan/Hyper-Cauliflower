@@ -32,8 +32,10 @@ public class Inventory {
 
     public void equipWeapon(Weapon w){
         //return current weapon to backpack
-        this.storedItems[storedItems.length+1] = this.equippedWeapon;
-        //add current weapon to the equipped weapon variable
+        if (equippedWeapon!= null) {
+            this.storedItems[storedItems.length + 1] = this.equippedWeapon;
+        }
+            //add current weapon to the equipped weapon variable
         this.equippedWeapon = w;
     }
 

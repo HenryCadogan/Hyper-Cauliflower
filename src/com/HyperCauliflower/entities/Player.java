@@ -22,6 +22,7 @@ public class Player extends Entity {
     public ConfigurableEmitter footsteps;
     private Inventory inventory;
     private final int MOVE_MODE = 0;
+    private double lastTime = 0;
 
     public Player(SpriteSheetData spriteSheetData, String name, Point location) {
         super(spriteSheetData, name, location);
@@ -38,12 +39,15 @@ public class Player extends Entity {
         }
     }
 
+    public Inventory getInventory() {
+        return this.inventory;
+    }
 
     public void move(int dir) {
         enableFootsteps();
         //todo make holding shift run but drain stamina
-
-        if (MOVE_MODE == 1) {
+        //todo add in option for different movement modes
+        if (MOVE_MODE == 0) {
             int shiftMod = 0;
 
             double direction = 0;
@@ -97,11 +101,21 @@ public class Player extends Entity {
     }
 
     public void usePrimary() {
-        if (this.inventory.getEquippedWeapon() != null) {
-            this.inventory.getEquippedWeapon().fire(mousePos);
+        //not sure if this should be outer loop or not
+        //System.out.println("Elapsed time: " + (System.currentTimeMillis() - lastTime));
+        //System.out.println("Fire rate:    " + this.getInventory().getEquippedWeapon().getFireRate());
+        if (System.currentTimeMillis() - lastTime > (this.getInventory().getEquippedWeapon().getFireRate()*10)) {
 
-        } else {
-            //print no primary weapon equipped
+            if (this.inventory.getEquippedWeapon() != null) {
+                this.inventory.getEquippedWeapon().fire(this.getLocation(), mousePos);
+                System.out.println("fired at: " + mousePos.getX() + "," + mousePos.getY());
+                lastTime = System.currentTimeMillis();
+
+            } else {
+                //print no primary weapon equipped
+            }
+        }else{
+            //System.out.println("not fired");
         }
     }
 }
