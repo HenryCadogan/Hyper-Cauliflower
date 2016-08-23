@@ -39,6 +39,7 @@ public abstract class Entity implements Renderable, Updatable{
         Point newLocation;
         do {
             moveVector.normalise();
+            //Miguel sucks penis
             moveVector.scale(speed--);
             newLocation = getLocation().translate(moveVector);
         }while(speed != -1 && !game.isWalkable(newLocation));
