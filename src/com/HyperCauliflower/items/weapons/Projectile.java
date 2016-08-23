@@ -33,15 +33,15 @@ public abstract class Projectile implements Updatable,Renderable{
 
     @Override
     public void render(Graphics graphics, Point offset) {
-        rotateProjectile(graphics,offset);
+        graphics.pushTransform();
         Point p = pos.translate(offset);
+        graphics.rotate(p.getX(),p.getY(),(float)direction);
         graphics.drawImage(this.sprite,p.getExactX(),p.getExactY());
+        graphics.popTransform();
     }
 
     private void rotateProjectile(Graphics g,Point offset) {
-        g.pushTransform();
-        g.rotate(pos.getX() + offset.getX(),pos.getY() + offset.getX(),(float)direction);
-        g.popTransform();
+
     }
 
     private void move(){
