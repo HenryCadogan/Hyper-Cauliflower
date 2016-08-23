@@ -9,7 +9,6 @@ import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 /**
  * Created by Matt on 24/06/2016.
@@ -17,8 +16,7 @@ import java.lang.reflect.Field;
 public class Player extends Entity {
 
     //load in all values from json to avoid further reads thus being more efficient
-    private Point mousePos = new Point(0, 0);
-    private Point playerAbsPos;
+    private Point mousePos = new Point(0, 0), mouseAbsPos = new Point(0,0);
     public ConfigurableEmitter footsteps;
     private Inventory inventory;
     private final int MOVE_MODE = 0;
@@ -72,6 +70,9 @@ public class Player extends Entity {
     public void update(GameState game) {
         super.update(game);
         mousePos = game.getMousePosition();
+        Point offset = new Point(0,0).translate(game.getCameraPosition());
+        offset.scale(-1);
+        mouseAbsPos = mousePos.translate(offset);
         footsteps.update(game.pSystem, game.getDelta());
 
     }
@@ -105,7 +106,7 @@ public class Player extends Entity {
         //not sure if this should be outer loop or not
         if (System.currentTimeMillis() - lastTime > (this.getInventory().getEquippedWeapon().getFireRate() * FIRE_RATE_MOD)) {
             if (this.inventory.getEquippedWeapon() != null) {
-                this.inventory.getEquippedWeapon().fire(this.getLocation(), mousePos);
+                this.inventory.getEquippedWeapon().fire(this.getLocation(), facing);
                 System.out.println("fired at: " + mousePos.getX() + "," + mousePos.getY());
                 lastTime = System.currentTimeMillis();
             } else {

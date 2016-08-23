@@ -4,7 +4,7 @@ import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
 import com.HyperCauliflower.items.weapons.BowWeapon;
-import com.HyperCauliflower.items.weapons.Weapon;
+import com.HyperCauliflower.items.weapons.Projectile;
 import com.HyperCauliflower.world.TerrainLayer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -46,7 +46,7 @@ public class GameState extends BasicGameState {
         updatables.add(player);
 
         //temporary weapon
-        BowWeapon testBow = new BowWeapon(0, 100, "Test", (float) 30);
+        BowWeapon testBow = new BowWeapon(0, 100, "Test", (float) 30, spriteSheetHandler.get("projectiles"), this);
         player.getInventory().equipWeapon(testBow);
 
         //stuff for particles
@@ -76,7 +76,6 @@ public class GameState extends BasicGameState {
         this.cameraPosition = player.getLocation();
         boolean moving = false;
         player.enableFootsteps();
-        //System.out.println(r.getWalkable(player.getLocation().getX(),player.getLocation().getY()));
 
         this.delta = delta;
         if (gameContainer.getInput().isMouseButtonDown(0)) {
@@ -121,12 +120,14 @@ public class GameState extends BasicGameState {
     public float getSpeedMod(Point p){
         return r.getSpeedMod(p.getX(),p.getY());
     }
-
     public Point getMousePosition() {
         return this.mousePos;
     }
     public int getDelta(){
         return delta;
     }
-
+    public void addProjectile(Projectile p){
+        updatables.add(p);
+        renderables.add(p);
+    }
 }

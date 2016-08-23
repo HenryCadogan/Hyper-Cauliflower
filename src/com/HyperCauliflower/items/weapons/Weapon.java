@@ -26,7 +26,7 @@ public abstract class Weapon extends Item implements Fireable {
     }
 
     @Override
-    public void fire(Point origin,Point direction) {
+    public void fire(Point origin,double direction) {
 
     }
 

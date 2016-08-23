@@ -1,7 +1,9 @@
 package com.HyperCauliflower.items.weapons;
 
-import com.HyperCauliflower.items.Projectiles.Projectile;
+import com.HyperCauliflower.handlers.SpriteSheetData;
+import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
+import org.newdawn.slick.Image;
 
 /**
  * Created by Henry on 21/07/2016.
@@ -9,10 +11,13 @@ import com.HyperCauliflower.states.Point;
 public class BowWeapon extends Weapon {
 
     private int damage;
+    private Image projectileSprite;
+    private GameState gameState;
 
-
-    public BowWeapon(int rarityMod, int value, String name,Float fireRate) {
+    public BowWeapon(int rarityMod, int value, String name, Float fireRate, SpriteSheetData spriteSheet, GameState gameState) {
         super(rarityMod, value,name,fireRate);
+        projectileSprite = spriteSheet.getImage("arrow",0);
+        this.gameState = gameState;
         //todo generate weapon values from other aspects
     }
 
@@ -24,16 +29,15 @@ public class BowWeapon extends Weapon {
         }
     }
 
-    public void fire(Point position,Point target){
-        //create arrow
-        //add arrow to update and render methods
+    public void fire(Point position,double direction){
+        gameState.addProjectile(new Arrow(direction,position));
     }
 
 
     private class Arrow extends Projectile{
-
-        public Arrow(Point target, Point pos, int speed) {
-            super(target, pos, speed);
+        //look, a helpful comment! And you say I never comment my code.
+        public Arrow(double direction, Point pos) {
+            super(direction, pos, 7, projectileSprite);
         }
 
     }
