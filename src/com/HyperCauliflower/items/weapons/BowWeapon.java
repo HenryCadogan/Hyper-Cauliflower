@@ -3,9 +3,6 @@ package com.HyperCauliflower.items.weapons;
 
 import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.states.GameState;
-
-import com.HyperCauliflower.items.weapons.Projectile;
-
 import com.HyperCauliflower.states.Point;
 import org.newdawn.slick.Image;
 
@@ -34,7 +31,9 @@ public class BowWeapon extends Weapon {
     }
 
     public void fire(Point position,double direction){
+        gameState.addProjectile(new Arrow(direction+0.1,position));
         gameState.addProjectile(new Arrow(direction,position));
+        gameState.addProjectile(new Arrow(direction-0.1,position));
     }
 
 
