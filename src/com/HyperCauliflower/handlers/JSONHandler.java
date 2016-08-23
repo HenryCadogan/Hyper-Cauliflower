@@ -24,6 +24,7 @@ public abstract class JSONHandler<T> {
             obj = (JSONArray) ((JSONObject) new JSONParser().parse(new FileReader(PATH))).get(name);
             map = new HashMap<String, T>();
             for (Object j : obj) {
+                System.out.println((String) ((JSONObject) j).get("name"));
                 map.put((String) ((JSONObject) j).get("name"), load((JSONObject) j));
             }
         }catch(IOException e){

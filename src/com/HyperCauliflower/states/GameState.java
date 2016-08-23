@@ -47,7 +47,6 @@ public class GameState extends BasicGameState {
 
         //temporary weapon
         BowWeapon testBow = new BowWeapon(0, 100, "Test", (float) 30);
-
         player.getInventory().equipWeapon(testBow);
 
         //stuff for particles
