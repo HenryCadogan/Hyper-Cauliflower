@@ -20,7 +20,13 @@
      "height": 32,
      "width": 32
 
+   },
+   {"name":"projectiles",
+     "path": "res/sprites/player.png",
+     "height": 16,
+     "width": 16
    }
+
   ],
   "tilesData": [
     {

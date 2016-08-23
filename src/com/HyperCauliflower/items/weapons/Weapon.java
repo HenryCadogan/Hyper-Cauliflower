@@ -7,21 +7,31 @@ import org.newdawn.slick.Graphics;
 /**
  * Created by Henry on 21/07/2016.
  */
-public class Weapon extends Item implements Fireable {
+public abstract class Weapon extends Item implements Fireable {
 
     private String name;
     private int damage;
+    private int reqLvl;
+    private float fireRate;
 
-    public Weapon(int rarityMod,int value){
+    public Weapon(int rarityMod,int value,String name,float fireRate){
         super(rarityMod,value);
+        this.fireRate = fireRate;
     }
+
+
     @Override
     public void render(Graphics graphics, Point offset) {
-
+        //todo render the weapon on top of the player
     }
 
     @Override
-    public void fire() {
+    public void fire(Point origin,Point direction) {
 
+    }
+
+    public float getFireRate(){
+
+        return this.fireRate;
     }
 }

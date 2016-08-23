@@ -3,6 +3,8 @@ package com.HyperCauliflower.states;
 import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
+import com.HyperCauliflower.items.weapons.BowWeapon;
+import com.HyperCauliflower.items.weapons.Weapon;
 import com.HyperCauliflower.world.TerrainLayer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -43,7 +45,13 @@ public class GameState extends BasicGameState {
         player = new Player(spriteSheetHandler.get("entities"),"player",cameraPosition);
         updatables.add(player);
 
-        pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png",2000);
+        //temporary weapon
+        BowWeapon testBow = new BowWeapon(0, 100, "Test", (float) 30);
+
+        player.getInventory().equipWeapon(testBow);
+
+        //stuff for particles
+        pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png", 2000);
         pSystem.usePoints();
         renderables.add(player);
         pSystem.addEmitter(player.footsteps);
@@ -72,8 +80,10 @@ public class GameState extends BasicGameState {
         //System.out.println(r.getWalkable(player.getLocation().getX(),player.getLocation().getY()));
 
         this.delta = delta;
-
-        if (gameContainer.getInput().isKeyDown(Input.KEY_W)){
+        if (gameContainer.getInput().isMouseButtonDown(0)) {
+            player.usePrimary();
+        }
+        if (gameContainer.getInput().isKeyDown(Input.KEY_W)) {
             player.move(0);
             moving = true;
         }
@@ -112,7 +122,8 @@ public class GameState extends BasicGameState {
     public float getSpeedMod(Point p){
         return r.getSpeedMod(p.getX(),p.getY());
     }
-    public Point getMousePosition(){
+
+    public Point getMousePosition() {
         return this.mousePos;
     }
     public int getDelta(){

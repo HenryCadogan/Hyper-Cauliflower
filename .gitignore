@@ -1,2 +1,5 @@
 ##Misc
 .idea/
+libs/
+target/
+*.iml

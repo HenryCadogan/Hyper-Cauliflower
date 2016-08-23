@@ -14,6 +14,7 @@ public abstract class Item implements Renderable {
 
     public Item(int rarityModifier,int value){
         this.rarity = generateRarity(rarityModifier);
+        this.value = value;
     }
 
     public int generateRarity(int modifier){
