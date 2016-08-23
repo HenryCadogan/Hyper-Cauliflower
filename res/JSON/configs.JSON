@@ -1,32 +1,31 @@
 {
-  "saves":[
+  "saves": [
     {
-      "name":"test",
-      "seed":69420,
-      "x":0,
-      "y":0
+      "name": "test",
+      "seed": 69420,
+      "x": 0,
+      "y": 0
     }
   ],
- "spritesheets":[
-   {
-     "name": "tiles",
-     "path": "res/sprites/tiles.png",
-     "height": 32,
-     "width": 32
-   },
-   {
-     "name":"entities",
-     "path": "res/sprites/player.png",
-     "height": 32,
-     "width": 32
-
-   },
-   {"name":"projectiles",
-     "path": "res/sprites/player.png",
-     "height": 16,
-     "width": 16
-   }
-
+  "spritesheets": [
+    {
+      "name": "tiles",
+      "path": "res/sprites/tiles.png",
+      "height": 32,
+      "width": 32
+    },
+    {
+      "name": "entities",
+      "path": "res/sprites/player.png",
+      "height": 32,
+      "width": 32
+    },
+    {
+      "name": "projectiles",
+      "path": "res/sprites/projectiles/Arrow.png",
+      "height": 16,
+      "width": 16
+    }
   ],
   "tilesData": [
     {
@@ -47,13 +46,22 @@
       "endFrame": 5,
       "row": 0
     }
-    ],
-  "entitiesData":[
-  {
-    "name":"player",
-    "startFrame":0,
-    "endFrame":0,
-    "row":0
-  }
-]
+  ],
+  "entitiesData": [
+    {
+      "name": "player",
+      "startFrame": 0,
+      "endFrame": 0,
+      "row": 0
+    }
+  ],
+
+  "projectilesData": [
+    {
+      "name": "arrow",
+      "startFrame": 0,
+      "endFrame": 0,
+      "row": 0
+    }
+  ]
 }

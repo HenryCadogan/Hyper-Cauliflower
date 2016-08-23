@@ -19,6 +19,6 @@ public class Main {
             container.start();
         } catch (SlickException e){
             e.printStackTrace();
-        };
+        }
     }
 }
