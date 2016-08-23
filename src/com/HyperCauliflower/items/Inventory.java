@@ -1,5 +1,6 @@
 package com.HyperCauliflower.items;
 
+import com.HyperCauliflower.abilities.Ability;
 import com.HyperCauliflower.items.armor.Armor;
 import com.HyperCauliflower.items.armor.BreastPlate;
 import com.HyperCauliflower.items.armor.HeadGear;
@@ -14,6 +15,7 @@ public class Inventory {
     private Armor[] equippedArmor = new Armor[3];
     private Weapon equippedWeapon;
     private Item[] storedItems = new Item[50];
+    private Ability abilityBar[] = new Ability[4];
 
     public Item equipArmor(Armor armor) {
         Armor oldItem = null;

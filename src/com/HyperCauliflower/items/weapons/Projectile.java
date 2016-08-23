@@ -14,13 +14,16 @@ public abstract class Projectile implements Updatable,Renderable{
 
     private Point velocity, pos;
     private Image sprite;
+    private double direction;
 
 
     public Projectile(double direction, Point pos,int speed, Image sprite){
         this.sprite = sprite;
         this.pos = pos;
+        this.direction = direction;
         velocity = new Point(Math.cos(direction), Math.sin(direction));
         velocity.scale(speed);
+
     }
 
     @Override
@@ -30,8 +33,15 @@ public abstract class Projectile implements Updatable,Renderable{
 
     @Override
     public void render(Graphics graphics, Point offset) {
+        rotateProjectile(graphics,offset);
         Point p = pos.translate(offset);
         graphics.drawImage(this.sprite,p.getExactX(),p.getExactY());
+    }
+
+    private void rotateProjectile(Graphics g,Point offset) {
+        g.pushTransform();
+        g.rotate(pos.getX() + offset.getX(),pos.getY() + offset.getX(),(float)direction);
+        g.popTransform();
     }
 
     private void move(){

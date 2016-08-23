@@ -4,6 +4,7 @@ import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
 import com.HyperCauliflower.items.weapons.BowWeapon;
+
 import com.HyperCauliflower.items.weapons.Projectile;
 import com.HyperCauliflower.world.TerrainLayer;
 import org.newdawn.slick.*;
@@ -26,7 +27,7 @@ public class GameState extends BasicGameState {
     public ParticleSystem pSystem;
     private Point mousePos;
     private int delta;
-    private TerrainLayer r;
+    private TerrainLayer terrainLayer;
 
     public int getID() {
         return Game.State.GAME.ordinal();
@@ -36,11 +37,11 @@ public class GameState extends BasicGameState {
         SpriteSheetHandler spriteSheetHandler = new SpriteSheetHandler();
         SaveData s = new SaveHandler().get("test");
         cameraPosition = s.getLocation(); //Change to being loaded from a file
-        r = new TerrainLayer(s.getSeed(),cameraPosition.translate(new Point(-Main.INTERNAL_WIDTH/2,-Main.INTERNAL_HEIGHT/2)));
+        terrainLayer = new TerrainLayer(s.getSeed(),cameraPosition.translate(new Point(-Main.INTERNAL_WIDTH/2,-Main.INTERNAL_HEIGHT/2)));
         renderables = new ArrayList<Renderable>();
-        renderables.add(r);
+        renderables.add(terrainLayer);
         updatables = new ArrayList<Updatable>();
-        updatables.add(r);
+        updatables.add(terrainLayer);
 
         player = new Player(spriteSheetHandler.get("entities"),"player",cameraPosition);
         updatables.add(player);
@@ -68,6 +69,7 @@ public class GameState extends BasicGameState {
         }
 
         pSystem.render();
+        // render ui
     }
 
 
@@ -76,6 +78,8 @@ public class GameState extends BasicGameState {
         this.cameraPosition = player.getLocation();
         boolean moving = false;
         player.enableFootsteps();
+
+        //System.out.println(terrainLayer.getWalkable(player.getLocation().getX(),player.getLocation().getY()));
 
         this.delta = delta;
         if (gameContainer.getInput().isMouseButtonDown(0)) {
@@ -115,10 +119,10 @@ public class GameState extends BasicGameState {
         return cameraPosition;
     }
     public boolean isWalkable(Point p){
-        return r.getWalkable(p.getX(),p.getY());
+        return terrainLayer.getWalkable(p.getX(),p.getY());
     }
     public float getSpeedMod(Point p){
-        return r.getSpeedMod(p.getX(),p.getY());
+        return terrainLayer.getSpeedMod(p.getX(),p.getY());
     }
     public Point getMousePosition() {
         return this.mousePos;
@@ -126,6 +130,8 @@ public class GameState extends BasicGameState {
     public int getDelta(){
         return delta;
     }
+
+
     public void addProjectile(Projectile p){
         updatables.add(p);
         renderables.add(p);

@@ -1,7 +1,11 @@
 package com.HyperCauliflower.items.weapons;
 
+
 import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.states.GameState;
+
+import com.HyperCauliflower.items.weapons.Projectile;
+
 import com.HyperCauliflower.states.Point;
 import org.newdawn.slick.Image;
 
