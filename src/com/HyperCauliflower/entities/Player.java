@@ -23,6 +23,7 @@ public class Player extends Entity {
     private Inventory inventory;
     private final int MOVE_MODE = 0;
     private double lastTime = 0;
+    private final int FIRE_RATE_MOD = 10;
 
     public Player(SpriteSheetData spriteSheetData, String name, Point location) {
         super(spriteSheetData, name, location);
@@ -102,19 +103,15 @@ public class Player extends Entity {
 
     public void usePrimary() {
         //not sure if this should be outer loop or not
-        //System.out.println("Elapsed time: " + (System.currentTimeMillis() - lastTime));
-        //System.out.println("Fire rate:    " + this.getInventory().getEquippedWeapon().getFireRate());
-        if (System.currentTimeMillis() - lastTime > (this.getInventory().getEquippedWeapon().getFireRate()*10)) {
-
+        if (System.currentTimeMillis() - lastTime > (this.getInventory().getEquippedWeapon().getFireRate() * FIRE_RATE_MOD)) {
             if (this.inventory.getEquippedWeapon() != null) {
                 this.inventory.getEquippedWeapon().fire(this.getLocation(), mousePos);
                 System.out.println("fired at: " + mousePos.getX() + "," + mousePos.getY());
                 lastTime = System.currentTimeMillis();
-
             } else {
                 //print no primary weapon equipped
             }
-        }else{
+        } else {
             //System.out.println("not fired");
         }
     }

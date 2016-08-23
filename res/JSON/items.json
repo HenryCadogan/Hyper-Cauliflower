@@ -4,8 +4,15 @@
       "damageScale":1.2,
       "valueScale":1.0
     }
-  ]
+  ],
 
+  "projectiles":[
+    {"name":"arrow",
+      "imagePath":"res/sprites/projectiles/Arrow.png",
+      "speed": 1,
+      "ttl": 5
+    }
+  ]
 }
 
 

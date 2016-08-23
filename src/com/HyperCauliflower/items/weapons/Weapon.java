@@ -15,7 +15,6 @@ public abstract class Weapon extends Item implements Fireable {
     private float fireRate;
 
     public Weapon(int rarityMod,int value,String name,float fireRate){
-
         super(rarityMod,value);
         this.fireRate = fireRate;
     }
