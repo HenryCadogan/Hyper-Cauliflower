@@ -35,7 +35,7 @@ public abstract class Projectile implements Updatable,Renderable{
     public void render(Graphics graphics, Point offset) {
         graphics.pushTransform();
         Point p = pos.translate(offset);
-        graphics.rotate(p.getX(),p.getY(),(float)direction);
+        graphics.rotate(p.getX(),p.getY(),((float)Math.toDegrees(direction)+90));
         graphics.drawImage(this.sprite,p.getExactX(),p.getExactY());
         graphics.popTransform();
     }
