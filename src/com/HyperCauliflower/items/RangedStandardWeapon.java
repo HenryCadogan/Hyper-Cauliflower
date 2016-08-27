@@ -3,24 +3,25 @@ package com.HyperCauliflower.items;
 import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
+import org.json.simple.JSONObject;
 import org.newdawn.slick.Image;
 
 /**
  * Created by Matt on 27/08/2016.
  */
-public class Bow extends Weapon implements Ranged {
+public class RangedStandardWeapon extends Weapon implements Ranged {
 
-    Image projectileSprite;
+    ProjectileFactory projectileFactory;
 
-    public Bow(int rarityMod, int value, String name, Float fireRate, GameState gameState, SpriteSheetData spriteSheetData) {
+    public RangedStandardWeapon(int rarityMod, int value, String name, int fireRate, GameState gameState, ProjectileFactory p) {
         super(rarityMod, value, name, fireRate, gameState);
-        projectileSprite = spriteSheetData.getImage("arrow",0);
+        projectileFactory = p;
     }
 
 
     @Override
     public Projectile shoot(Point position, double direction) {
-        return new Projectile(direction, position, 7, projectileSprite);
+        return projectileFactory.produce(position,direction);
     }
 
     @Override

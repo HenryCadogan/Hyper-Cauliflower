@@ -1,16 +1,19 @@
 {
   "weapons":[
-    {"name":"bow",
-      "damageScale":1.2,
-      "valueScale":1.0
+    {
+      "name":"bow",
+      "type":"ranged standard",
+      "projectile":"arrow",
+      "min damage":1,
+      "max damage":3,
+      "firerate":30
     }
   ],
 
   "projectiles":[
-    {"name":"arrow",
-      "imagePath":"res/sprites/projectiles/Arrow.png",
-      "speed": 1,
-      "ttl": 5
+    {
+      "name":"arrow",
+      "speed": 7
     }
   ]
 }

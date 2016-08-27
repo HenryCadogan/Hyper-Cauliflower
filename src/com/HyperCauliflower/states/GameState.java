@@ -3,8 +3,10 @@ package com.HyperCauliflower.states;
 import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
-import com.HyperCauliflower.items.Bow;
+import com.HyperCauliflower.items.RangedStandardWeapon;
 import com.HyperCauliflower.items.Projectile;
+import com.HyperCauliflower.items.Weapon;
+import com.HyperCauliflower.items.WeaponHandler;
 import com.HyperCauliflower.world.TerrainLayer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -36,6 +38,7 @@ public class GameState extends BasicGameState {
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.gameContainer = gameContainer;
         SpriteSheetHandler spriteSheetHandler = new SpriteSheetHandler();
+        WeaponHandler weaponHandler = new WeaponHandler(spriteSheetHandler.get("projectiles"));
         SaveData s = new SaveHandler().get("test");
         cameraPosition = s.getLocation(); //Change to being loaded from a file
         terrainLayer = new TerrainLayer(s.getSeed(),cameraPosition.translate(new Point(-Main.INTERNAL_WIDTH/2,-Main.INTERNAL_HEIGHT/2)));
@@ -48,7 +51,7 @@ public class GameState extends BasicGameState {
         updatables.add(player);
 
         //temporary weapon
-        Bow testBow = new Bow(0, 100, "Test", (float) 30, this, spriteSheetHandler.get("projectiles"));
+        Weapon testBow = weaponHandler.generateWeapon("bow",this);
         player.getInventory().equipWeapon(testBow);
 
         //stuff for particles

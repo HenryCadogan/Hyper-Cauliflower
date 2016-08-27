@@ -2,6 +2,7 @@ package com.HyperCauliflower.items;
 
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
+import org.json.simple.JSONObject;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -12,16 +13,16 @@ public abstract class Weapon extends Item implements Useable {
     private String name;
     private int damage;
     private int reqLvl;
-    private float fireRate;
+    private int fireRate;
     private GameState gameState;
 
-    public Weapon(int rarityMod,int value,String name,float fireRate, GameState gameState) {
+    public Weapon(int rarityMod,int value,String name,int fireRate, GameState gameState) {
         super(rarityMod, value);
         this.fireRate = fireRate;
         this.gameState = gameState;
     }
 
-    public float getFireRate(){
+    public int getFireRate(){
 
         return this.fireRate;
     }
