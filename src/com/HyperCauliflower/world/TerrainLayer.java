@@ -6,6 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -131,6 +132,12 @@ public class TerrainLayer implements Renderable, Updatable{
     }
 
     public boolean getWalkable(int x, int y){
+        return getChunk(x,y).getWalkable(adjustValue(x%CHUNK_WIDTH,CHUNK_WIDTH),adjustValue(y%CHUNK_WIDTH,CHUNK_WIDTH));
+    }
+    public Color getColor(int x, int y){
+        return getChunk(x,y).getColor(adjustValue(x%CHUNK_WIDTH,CHUNK_WIDTH),adjustValue(y%CHUNK_WIDTH,CHUNK_WIDTH));
+    }
+    private Chunk getChunk(int x, int y){
         int chunkX = adjustValue(x/CHUNK_WIDTH+u-getTL().getX(), STORED_WIDTH),
                 chunkY = adjustValue(y/CHUNK_WIDTH+v-getTL().getY(), STORED_HEIGHT);
         if(x <= 0){
@@ -139,7 +146,7 @@ public class TerrainLayer implements Renderable, Updatable{
         if(y > 0){
             chunkY = adjustValue(chunkY + 1, STORED_HEIGHT);
         }
-        return chunksLoaded[chunkX][chunkY].getWalkable(adjustValue(x%CHUNK_WIDTH,CHUNK_WIDTH),adjustValue(y%CHUNK_WIDTH,CHUNK_WIDTH));
+        return chunksLoaded[chunkX][chunkY];
     }
 
     public float getSpeedMod(int x, int y){

@@ -130,7 +130,7 @@ public class GameState extends BasicGameState {
     public int getDelta(){
         return delta;
     }
-
+    private Color getColor(Point p){return terrainLayer.getColor(p.getX(),p.getY());}
 
     public void addProjectile(Projectile p){
         updatables.add(p);
