@@ -79,7 +79,14 @@ public class Player extends Entity {
         offset.scale(-1);
         mouseAbsPos = mousePos.translate(offset);
         footsteps.update(game.pSystem, game.getDelta());
+        updateFootstepsColor(game);
 
+
+
+    }
+
+    private void updateFootstepsColor(GameState g) {
+        ((ConfigurableEmitter.ColorRecord)footsteps.colors.get(0)).col = g.getColor(this.getLocation());
     }
 
     public void render(Graphics graphics, Point offset) {
