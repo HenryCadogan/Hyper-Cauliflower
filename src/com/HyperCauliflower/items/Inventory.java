@@ -1,11 +1,6 @@
 package com.HyperCauliflower.items;
 
 import com.HyperCauliflower.abilities.Ability;
-import com.HyperCauliflower.items.armor.Armor;
-import com.HyperCauliflower.items.armor.BreastPlate;
-import com.HyperCauliflower.items.armor.HeadGear;
-import com.HyperCauliflower.items.armor.LegArmor;
-import com.HyperCauliflower.items.weapons.Weapon;
 
 /**
  * Created by Tim on 04/08/2016.
@@ -18,18 +13,8 @@ public class Inventory {
     private Ability abilityBar[] = new Ability[4];
 
     public Item equipArmor(Armor armor) {
-        Armor oldItem = null;
-        if (armor instanceof HeadGear) {
-            oldItem = equippedArmor[0];
-            equippedArmor[0] = armor;
-        } else if (armor instanceof BreastPlate) {
-            oldItem = equippedArmor[1];
-            equippedArmor[1] = armor;
-        } else if (armor instanceof LegArmor) {
-            oldItem = equippedArmor[2];
-            equippedArmor[2] = armor;
-        }
-        return oldItem;
+        //todo make work with the new system
+        return null;
     }
 
     public void equipWeapon(Weapon w){

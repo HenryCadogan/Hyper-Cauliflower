@@ -6,7 +6,6 @@ import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
 
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
@@ -119,7 +118,7 @@ public class Player extends Entity {
         //not sure if this should be outer loop or not
         if (System.currentTimeMillis() - lastTime > (this.getInventory().getEquippedWeapon().getFireRate() * FIRE_RATE_MOD)) {
             if (this.inventory.getEquippedWeapon() != null) {
-                this.inventory.getEquippedWeapon().fire(this.getLocation(), facing);
+                this.inventory.getEquippedWeapon().use(this.getLocation(), facing);
                 System.out.println("fired at: " + mousePos.getX() + "," + mousePos.getY());
                 lastTime = System.currentTimeMillis();
             } else {

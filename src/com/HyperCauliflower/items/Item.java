@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * Created by Henry on 26/06/2016.
  */
-public abstract class Item implements Renderable {
+public abstract class Item{
     private int value;
     private int rarity =-1;
     private String type;
@@ -19,6 +19,8 @@ public abstract class Item implements Renderable {
 
     public int generateRarity(int modifier){
 
+
+        //Miguel learn what an enum is, or a constant, basically stop using random numbers
         int rand = new Random().nextInt(60) + modifier;
         if (rand < 20){
             rarity = 0;

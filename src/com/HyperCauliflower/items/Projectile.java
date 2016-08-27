@@ -1,4 +1,4 @@
-package com.HyperCauliflower.items.weapons;
+package com.HyperCauliflower.items;
 
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
@@ -10,7 +10,7 @@ import org.newdawn.slick.Image;
 /**
  * Created by Experiment Account on 24/07/2016.
  */
-public abstract class Projectile implements Updatable,Renderable{
+public class Projectile implements Updatable,Renderable{
 
     private Point velocity, pos;
     private Image sprite;
