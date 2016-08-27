@@ -31,9 +31,9 @@ public class BowWeapon extends Weapon {
     }
 
     public void fire(Point position,double direction){
-        gameState.addProjectile(new Arrow(direction+0.1,position));
-        gameState.addProjectile(new Arrow(direction,position));
-        gameState.addProjectile(new Arrow(direction-0.1,position));
+        gameState.addProjectile(new Arrow(direction + 0.1, position));
+        gameState.addProjectile(new Arrow(direction , position));
+        gameState.addProjectile(new Arrow(direction - 0.1, position));
     }
 
 

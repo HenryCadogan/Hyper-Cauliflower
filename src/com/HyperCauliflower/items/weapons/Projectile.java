@@ -22,7 +22,7 @@ public abstract class Projectile implements Updatable,Renderable{
         this.pos = pos;
         this.direction = direction;
         velocity = new Point(Math.cos(direction), Math.sin(direction));
-        velocity.scale(speed);
+        velocity.scale(speed*2);
 
     }
 
@@ -40,9 +40,6 @@ public abstract class Projectile implements Updatable,Renderable{
         graphics.popTransform();
     }
 
-    private void rotateProjectile(Graphics g,Point offset) {
-
-    }
 
     private void move(){
         pos = pos.translate(velocity);

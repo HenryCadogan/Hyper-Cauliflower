@@ -4,6 +4,7 @@ import com.HyperCauliflower.states.Main;
 import com.HyperCauliflower.states.Point;
 import com.HyperCauliflower.states.Renderable;
 import com.flowpowered.noise.module.source.Perlin;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.ImageBuffer;
@@ -60,4 +61,5 @@ class Chunk implements Renderable{
     Point getLocation(){
         return location;
     }
+
 }

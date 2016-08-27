@@ -160,4 +160,5 @@ public class TerrainLayer implements Renderable, Updatable{
         else if(val<0)return comp+val;
         else return val;
     }
+
 }
