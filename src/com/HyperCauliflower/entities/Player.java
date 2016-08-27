@@ -85,7 +85,7 @@ public class Player extends Entity {
     }
 
     private void updateFootstepsColor(GameState g) {
-        ((ConfigurableEmitter.ColorRecord)footsteps.colors.get(0)).col = g.getColor(this.getLocation());
+        ((ConfigurableEmitter.ColorRecord)footsteps.colors.get(0)).col = g.getColor(this.getLocation()).darker();
     }
 
     public void render(Graphics graphics, Point offset) {
