@@ -4,11 +4,16 @@ import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.items.Inventory;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
+
+
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 
+
 import java.io.IOException;
+
 
 /**
  * Created by Matt on 24/06/2016.
@@ -73,14 +78,23 @@ public class Player extends Entity {
         Point offset = new Point(0,0).translate(game.getCameraPosition());
         offset.scale(-1);
         mouseAbsPos = mousePos.translate(offset);
+        updateFootstepsColor(game);
         footsteps.update(game.pSystem, game.getDelta());
 
     }
 
+    private void updateFootstepsColor(GameState g) {
+        //this works, kinda. It gets the pixel color. But of the player model, hence why it is black.
+        // todo get the pixel color all the way through the graphics class like i was going to do before. MATT I NEED AN ACCESSOR TO THE CHUNK COLOR
+        ((ConfigurableEmitter.ColorRecord)footsteps.colors.get(0)).col = g.getGraphics().getPixel((int)this.getLocation().getX(),(int)this.getLocation().getY());
+
+    }
+
     public void render(Graphics graphics, Point offset) {
+        footsteps.setPosition(this.getLocation().getX(), this.getLocation().getY(), true);
         rotatePlayer(offset);
         super.render(graphics, offset);
-        footsteps.setPosition(this.getLocation().getX(), this.getLocation().getY(), true);
+
     }
 
     public int getAnimationFrame() {

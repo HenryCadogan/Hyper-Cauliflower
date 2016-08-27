@@ -62,4 +62,5 @@ class Chunk implements Renderable{
     Point getLocation(){
         return location;
     }
+
 }

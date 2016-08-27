@@ -28,12 +28,14 @@ public class GameState extends BasicGameState {
     private Point mousePos;
     private int delta;
     private TerrainLayer terrainLayer;
+    private GameContainer gameContainer;
 
     public int getID() {
         return Game.State.GAME.ordinal();
     }
 
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        this.gameContainer = gameContainer;
         SpriteSheetHandler spriteSheetHandler = new SpriteSheetHandler();
         SaveData s = new SaveHandler().get("test");
         cameraPosition = s.getLocation(); //Change to being loaded from a file
@@ -47,7 +49,7 @@ public class GameState extends BasicGameState {
         updatables.add(player);
 
         //temporary weapon
-        BowWeapon testBow = new BowWeapon(0, 100, "Test", (float) 0, spriteSheetHandler.get("projectiles"), this);
+        BowWeapon testBow = new BowWeapon(0, 100, "Test", (float) 30, spriteSheetHandler.get("projectiles"), this);
         player.getInventory().equipWeapon(testBow);
 
         //stuff for particles
@@ -130,6 +132,7 @@ public class GameState extends BasicGameState {
     public int getDelta(){
         return delta;
     }
+
     private Color getColor(Point p){return terrainLayer.getColor(p.getX(),p.getY());}
 
     public void addProjectile(Projectile p){
