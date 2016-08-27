@@ -3,7 +3,7 @@ package com.HyperCauliflower.states;
 import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
-import com.HyperCauliflower.items.weapons.BowWeapon;
+import com.HyperCauliflower.items.weapons.RangedWeapon;
 
 import com.HyperCauliflower.items.weapons.Projectile;
 import com.HyperCauliflower.world.TerrainLayer;
@@ -49,7 +49,7 @@ public class GameState extends BasicGameState {
         updatables.add(player);
 
         //temporary weapon
-        BowWeapon testBow = new BowWeapon(0, 100, "Test", (float) 30, spriteSheetHandler.get("projectiles"), this);
+        RangedWeapon testBow = new RangedWeapon(0, 100, "Test", (float) 30, spriteSheetHandler.get("projectiles"), this);
         player.getInventory().equipWeapon(testBow);
 
         //stuff for particles

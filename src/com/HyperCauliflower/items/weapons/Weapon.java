@@ -24,11 +24,7 @@ public abstract class Weapon extends Item implements Fireable {
     public void render(Graphics graphics, Point offset) {
         //todo render the weapon on top of the player
     }
-
-    @Override
-    public void fire(Point origin,double direction) {
-
-    }
+    public abstract void fire(Point origin,double direction);
 
     public float getFireRate(){
 

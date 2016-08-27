@@ -78,15 +78,7 @@ public class Player extends Entity {
         Point offset = new Point(0,0).translate(game.getCameraPosition());
         offset.scale(-1);
         mouseAbsPos = mousePos.translate(offset);
-        updateFootstepsColor(game);
         footsteps.update(game.pSystem, game.getDelta());
-
-    }
-
-    private void updateFootstepsColor(GameState g) {
-        //this works, kinda. It gets the pixel color. But of the player model, hence why it is black.
-        // todo get the pixel color all the way through the graphics class like i was going to do before. MATT I NEED AN ACCESSOR TO THE CHUNK COLOR
-        ((ConfigurableEmitter.ColorRecord)footsteps.colors.get(0)).col = g.getGraphics().getPixel((int)this.getLocation().getX(),(int)this.getLocation().getY());
 
     }
 
