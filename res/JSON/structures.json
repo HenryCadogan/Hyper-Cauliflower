@@ -1,0 +1,10 @@
+{
+  "path":"res/sprites/structures.png",
+  "width":32,
+  "structures":[
+    {
+      "name":"town",
+      "size":50
+    }
+  ]
+}

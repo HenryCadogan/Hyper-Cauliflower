@@ -26,7 +26,6 @@ public class TerrainLayer implements Renderable, Updatable{
     private int seed,u,v;
     private static final String PATH = "res/JSON/terrain.json";
     private static final int BUFFER = 20, SCREEN_WIDTH = (Main.INTERNAL_WIDTH>>Chunk.CHUNK_SHIFT), STORED_WIDTH = BUFFER+SCREEN_WIDTH, SCREEN_HEIGHT = (Main.INTERNAL_HEIGHT>>Chunk.CHUNK_SHIFT), STORED_HEIGHT = BUFFER + SCREEN_HEIGHT;
-    //private static final int SCREEN_WIDTH = 2, SCREEN_HEIGHT = 2, STORED_WIDTH = 8, STORED_HEIGHT = 8;
     static final int GRASS = 0, WATER = 1, SAND = 2, COUNT = 3;
     private Chunk[][] chunksLoaded;
     private Perlin noiseGen;
@@ -131,9 +130,6 @@ public class TerrainLayer implements Renderable, Updatable{
         return new Chunk(new Point(x, y),noiseGen, generator);
     }
 
-    public boolean getWalkable(int x, int y){
-        return getChunk(x,y).getWalkable(adjustValue(x%CHUNK_WIDTH,CHUNK_WIDTH),adjustValue(y%CHUNK_WIDTH,CHUNK_WIDTH));
-    }
     public Color getColor(int x, int y){
         return getChunk(x,y).getColor(adjustValue(x%CHUNK_WIDTH,CHUNK_WIDTH),adjustValue(y%CHUNK_WIDTH,CHUNK_WIDTH));
     }

@@ -2,14 +2,33 @@
   "weapons":[
     {
       "name":"bow",
-      "type":"ranged standard",
+      "type":"RANGED_STANDARD",
       "projectile":"arrow",
       "min damage":1,
       "max damage":3,
       "firerate":30
     }
   ],
-
+  "armor":[
+    {
+      "name":"helmet",
+      "slot":"HEAD",
+      "min armor":1,
+      "max armor":2
+    },
+    {
+      "name":"chestplate",
+      "slot":"TORSO",
+      "min armor":1,
+      "max armor":5
+    },
+    {
+      "name":"platelegs",
+      "slot":"LEGS",
+      "min armor":1,
+      "max armor":3
+    }
+  ],
   "projectiles":[
     {
       "name":"arrow",

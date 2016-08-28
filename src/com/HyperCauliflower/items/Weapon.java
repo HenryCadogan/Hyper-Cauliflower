@@ -10,14 +10,13 @@ import org.newdawn.slick.Graphics;
  */
 public abstract class Weapon extends Item implements Useable {
 
-    private String name;
     private int damage;
     private int reqLvl;
     private int fireRate;
     private GameState gameState;
 
     public Weapon(int rarityMod,int value,String name,int fireRate, GameState gameState) {
-        super(rarityMod, value);
+        super(rarityMod, value, name);
         this.fireRate = fireRate;
         this.gameState = gameState;
     }

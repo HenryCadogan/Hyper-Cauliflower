@@ -54,9 +54,6 @@ class Chunk implements Renderable{
         return speedMod[x][y];
     }
 
-    boolean getWalkable(int x, int y){
-        return walkable[x][y];
-    }
     Color getColor(int x, int y){return image.getColor(x,y);}
 
     Point getLocation(){

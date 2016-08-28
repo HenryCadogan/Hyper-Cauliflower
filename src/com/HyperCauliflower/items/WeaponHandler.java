@@ -16,17 +16,27 @@ import java.util.HashMap;
  * Created by Matt on 27/08/2016.
  */
 public class WeaponHandler {
+
+    private enum WeaponType{
+        RANGED_STANDARD
+    }
     private final String PATH = "res/json/items.json";
     private HashMap<String, JSONObject> weapons;
+    private HashMap<String, JSONObject> armors;
     private HashMap<String, ProjectileFactory> projectiles;
     public WeaponHandler(SpriteSheetData projectileSprites){
         try {
             weapons = new HashMap<>();
             projectiles = new HashMap<>();
+            armors = new HashMap<>();
             JSONObject obj = (JSONObject)new JSONParser().parse(new FileReader(PATH));
             for(Object weapon:(JSONArray)obj.get("weapons")){
                 JSONObject w = (JSONObject) weapon;
                 weapons.put((String)w.get("name"),w);
+            }
+            for(Object armor:(JSONArray)obj.get("armor")){
+                JSONObject a = (JSONObject) armor;
+                armors.put((String)a.get("name"),a);
             }
             for(Object projectile:(JSONArray)obj.get("projectiles")){
                 JSONObject p = (JSONObject) projectile;
@@ -42,12 +52,29 @@ public class WeaponHandler {
     }
 
 
+    public Armor generateArmor(String name, GameState game){
+        JSONObject armor = armors.get(name);
+        return new Armor(0,0,
+                name,
+                (String)armor.get("slot"));
+    }
+
     public Weapon generateWeapon(String name, GameState game){
         JSONObject weapon = weapons.get(name);
-        System.out.println((String)weapon.get("type"));
-        if(((String)weapon.get("type")).equals("ranged standard"))
-            return new RangedStandardWeapon(0,0,(String)weapon.get("name"),((Number)weapon.get("firerate")).intValue(), game, projectiles.get((String)weapon.get("projectile")));
-        else
-            return null;
+        switch(WeaponType.valueOf((String)weapon.get("type"))){
+            case RANGED_STANDARD:
+                return new RangedStandardWeapon(0,0,
+                        name,
+                        ((Number)weapon.get("firerate")).intValue(),
+                        game,
+                        projectiles.get((String)weapon.get("projectile")));
+            default:
+                return null;
+        }
     }
+
+
+
+
+
 }

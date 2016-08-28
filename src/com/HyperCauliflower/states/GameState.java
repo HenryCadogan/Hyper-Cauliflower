@@ -7,6 +7,7 @@ import com.HyperCauliflower.items.RangedStandardWeapon;
 import com.HyperCauliflower.items.Projectile;
 import com.HyperCauliflower.items.Weapon;
 import com.HyperCauliflower.items.WeaponHandler;
+import com.HyperCauliflower.world.StructureLayer;
 import com.HyperCauliflower.world.TerrainLayer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -29,6 +30,7 @@ public class GameState extends BasicGameState {
     private Point mousePos;
     private int delta;
     private TerrainLayer terrainLayer;
+    private StructureLayer structureLayer;
     private GameContainer gameContainer;
 
     public int getID() {
@@ -40,10 +42,12 @@ public class GameState extends BasicGameState {
         SpriteSheetHandler spriteSheetHandler = new SpriteSheetHandler();
         WeaponHandler weaponHandler = new WeaponHandler(spriteSheetHandler.get("projectiles"));
         SaveData s = new SaveHandler().get("test");
-        cameraPosition = s.getLocation(); //Change to being loaded from a file
+        cameraPosition = s.getLocation();
         terrainLayer = new TerrainLayer(s.getSeed(),cameraPosition.translate(new Point(-Main.INTERNAL_WIDTH/2,-Main.INTERNAL_HEIGHT/2)));
+        structureLayer = new StructureLayer(s.getSeed());
         renderables = new ArrayList<Renderable>();
         renderables.add(terrainLayer);
+        renderables.add(structureLayer);
         updatables = new ArrayList<Updatable>();
         updatables.add(terrainLayer);
 
@@ -123,7 +127,7 @@ public class GameState extends BasicGameState {
         return cameraPosition;
     }
     public boolean isWalkable(Point p){
-        return terrainLayer.getWalkable(p.getX(),p.getY());
+        return structureLayer.getWalkable(p.getX(),p.getY());
     }
     public float getSpeedMod(Point p){
         return terrainLayer.getSpeedMod(p.getX(),p.getY());

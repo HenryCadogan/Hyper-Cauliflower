@@ -115,10 +115,6 @@ public class Player extends Entity {
     }
 
     public void usePrimary() {
-        //not sure if this should be outer loop or not
-        if(this.getInventory().getEquippedWeapon()==null){
-            System.out.println("fuck shit dammit");
-        }
         if (System.currentTimeMillis() - lastTime > (this.getInventory().getEquippedWeapon().getFireRate() * FIRE_RATE_MOD)) {
             if (this.inventory.getEquippedWeapon() != null) {
                 this.inventory.getEquippedWeapon().use(this.getLocation(), facing);

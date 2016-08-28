@@ -10,11 +10,12 @@ import java.util.Random;
 public abstract class Item{
     private int value;
     private int rarity =-1;
-    private String type;
+    private String name;
 
-    public Item(int rarityModifier,int value){
+    public Item(int rarityModifier,int value, String name){
         this.rarity = generateRarity(rarityModifier);
         this.value = value;
+        this.name = name;
     }
 
     public int generateRarity(int modifier){

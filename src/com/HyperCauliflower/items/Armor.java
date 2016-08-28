@@ -18,16 +18,12 @@ public class Armor extends Item {
         BOOTS
     }
     private Slot slot;
-    private String type;
     private int armorRating;
 
-    public Armor(int rarityModifier, int value,String type) {
-        super(rarityModifier, value);
-        this.type = type;
-
+    public Armor(int rarityModifier, int value, String name, String slot) {
+        super(rarityModifier, value, name);
+        this.slot = Slot.valueOf(slot);
     }
-
-    public String getType(){ return this.type;}
 
     public int getArmorRating(){
         return this.armorRating;
