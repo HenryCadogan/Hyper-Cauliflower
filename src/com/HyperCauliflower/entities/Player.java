@@ -6,11 +6,15 @@ import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
 
 
+import com.HyperCauliflower.ui.Bar;
+import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 
 
+import java.awt.*;
 import java.io.IOException;
 
 
@@ -20,18 +24,20 @@ import java.io.IOException;
 public class Player extends Entity {
 
     //load in all values from json to avoid further reads thus being more efficient
-    private Point mousePos = new Point(0, 0), mouseAbsPos = new Point(0,0);
+    private Point mousePos = new Point(0, 0), mouseAbsPos = new Point(0, 0);
     public ConfigurableEmitter footsteps;
     private Inventory inventory;
     private final int MOVE_MODE = 0;
     private double lastTime = 0;
     private final int FIRE_RATE_MOD = 10;
+    private Bar healthBar;
 
-    public Player(SpriteSheetData spriteSheetData, String name, Point location) {
-        super(spriteSheetData, name, location);
+    public Player(SpriteSheetData spriteSheetData, String name, Point location,int health) {
+        super(spriteSheetData, name, location,health);
         setMoveSpeed(5);
         this.experiencePoints = 0;
         this.inventory = new Inventory();
+        this.healthBar = new Bar(new Point(this.getLocation().getX(),this.getLocation().getY() - 30),32,6, super.getHealth(), new Color(255,0,0));
 
         try {
             footsteps = ParticleIO.loadEmitter("/res/sprites/Particles/footsteps.xml");
@@ -40,6 +46,8 @@ public class Player extends Entity {
             e.printStackTrace();
             System.exit(3);
         }
+
+
     }
 
     public Inventory getInventory() {
@@ -74,25 +82,23 @@ public class Player extends Entity {
     public void update(GameState game) {
         super.update(game);
         mousePos = game.getMousePosition();
-        Point offset = new Point(0,0).translate(game.getCameraPosition());
+        Point offset = new Point(0, 0).translate(game.getCameraPosition());
         offset.scale(-1);
         mouseAbsPos = mousePos.translate(offset);
         footsteps.update(game.pSystem, game.getDelta());
         updateFootstepsColor(game);
-
-
-
+        healthBar.setPos(new Point(this.getLocation().getX()- 16,this.getLocation().getY() - 26));
     }
 
-    private void updateFootstepsColor(GameState g) {
-        ((ConfigurableEmitter.ColorRecord)footsteps.colors.get(0)).col = g.getColor(this.getLocation()).darker();
+    private void updateFootstepsColor(GameState game) {
+        ((ConfigurableEmitter.ColorRecord) footsteps.colors.get(0)).col = game.getColor(this.getLocation()).darker();
     }
 
     public void render(Graphics graphics, Point offset) {
         footsteps.setPosition(this.getLocation().getX(), this.getLocation().getY(), true);
         rotatePlayer(offset);
         super.render(graphics, offset);
-
+        healthBar.render(graphics,offset);
     }
 
     public int getAnimationFrame() {
@@ -115,6 +121,10 @@ public class Player extends Entity {
     }
 
     public void usePrimary() {
+        //not sure if this should be outer loop or not
+        if (this.getInventory().getEquippedWeapon() == null) {
+            System.out.println("fuck shit dammit");
+        }
         if (System.currentTimeMillis() - lastTime > (this.getInventory().getEquippedWeapon().getFireRate() * FIRE_RATE_MOD)) {
             if (this.inventory.getEquippedWeapon() != null) {
                 this.inventory.getEquippedWeapon().use(this.getLocation(), facing);
@@ -127,6 +137,8 @@ public class Player extends Entity {
             //System.out.println("not fired");
         }
     }
+
+
 }
 
 

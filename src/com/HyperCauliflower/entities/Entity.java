@@ -25,11 +25,12 @@ public abstract class Entity implements Renderable, Updatable{
     protected static final int CURRENT = 0, BASE = 1, SCALING = 2, ITEM = 3, SKILL = 4, BUFF = 5, MAXHP = 0, ARMOUR = 1, STR = 2, DEX = 3, INT = 4, MODCOUNT = 6, STATCOUNT = 5;
     protected float[][] stats;
 
-    Entity(SpriteSheetData spriteSheetData, String name, Point location){
+    Entity(SpriteSheetData spriteSheetData, String name, Point location, int health){
         stats = new float[MODCOUNT][STATCOUNT];
         this.spriteSheetData = spriteSheetData;
         this.location = location;
         this.name = name;
+        this.health = health;
     }
 
     public void update(GameState game){
@@ -78,6 +79,10 @@ public abstract class Entity implements Renderable, Updatable{
 
     public int getLevel(){
         return this.level;
+    }
+
+    public int getHealth(){
+        return this.health;
     }
 
     private void takeDamage(int damageValue){

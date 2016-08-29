@@ -7,6 +7,7 @@ import com.HyperCauliflower.items.RangedStandardWeapon;
 import com.HyperCauliflower.items.Projectile;
 import com.HyperCauliflower.items.Weapon;
 import com.HyperCauliflower.items.WeaponHandler;
+import com.HyperCauliflower.ui.Button;
 import com.HyperCauliflower.world.StructureLayer;
 import com.HyperCauliflower.world.TerrainLayer;
 import org.newdawn.slick.*;
@@ -51,7 +52,7 @@ public class GameState extends BasicGameState {
         updatables = new ArrayList<Updatable>();
         updatables.add(terrainLayer);
 
-        player = new Player(spriteSheetHandler.get("entities"),"player",cameraPosition);
+        player = new Player(spriteSheetHandler.get("entities"),"player",cameraPosition,100);
         updatables.add(player);
 
         //temporary weapon
@@ -67,6 +68,10 @@ public class GameState extends BasicGameState {
         pSystem.setPosition(0,0);
         player.enableFootsteps();
         pSystem.setBlendingMode(ParticleSystem.BLEND_COMBINE);
+
+        //test ui
+        Button testButton = new Button(new Point(20,20),200,40);
+        renderables.add(testButton);
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
