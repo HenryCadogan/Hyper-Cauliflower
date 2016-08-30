@@ -98,6 +98,9 @@ public class GameState extends BasicGameState {
         if (gameContainer.getInput().isMouseButtonDown(0)) {
             player.usePrimary();
         }
+        if (gameContainer.getInput().isMouseButtonDown(1)){
+            player.takeDamage(12);
+        }
         if (gameContainer.getInput().isKeyDown(Input.KEY_W)) {
             player.move(0);
             moving = true;
