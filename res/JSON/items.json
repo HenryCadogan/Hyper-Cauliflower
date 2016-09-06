@@ -6,7 +6,7 @@
       "projectile":"arrow",
       "min damage":1,
       "max damage":3,
-      "firerate":30
+      "firerate":25
     }
   ],
   "armor":[

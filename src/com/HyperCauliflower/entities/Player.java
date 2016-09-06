@@ -6,15 +6,11 @@ import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
 
 
-import com.HyperCauliflower.ui.Bar;
-import org.newdawn.slick.*;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 
 
-import java.awt.*;
 import java.io.IOException;
 
 
@@ -23,21 +19,19 @@ import java.io.IOException;
  */
 public class Player extends Entity {
 
-    //load in all values from json to avoid further reads thus being more efficient
     private Point mousePos = new Point(0, 0), mouseAbsPos = new Point(0, 0);
     public ConfigurableEmitter footsteps;
     private Inventory inventory;
     private final int MOVE_MODE = 0;
-    private double lastTime = 0;
-    private final int FIRE_RATE_MOD = 10;
-    private Bar healthBar;
+    private int fireUpdateCount;
 
-    public Player(SpriteSheetData spriteSheetData, String name, Point location,int health) {
-        super(spriteSheetData, name, location,health);
+
+    public Player(SpriteSheetData spriteSheetData, String name, Point location, int health) {
+        super(spriteSheetData, name, location, health);
         setMoveSpeed(5);
         this.experiencePoints = 0;
         this.inventory = new Inventory();
-        this.healthBar = new Bar(new Point(this.getLocation().getX(),this.getLocation().getY() - 30),32,6, super.getHealth(),1, new Color(255,0,0));
+
 
         try {
             footsteps = ParticleIO.loadEmitter("/res/sprites/Particles/footsteps.xml");
@@ -46,8 +40,6 @@ public class Player extends Entity {
             e.printStackTrace();
             System.exit(3);
         }
-
-
     }
 
     public Inventory getInventory() {
@@ -87,7 +79,12 @@ public class Player extends Entity {
         mouseAbsPos = mousePos.translate(offset);
         footsteps.update(game.pSystem, game.getDelta());
         updateFootstepsColor(game);
-        healthBar.setPos(new Point(this.getLocation().getX()- 16,this.getLocation().getY() - 26));
+        // making sure we dont overflow if the game is left running
+        if (fireUpdateCount >= 25565) {
+            fireUpdateCount = 0;
+        }else {
+            fireUpdateCount++;
+        }
     }
 
     private void updateFootstepsColor(GameState game) {
@@ -98,7 +95,6 @@ public class Player extends Entity {
         footsteps.setPosition(this.getLocation().getX(), this.getLocation().getY(), true);
         rotatePlayer(offset);
         super.render(graphics, offset);
-        healthBar.render(graphics,offset,this.getHealth());
     }
 
     public int getAnimationFrame() {
@@ -125,21 +121,18 @@ public class Player extends Entity {
         if (this.getInventory().getEquippedWeapon() == null) {
             System.out.println("fuck shit dammit");
         }
-        if (System.currentTimeMillis() - lastTime > (this.getInventory().getEquippedWeapon().getFireRate() * FIRE_RATE_MOD)) {
-                if (this.inventory.getEquippedWeapon() != null) {
-                    this.inventory.getEquippedWeapon().use(this.getLocation(), facing);
-                    System.out.println("fired at: " + mousePos.getX() + "," + mousePos.getY());
-                    lastTime = System.currentTimeMillis();
-                } else {
-                //print no primary weapon equipped
+
+        if (fireUpdateCount > this.getInventory().getEquippedWeapon().getFireRate()) {
+            fireUpdateCount = 0;
+            if (this.inventory.getEquippedWeapon() != null) {
+                this.inventory.getEquippedWeapon().use(this.getLocation(), facing);
+                System.out.println("fired at: " + mousePos.getX() + "," + mousePos.getY());
             }
-        } else {
-            //System.out.println("not fired");
+
         }
     }
-
-
 }
+
 
 
 

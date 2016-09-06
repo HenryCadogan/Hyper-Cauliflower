@@ -3,7 +3,6 @@ package com.HyperCauliflower.states;
 import com.HyperCauliflower.entities.Player;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
-import com.HyperCauliflower.items.RangedStandardWeapon;
 import com.HyperCauliflower.items.Projectile;
 import com.HyperCauliflower.items.Weapon;
 import com.HyperCauliflower.items.WeaponHandler;

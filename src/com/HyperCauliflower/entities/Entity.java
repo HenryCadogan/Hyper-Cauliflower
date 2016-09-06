@@ -5,6 +5,8 @@ import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
 import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
+import com.HyperCauliflower.ui.Bar;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -21,6 +23,8 @@ public abstract class Entity implements Renderable, Updatable {
     protected double facing;
     private double lastHitTime = 0;
     private final int INVUNERABILITY_PERIOD = 50;
+    private Bar healthBar;
+    private int damageUpdateCount;
 
     Point moveVector = new Point(0, 0);
 
@@ -33,7 +37,9 @@ public abstract class Entity implements Renderable, Updatable {
         this.location = location;
         this.name = name;
         this.health = health;
+        this.healthBar = new Bar(new Point(this.getLocation().getX(),this.getLocation().getY() - 30),32,6, getHealth(),1, new Color(255,0,0));
     }
+
 
     public void update(GameState game) {
         for (int i = 0; i < STATCOUNT; i++)
@@ -47,6 +53,18 @@ public abstract class Entity implements Renderable, Updatable {
         } while (speed != -1 && !game.isWalkable(newLocation));
         getLocation().setPosition(newLocation);
         moveVector = new Point(0, 0);
+
+        healthBar.setPos(new Point(this.getLocation().getX() - 16, this.getLocation().getY() - 26));
+
+
+        if (damageUpdateCount >= 25565) {
+            damageUpdateCount = 0;
+        }else {
+            damageUpdateCount++;
+        }
+
+
+
     }
 
     public void render(Graphics graphics, Point offset) {
@@ -54,7 +72,7 @@ public abstract class Entity implements Renderable, Updatable {
         graphics.rotate(this.getLocation().getX() + offset.getX(), this.getLocation().getY() + offset.getY(), (float) Math.toDegrees(this.facing));
         graphics.drawImage(getImage(0), this.getLocation().getX() - this.getWidth() / 2 + offset.getX(), this.getLocation().getY() - this.getHeight() / 2 + offset.getY());
         graphics.popTransform();
-
+        healthBar.render(graphics, offset, this.getHealth());
     }
 
     public Point getLocation() {
@@ -90,19 +108,19 @@ public abstract class Entity implements Renderable, Updatable {
     }
 
     public void takeDamage(int damageValue) {
-        if ((System.currentTimeMillis() - lastHitTime) > INVUNERABILITY_PERIOD) {
+        //todo change this and also the player shooting delay to be done via game ticks not time incase the game slows down
+        if (damageUpdateCount > INVUNERABILITY_PERIOD) {
+            damageUpdateCount = 0;
             if (this.health > 0) {
                 this.health -= damageValue;
-                System.out.println("Ouch!, im now on " + this.getHealth() + " hp!");
-                lastHitTime = System.currentTimeMillis();
+                //System.out.println("Ouch!, im now on " + this.getHealth() + " hp!");
                 if (this.health < 0) {
                     // ded
+                    // do ded stuff
                 }
             } else {
                 System.out.println("Piss off im already dead");
             }
-        } else {
-            //System.out.println("Time: " + (lastHitTime));
         }
     }
 
@@ -111,8 +129,8 @@ public abstract class Entity implements Renderable, Updatable {
     }
 
     private void drainStamina(int drainAmount) {
-        if (this.stamina >= drainAmount) {
-            this.stamina -= drainAmount;
+        if (stamina >= drainAmount) {
+            stamina -= drainAmount;
         } else {
 
         }
