@@ -9,6 +9,7 @@ import com.HyperCauliflower.ui.Bar;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Sound;
 
 /**
  * Created by Matt on 24/06/2016.
@@ -25,6 +26,7 @@ public abstract class Entity implements Renderable, Updatable {
     private final int INVUNERABILITY_PERIOD = 50;
     private Bar healthBar;
     private int damageUpdateCount;
+    Sound hurtSound;
 
     Point moveVector = new Point(0, 0);
 
@@ -108,7 +110,6 @@ public abstract class Entity implements Renderable, Updatable {
     }
 
     public void takeDamage(int damageValue) {
-        //todo change this and also the player shooting delay to be done via game ticks not time incase the game slows down
         if (damageUpdateCount > INVUNERABILITY_PERIOD) {
             damageUpdateCount = 0;
             if (this.health > 0) {

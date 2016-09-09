@@ -7,11 +7,19 @@ import com.HyperCauliflower.states.Point;
 
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
@@ -24,22 +32,56 @@ public class Player extends Entity {
     private Inventory inventory;
     private final int MOVE_MODE = 0;
     private int fireUpdateCount;
-
+    ArrayList<Sound> hurtSounds;
 
     public Player(SpriteSheetData spriteSheetData, String name, Point location, int health) {
         super(spriteSheetData, name, location, health);
         setMoveSpeed(5);
         this.experiencePoints = 0;
         this.inventory = new Inventory();
-
+        hurtSounds = new ArrayList<>();
+        getSounds();
 
         try {
             footsteps = ParticleIO.loadEmitter("/res/sprites/Particles/footsteps.xml");
             footsteps.setEnabled(true);
+
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(3);
         }
+    }
+    private void getSounds() {
+
+        try{
+            File[] sounds = new File("res/Sounds/Entities/Hurts/").listFiles();
+            for (File sound : sounds){
+                System.out.println(sound.getPath());
+                hurtSounds.add(new Sound(sound.getPath()));
+            }
+        }catch(SlickException e){
+            e.printStackTrace();
+
+        }
+        // fancy way that I haven't even checked if it works or not
+    /*/
+        try {
+            Files.walk(Paths.get("res/Sounds/Entities/Hurts/"))
+                    .forEach(filePath -> {
+                        if (!Files.isDirectory(filePath)) {
+                            try {
+                                System.out.println(filePath.toString());
+                                hurtSounds.add(new Sound(filePath.toString()));
+                            }catch(SlickException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+        /*/
     }
 
     public Inventory getInventory() {
@@ -79,10 +121,10 @@ public class Player extends Entity {
         mouseAbsPos = mousePos.translate(offset);
         footsteps.update(game.pSystem, game.getDelta());
         updateFootstepsColor(game);
-        // making sure we dont overflow if the game is left running
+        // making sure we don't overflow if the game is left running
         if (fireUpdateCount >= 25565) {
             fireUpdateCount = 0;
-        }else {
+        } else {
             fireUpdateCount++;
         }
     }
@@ -95,6 +137,7 @@ public class Player extends Entity {
         footsteps.setPosition(this.getLocation().getX(), this.getLocation().getY(), true);
         rotatePlayer(offset);
         super.render(graphics, offset);
+        // render the weapon image on top
     }
 
     public int getAnimationFrame() {
@@ -126,11 +169,18 @@ public class Player extends Entity {
             fireUpdateCount = 0;
             if (this.inventory.getEquippedWeapon() != null) {
                 this.inventory.getEquippedWeapon().use(this.getLocation(), facing);
-                System.out.println("fired at: " + mousePos.getX() + "," + mousePos.getY());
+                //System.out.println("fired at: " + mousePos.getX() + "," + mousePos.getY());
             }
 
         }
     }
+
+    public void takeDamage(int damageValue){
+        super.takeDamage(damageValue);
+        int randomSoundNo = ThreadLocalRandom.current().nextInt(0, hurtSounds.size() -1);
+        hurtSounds.get(randomSoundNo).play();
+    }
+
 }
 
 
