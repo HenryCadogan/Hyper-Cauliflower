@@ -51,15 +51,16 @@ public class Player extends Entity {
             System.exit(3);
         }
     }
+
     private void getSounds() {
 
-        try{
+        try {
             File[] sounds = new File("res/Sounds/Entities/Hurts/").listFiles();
-            for (File sound : sounds){
+            for (File sound : sounds) {
                 System.out.println(sound.getPath());
                 hurtSounds.add(new Sound(sound.getPath()));
             }
-        }catch(SlickException e){
+        } catch (SlickException e) {
             e.printStackTrace();
 
         }
@@ -81,7 +82,7 @@ public class Player extends Entity {
             e.printStackTrace();
 
         }
-        /*/
+/*/
     }
 
     public Inventory getInventory() {
@@ -175,10 +176,14 @@ public class Player extends Entity {
         }
     }
 
-    public void takeDamage(int damageValue){
-        super.takeDamage(damageValue);
-        int randomSoundNo = ThreadLocalRandom.current().nextInt(0, hurtSounds.size() -1);
-        hurtSounds.get(randomSoundNo).play();
+    public void takeDamage(int damageValue) {
+
+        if (super.canTakeDamage()) {
+            super.takeDamage(damageValue);
+            int randomSoundNo = ThreadLocalRandom.current().nextInt(0, hurtSounds.size() - 1);
+            System.out.println(hurtSounds.get(randomSoundNo).toString());
+            hurtSounds.get(randomSoundNo).play(1.0F, 0.5F);
+        }
     }
 
 }

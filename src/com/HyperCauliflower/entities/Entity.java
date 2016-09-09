@@ -109,9 +109,17 @@ public abstract class Entity implements Renderable, Updatable {
         return this.health;
     }
 
-    public void takeDamage(int damageValue) {
+    Boolean canTakeDamage() {
         if (damageUpdateCount > INVUNERABILITY_PERIOD) {
             damageUpdateCount = 0;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public void takeDamage(int damageValue) {
             if (this.health > 0) {
                 this.health -= damageValue;
                 //System.out.println("Ouch!, im now on " + this.getHealth() + " hp!");
@@ -123,7 +131,6 @@ public abstract class Entity implements Renderable, Updatable {
                 System.out.println("Piss off im already dead");
             }
         }
-    }
 
     private int getStamina() {
         return this.stamina;
