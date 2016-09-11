@@ -13,7 +13,7 @@ public class Hitbox {
     }
 
     private Shape getShape(){
-        return hitbox;
+        return  hitbox;
     }
     public Boolean hits(Hitbox h){
         return h.getShape().intersects(hitbox);
