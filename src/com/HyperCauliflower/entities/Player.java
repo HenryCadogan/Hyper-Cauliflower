@@ -166,7 +166,6 @@ public class Player extends Entity {
                 this.inventory.getEquippedWeapon().use(this.getLocation(), facing);
                 //System.out.println("fired at: " + mousePos.getX() + "," + mousePos.getY());
             }
-
         }
     }
 
@@ -176,10 +175,9 @@ public class Player extends Entity {
             super.takeDamage(damageValue);
             int randomSoundNo = ThreadLocalRandom.current().nextInt(0, hurtSounds.size() - 1);
             System.out.println(hurtSounds.get(randomSoundNo).toString());
-            hurtSounds.get(randomSoundNo).play(1.0F, 0.5F);
+            hurtSounds.get(randomSoundNo).play(1.0F, 0.3F);
         }
     }
-
 }
 
 
