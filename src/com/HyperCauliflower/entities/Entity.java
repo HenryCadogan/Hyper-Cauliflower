@@ -10,11 +10,12 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.geom.Circle;
 
 /**
  * Created by Matt on 24/06/2016.
  */
-public abstract class Entity implements Renderable, Updatable {
+public abstract class Entity extends Hitbox implements Renderable, Updatable {
     private Point location;
     private int moveSpeed;
     private SpriteSheetData spriteSheetData;
@@ -30,10 +31,12 @@ public abstract class Entity implements Renderable, Updatable {
 
     Point moveVector = new Point(0, 0);
 
-    protected static final int CURRENT = 0, BASE = 1, SCALING = 2, ITEM = 3, SKILL = 4, BUFF = 5, MAXHP = 0, ARMOUR = 1, STR = 2, DEX = 3, INT = 4, MODCOUNT = 6, STATCOUNT = 5;
+    protected static final int CURRENT = 0, BASE = 1, SCALING = 2, ITEM = 3, SKILL = 4, BUFF = 5, MAXHP = 0, ARMOUR = 1, STR = 2, DEX = 3, INT = 4, MODCOUNT = 6, STATCOUNT = 5, ARBITRARY_WIDTH=25;
     protected float[][] stats;
 
     Entity(SpriteSheetData spriteSheetData, String name, Point location, int health) {
+        super(new Circle(location.getX(),location.getY(),ARBITRARY_WIDTH));
+        //todo add meaningful width values
         stats = new float[MODCOUNT][STATCOUNT];
         this.spriteSheetData = spriteSheetData;
         this.location = location;

@@ -1,16 +1,18 @@
 package com.HyperCauliflower.items;
 
+import com.HyperCauliflower.entities.Hitbox;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
 import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Circle;
 
 /**
  * Created by Experiment Account on 24/07/2016.
  */
-public class Projectile implements Updatable,Renderable{
+public class Projectile extends Hitbox implements Updatable,Renderable{
 
     private Point velocity, pos;
     private Image sprite;
@@ -18,6 +20,7 @@ public class Projectile implements Updatable,Renderable{
 
 
     public Projectile(double direction, Point pos,int speed, Image sprite){
+        super(new Circle(pos.getX(),pos.getY(),5));
         this.sprite = sprite;
         this.pos = pos;
         this.direction = direction;

@@ -4,21 +4,15 @@ import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.items.Inventory;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
-
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 
-
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
