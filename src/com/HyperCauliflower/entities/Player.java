@@ -58,7 +58,7 @@ public class Player extends Entity {
             e.printStackTrace();
 
         }
-        // fancy way that I haven't even checked if it works or not
+        //both these ways work so idk which we should use
     /*/
         try {
             Files.walk(Paths.get("res/Sounds/Entities/Hurts/"))

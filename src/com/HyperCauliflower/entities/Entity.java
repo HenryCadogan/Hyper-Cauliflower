@@ -11,6 +11,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Rectangle;
 
 /**
  * Created by Matt on 24/06/2016.
@@ -27,7 +28,7 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
     private final int INVUNERABILITY_PERIOD = 50;
     private Bar healthBar;
     private int damageUpdateCount;
-    Sound hurtSound;
+    Hitbox hitbox;
 
     Point moveVector = new Point(0, 0);
 
@@ -43,6 +44,7 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
         this.name = name;
         this.health = health;
         this.healthBar = new Bar(new Point(this.getLocation().getX(),this.getLocation().getY() - 30),32,6, getHealth(),1, new Color(255,0,0));
+        this.hitbox = new Hitbox(new Circle(this.getLocation().getX(),this.getLocation().getY(),16));
     }
 
 
@@ -66,7 +68,6 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
         }else {
             damageUpdateCount++;
         }
-
     }
 
     public void render(Graphics graphics, Point offset) {
@@ -75,6 +76,8 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
         graphics.drawImage(getImage(0), this.getLocation().getX() - this.getWidth() / 2 + offset.getX(), this.getLocation().getY() - this.getHeight() / 2 + offset.getY());
         graphics.popTransform();
         healthBar.render(graphics, offset, this.getHealth());
+        graphics.setColor(Color.cyan);
+        graphics.draw(new Circle(this.getLocation().getX() + offset.getX(),this.getLocation().getY() + offset.getY(),16));
     }
 
     public Point getLocation() {
@@ -117,7 +120,6 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
             return false;
         }
     }
-
 
     public void takeDamage(int damageValue) {
             if (this.health > 0) {

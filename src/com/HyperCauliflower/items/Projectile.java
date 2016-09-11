@@ -7,7 +7,9 @@ import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.font.effects.ConfigurableEffect;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.particles.ConfigurableEmitter;
 
 /**
  * Created by Experiment Account on 24/07/2016.
@@ -17,6 +19,7 @@ public class Projectile extends Hitbox implements Updatable,Renderable{
     private Point velocity, pos;
     private Image sprite;
     private double direction;
+    private ConfigurableEmitter pEffect;
 
 
     public Projectile(double direction, Point pos,int speed, Image sprite){
@@ -26,6 +29,8 @@ public class Projectile extends Hitbox implements Updatable,Renderable{
         this.direction = direction;
         velocity = new Point(Math.cos(direction), Math.sin(direction));
         velocity.scale(speed*2);
+        pEffect = new ConfigurableEmitter("Insert cool name here");
+
 
     }
 

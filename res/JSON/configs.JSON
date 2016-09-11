@@ -21,6 +21,12 @@
       "width": 32
     },
     {
+      "name": "zombie",
+      "path": "res/sprites/zombie.png",
+      "height": 32,
+      "width": 32
+    },
+    {
       "name": "projectiles",
       "path": "res/sprites/projectiles/Arrow.png",
       "height": 16,

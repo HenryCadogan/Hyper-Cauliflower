@@ -1,6 +1,7 @@
 package com.HyperCauliflower.states;
 
 import com.HyperCauliflower.entities.Player;
+import com.HyperCauliflower.handlers.EnemyHandler;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
 import com.HyperCauliflower.items.Projectile;
@@ -32,6 +33,7 @@ public class GameState extends BasicGameState {
     private TerrainLayer terrainLayer;
     private StructureLayer structureLayer;
     private GameContainer gameContainer;
+    private EnemyHandler enemyHandler;
 
     public int getID() {
         return Game.State.GAME.ordinal();
@@ -71,6 +73,11 @@ public class GameState extends BasicGameState {
         //test ui
         Button testButton = new Button(new Point(20,20),200,40);
         renderables.add(testButton);
+
+        //enemies and shiz
+        enemyHandler = new EnemyHandler(15);
+        renderables.add(enemyHandler);
+        updatables.add(enemyHandler);
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
