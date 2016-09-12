@@ -17,6 +17,7 @@ public class Mob extends Entity{
     @Override
     public void update(GameState game) {
         moveVector = game.getClosestPlayerTo(this.getLocation()).getLocation().translate(this.getLocation().negated());
+        facing = Math.atan(moveVector.getExactY()/moveVector.getExactX());
         super.update(game);
     }
 }
