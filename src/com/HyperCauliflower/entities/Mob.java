@@ -10,12 +10,13 @@ import com.HyperCauliflower.states.Point;
 public class Mob extends Entity{
 
     public Mob(SpriteSheetData spriteSheetData, String name, Point location, int health, int radius){
-        super(spriteSheetData,"mob", location, health, radius);
+        super(spriteSheetData,name, location, health, radius);
+        setMoveSpeed(4);
     }
 
     @Override
     public void update(GameState game) {
-        this.moveVector = game.getClosestPlayerTo(this.getLocation()).getLocation();
+        moveVector = game.getClosestPlayerTo(this.getLocation()).getLocation().translate(this.getLocation().negated());
         super.update(game);
     }
 }

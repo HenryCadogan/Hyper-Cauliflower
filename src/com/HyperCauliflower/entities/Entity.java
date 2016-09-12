@@ -26,8 +26,6 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
     private final int INVUNERABILITY_PERIOD = 50;
     private Bar healthBar;
     private int damageUpdateCount;
-    Hitbox hitbox;
-
     Point moveVector = new Point(0, 0);
 
     protected static final int CURRENT = 0, BASE = 1, SCALING = 2, ITEM = 3, SKILL = 4, BUFF = 5, MAXHP = 0, ARMOUR = 1, STR = 2, DEX = 3, INT = 4, MODCOUNT = 6, STATCOUNT = 5;

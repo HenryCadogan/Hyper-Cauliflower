@@ -66,6 +66,9 @@ public class GameState extends BasicGameState {
         //temporary mob factory
         factory = mobHandler.getFactory("zombie");
 
+        Mob fuckOffMiguel = factory.produce(spriteSheetHandler.get("entities"), new Point(300,167));
+        updatables.add(fuckOffMiguel);
+        renderables.add(fuckOffMiguel);
         initParticles();
 
         //test ui
@@ -95,10 +98,6 @@ public class GameState extends BasicGameState {
         this.cameraPosition = player.getLocation();
         boolean moving = false;
         player.enableFootsteps();
-        Mob fuckOffMiguel = factory.produce(spriteSheetHandler.get("entities"), new Point(300,167));
-        updatables.add(fuckOffMiguel);
-        renderables.add(fuckOffMiguel);
-        //System.out.println(terrainLayer.getWalkable(player.getLocation().getX(),player.getLocation().getY()));
 
         this.delta = delta;
         if (gameContainer.getInput().isMouseButtonDown(0)) {
@@ -185,7 +184,7 @@ public class GameState extends BasicGameState {
         for (int i =0; i < players.length;i++){
             //calculate distance between the points
             Player player = players[i];
-            newDistance = Math.sqrt((Math.pow(player.getLocation().getX() - point.getX(),2)+ (Math.pow(player.getLocation().getY() - point.getY(),2))));
+            newDistance = (Math.pow(player.getLocation().getX() - point.getX(),2)+ (Math.pow(player.getLocation().getY() - point.getY(),2)));
             if (distance > newDistance){
                 distance = newDistance;
                 playerIndex = i;

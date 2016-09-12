@@ -54,6 +54,9 @@ public class Point {
         x*=s;
         y*=s;
     }
+    public Point negated(){
+        return new Point(-x,-y);
+    }
     public void normalise(){
         float xf = x, yf = y, x2 = xf*xf, y2 = yf*yf, m = (float)Math.sqrt(x2+y2);
         if (m!= 0) {
