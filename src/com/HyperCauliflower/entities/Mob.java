@@ -15,9 +15,7 @@ public abstract class Mob extends Entity{
 
     @Override
     public void update(GameState game) {
-
+        this.moveVector = game.getClosestPlayerTo(this.getLocation()).getLocation();
         super.update(game);
-
-
     }
 }

@@ -34,6 +34,7 @@ public class GameState extends BasicGameState {
     private StructureLayer structureLayer;
     private GameContainer gameContainer;
     private EnemyHandler enemyHandler;
+    private Player[] players;
 
     public int getID() {
         return Game.State.GAME.ordinal();
@@ -78,6 +79,11 @@ public class GameState extends BasicGameState {
         enemyHandler = new EnemyHandler(15);
         renderables.add(enemyHandler);
         updatables.add(enemyHandler);
+
+        //grouping the players to do stuff with
+        players = new Player[4];
+        players[0] = player;
+
     }
 
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
@@ -159,4 +165,29 @@ public class GameState extends BasicGameState {
         updatables.add(p);
         renderables.add(p);
     }
+
+    public Player getClosestPlayerTo(Point point){
+        double distance = Integer.MAX_VALUE;
+        // dont want to initialise properly or it wont throw the error catch at the bottom
+        int playerIndex = -1;
+        double newDistance = 0;
+        for (int i =0; i < players.length -1;i++){
+            //calculate distance between the points
+            Player player = players[i];
+            newDistance = Math.sqrt((Math.pow(player.getLocation().getX() - point.getX(),2)+ (Math.pow(player.getLocation().getY() - point.getY(),2))));
+            if (distance > newDistance){
+                distance = newDistance;
+                playerIndex = i;
+            }
+        }
+        try {
+            return players[playerIndex];
+
+        }catch(IndexOutOfBoundsException e){
+            System.out.println("You Dun Goofed Somehow...");
+            e.printStackTrace();
+        } // pointless return as it wont get here but still;
+        return players[players.length];
+    }
+
 }

@@ -44,7 +44,6 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
         this.name = name;
         this.health = health;
         this.healthBar = new Bar(new Point(this.getLocation().getX(),this.getLocation().getY() - 30),32,6, getHealth(),1, new Color(255,0,0));
-        this.hitbox = new Hitbox(new Circle(this.getLocation().getX(),this.getLocation().getY(),16));
     }
 
 
@@ -53,6 +52,7 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
             stats[CURRENT][i] = stats[BASE][i] + stats[SCALING][i] * level + stats[ITEM][i] + stats[SKILL][i] + stats[BUFF][i];
         int speed = (int) getSpeed(game.getSpeedMod(getLocation()));
         Point newLocation;
+
         do {
             moveVector.normalise();
             moveVector.scale(speed--);
@@ -61,8 +61,9 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
         getLocation().setPosition(newLocation);
         moveVector = new Point(0, 0);
 
-        healthBar.setPos(new Point(this.getLocation().getX() - 16, this.getLocation().getY() - 26));
 
+
+        healthBar.setPos(new Point(this.getLocation().getX() - 16, this.getLocation().getY() - 26));
         if (damageUpdateCount >= 25565) {
             damageUpdateCount = 0;
         }else {

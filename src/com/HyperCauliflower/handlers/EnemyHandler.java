@@ -31,6 +31,7 @@ public class EnemyHandler implements Updatable, Renderable{
     @Override
     public void update(GameState game) {
 
+        //keeps enemies out of the main updatable loop which i think is nice and tidy
         for (Entity e : enemies){
             e.update(game);
             if (e.getHealth() <= 0){
@@ -42,9 +43,6 @@ public class EnemyHandler implements Updatable, Renderable{
             enemies.add(addNewSpawn());
             totalSpawns ++;
         }
-
-        //keeps enemies out of the main updatable loop which i think is nice and tidy
-
     }
 
 
@@ -56,8 +54,6 @@ public class EnemyHandler implements Updatable, Renderable{
     }
 
     private Entity addNewSpawn(){
-        // todo determine the type of enemy based on the location of the spawn in here
-
         //todo create random enemy based on the spawn location and biome, but for now just use a zombie
         return new Zombie(spriteSheetHandler.get("zombie"),"zombie",getSpawnLocation(),100);
     }
