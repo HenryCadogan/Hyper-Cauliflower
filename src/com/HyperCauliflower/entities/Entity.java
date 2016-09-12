@@ -59,8 +59,6 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
         getLocation().setPosition(newLocation);
         moveVector = new Point(0, 0);
 
-
-
         healthBar.setPos(new Point(this.getLocation().getX() - 16, this.getLocation().getY() - 26));
         if (damageUpdateCount >= 25565) {
             damageUpdateCount = 0;

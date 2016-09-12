@@ -73,7 +73,7 @@ public class GameState extends BasicGameState {
         renderables.add(testButton);
 
         //grouping the players to do stuff with
-        players = new Player[4];
+        players = new Player[1];
         players[0] = player;
 
     }
@@ -182,7 +182,7 @@ public class GameState extends BasicGameState {
         // dont want to initialise properly or it wont throw the error catch at the bottom
         int playerIndex = -1;
         double newDistance = 0;
-        for (int i =0; i < players.length -1;i++){
+        for (int i =0; i < players.length;i++){
             //calculate distance between the points
             Player player = players[i];
             newDistance = Math.sqrt((Math.pow(player.getLocation().getX() - point.getX(),2)+ (Math.pow(player.getLocation().getY() - point.getY(),2))));
