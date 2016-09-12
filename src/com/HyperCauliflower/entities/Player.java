@@ -29,7 +29,7 @@ public class Player extends Entity {
     ArrayList<Sound> hurtSounds;
 
     public Player(SpriteSheetData spriteSheetData, String name, Point location, int health) {
-        super(spriteSheetData, name, location, health);
+        super(spriteSheetData, name, location, health, 16);
         setMoveSpeed(5);
         this.experiencePoints = 0;
         this.inventory = new Inventory();

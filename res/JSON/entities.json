@@ -1,0 +1,9 @@
+{
+  "mobs":[
+    {
+      "name": "zombie",
+      "health": 5,
+      "radius": 16
+    }
+  ]
+}

@@ -7,10 +7,10 @@ import com.HyperCauliflower.states.Point;
 /**
  * Created by Matt on 24/06/2016.
  */
-public abstract class Mob extends Entity{
+public class Mob extends Entity{
 
-    public Mob(SpriteSheetData spriteSheetData, String name, Point location, int health){
-        super(spriteSheetData,"mob", location,health);
+    public Mob(SpriteSheetData spriteSheetData, String name, Point location, int health, int radius){
+        super(spriteSheetData,"mob", location, health, radius);
     }
 
     @Override

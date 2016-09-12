@@ -6,7 +6,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.lwjgl.Sys;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,7 +14,7 @@ import java.util.HashMap;
 /**
  * Created by Matt on 27/08/2016.
  */
-public class WeaponHandler {
+public class ItemHandler {
 
     private enum WeaponType{
         RANGED_STANDARD
@@ -24,7 +23,7 @@ public class WeaponHandler {
     private HashMap<String, JSONObject> weapons;
     private HashMap<String, JSONObject> armors;
     private HashMap<String, ProjectileFactory> projectiles;
-    public WeaponHandler(SpriteSheetData projectileSprites){
+    public ItemHandler(SpriteSheetData projectileSprites){
         try {
             weapons = new HashMap<>();
             projectiles = new HashMap<>();
@@ -67,7 +66,7 @@ public class WeaponHandler {
                         name,
                         ((Number)weapon.get("firerate")).intValue(),
                         game,
-                        projectiles.get((String)weapon.get("projectile")));
+                        projectiles.get(weapon.get("projectile")));
             default:
                 return null;
         }

@@ -1,12 +1,14 @@
 package com.HyperCauliflower.states;
 
+import com.HyperCauliflower.entities.Mob;
+import com.HyperCauliflower.entities.MobFactory;
+import com.HyperCauliflower.entities.MobHandler;
 import com.HyperCauliflower.entities.Player;
-import com.HyperCauliflower.handlers.EnemyHandler;
 import com.HyperCauliflower.handlers.SaveHandler;
 import com.HyperCauliflower.handlers.SpriteSheetHandler;
+import com.HyperCauliflower.items.ItemHandler;
 import com.HyperCauliflower.items.Projectile;
 import com.HyperCauliflower.items.Weapon;
-import com.HyperCauliflower.items.WeaponHandler;
 import com.HyperCauliflower.ui.Button;
 import com.HyperCauliflower.world.StructureLayer;
 import com.HyperCauliflower.world.TerrainLayer;
@@ -32,27 +34,27 @@ public class GameState extends BasicGameState {
     private int delta;
     private TerrainLayer terrainLayer;
     private StructureLayer structureLayer;
-    private GameContainer gameContainer;
-    private EnemyHandler enemyHandler;
     private Player[] players;
+    private int seed;
+    private MobFactory factory;
+    private SpriteSheetHandler spriteSheetHandler;
 
     public int getID() {
         return Game.State.GAME.ordinal();
     }
 
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        this.gameContainer = gameContainer;
-        SpriteSheetHandler spriteSheetHandler = new SpriteSheetHandler();
-        WeaponHandler weaponHandler = new WeaponHandler(spriteSheetHandler.get("projectiles"));
+        spriteSheetHandler = new SpriteSheetHandler();
+        MobHandler mobHandler = new MobHandler();
+        ItemHandler weaponHandler = new ItemHandler(spriteSheetHandler.get("projectiles"));
         SaveData s = new SaveHandler().get("test");
         cameraPosition = s.getLocation();
-        terrainLayer = new TerrainLayer(s.getSeed(),cameraPosition.translate(new Point(-Main.INTERNAL_WIDTH/2,-Main.INTERNAL_HEIGHT/2)));
-        structureLayer = new StructureLayer(s.getSeed());
-        renderables = new ArrayList<Renderable>();
-        renderables.add(terrainLayer);
-        renderables.add(structureLayer);
-        updatables = new ArrayList<Updatable>();
-        updatables.add(terrainLayer);
+        seed = s.getSeed();
+
+        renderables = new ArrayList<>();
+        updatables = new ArrayList<>();
+
+        initLayers();
 
         player = new Player(spriteSheetHandler.get("entities"),"player",cameraPosition,100);
         updatables.add(player);
@@ -61,24 +63,14 @@ public class GameState extends BasicGameState {
         Weapon testBow = weaponHandler.generateWeapon("bow",this);
         player.getInventory().equipWeapon(testBow);
 
-        //stuff for particles
-        pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png", 2000);
-        pSystem.usePoints();
-        renderables.add(player);
-        pSystem.addEmitter(player.footsteps);
-        pSystem.setVisible(true);
-        pSystem.setPosition(0,0);
-        player.enableFootsteps();
-        pSystem.setBlendingMode(ParticleSystem.BLEND_COMBINE);
+        //temporary mob factory
+        factory = mobHandler.getFactory("zombie");
+
+        initParticles();
 
         //test ui
         Button testButton = new Button(new Point(20,20),200,40);
         renderables.add(testButton);
-
-        //enemies and shiz
-        enemyHandler = new EnemyHandler(15);
-        renderables.add(enemyHandler);
-        updatables.add(enemyHandler);
 
         //grouping the players to do stuff with
         players = new Player[4];
@@ -103,7 +95,9 @@ public class GameState extends BasicGameState {
         this.cameraPosition = player.getLocation();
         boolean moving = false;
         player.enableFootsteps();
-
+        Mob fuckOffMiguel = factory.produce(spriteSheetHandler.get("entities"), new Point(300,167));
+        updatables.add(fuckOffMiguel);
+        renderables.add(fuckOffMiguel);
         //System.out.println(terrainLayer.getWalkable(player.getLocation().getX(),player.getLocation().getY()));
 
         this.delta = delta;
@@ -141,6 +135,23 @@ public class GameState extends BasicGameState {
         pSystem.update(delta);
         pSystem.setPosition(Main.INTERNAL_WIDTH/2-cameraPosition.getX(),Main.INTERNAL_HEIGHT/2-cameraPosition.getY());
 
+    }
+    private void initLayers(){
+        terrainLayer = new TerrainLayer(seed,cameraPosition.translate(new Point(-Main.INTERNAL_WIDTH/2,-Main.INTERNAL_HEIGHT/2)));
+        structureLayer = new StructureLayer(seed);
+        renderables.add(terrainLayer);
+        renderables.add(structureLayer);
+        updatables.add(terrainLayer);
+    }
+    private void initParticles(){
+        pSystem = new ParticleSystem("res/sprites/Particles/footsteps.png", 2000);
+        pSystem.usePoints();
+        renderables.add(player);
+        pSystem.addEmitter(player.footsteps);
+        pSystem.setVisible(true);
+        pSystem.setPosition(0,0);
+        player.enableFootsteps();
+        pSystem.setBlendingMode(ParticleSystem.BLEND_COMBINE);
     }
 
     public Point getCameraPosition() {

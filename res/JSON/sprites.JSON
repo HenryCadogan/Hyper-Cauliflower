@@ -16,13 +16,7 @@
     },
     {
       "name": "entities",
-      "path": "res/sprites/player.png",
-      "height": 32,
-      "width": 32
-    },
-    {
-      "name": "zombie",
-      "path": "res/sprites/zombie.png",
+      "path": "res/sprites/entities.png",
       "height": 32,
       "width": 32
     },
@@ -59,6 +53,12 @@
       "startFrame": 0,
       "endFrame": 0,
       "row": 0
+    },
+    {
+      "name": "zombie",
+      "startFrame":0,
+      "endFrame":0,
+      "row":1
     }
   ],
 

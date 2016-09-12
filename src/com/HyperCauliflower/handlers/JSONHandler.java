@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public abstract class JSONHandler<T> {
 
-    private static String PATH = "res/JSON/configs.JSON";
+    private static String PATH = "res/JSON/sprites.JSON";
     private JSONArray obj;
     private HashMap<String,T> map;
 
