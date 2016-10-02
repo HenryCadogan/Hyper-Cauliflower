@@ -32,7 +32,6 @@ public class Player extends Entity {
     private final int FIRE_RATE_MOD = 10;
     int staminaDrain = 3;
     int staminaRecovery = 5;
-    private Bar healthBar;
     int maxStamina = 100;
     int staminaCooldown = 10;
 
@@ -147,7 +146,7 @@ public class Player extends Entity {
         footsteps.setPosition(this.getLocation().getX(), this.getLocation().getY(), true);
         rotatePlayer(offset);
         super.render(graphics, offset);
-        healthBar.render(graphics,offset,this.getHealth());
+        this.healthBar.render(graphics,offset,this.getHealth());
     }
 
     public int getAnimationFrame() {
