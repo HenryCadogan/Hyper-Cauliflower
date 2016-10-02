@@ -19,7 +19,7 @@ public abstract class Entity extends Hitbox implements Renderable, Updatable {
     private int moveSpeed;
     private SpriteSheetData spriteSheetData;
     private String name;
-    private int health, level, stamina;
+    int health, level, stamina;
     public int experiencePoints;
     protected double facing;
     private double lastHitTime = 0;

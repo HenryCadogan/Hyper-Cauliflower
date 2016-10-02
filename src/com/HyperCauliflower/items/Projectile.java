@@ -7,6 +7,11 @@ import com.HyperCauliflower.states.Renderable;
 import com.HyperCauliflower.states.Updatable;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.particles.ConfigurableEmitter;
+import org.newdawn.slick.particles.ParticleEmitter;
+import org.newdawn.slick.particles.ParticleIO;
+
+import java.io.IOException;
 import org.newdawn.slick.font.effects.ConfigurableEffect;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.particles.ConfigurableEmitter;
@@ -20,6 +25,7 @@ public class Projectile extends Hitbox implements Updatable,Renderable{
     private Image sprite;
     private double direction;
     private ConfigurableEmitter pEffect;
+    private ConfigurableEmitter trail;
 
 
     public Projectile(double direction, Point pos,int speed, Image sprite){
@@ -32,11 +38,23 @@ public class Projectile extends Hitbox implements Updatable,Renderable{
         pEffect = new ConfigurableEmitter("Insert cool name here");
 
 
+        try {
+            trail = ParticleIO.loadEmitter("/res/sprites/Particles/trail.xml");
+            trail.setEnabled(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(3);
+        }
     }
 
     @Override
     public void update(GameState game) {
         move();
+        moveTrail();
+    }
+
+    private void moveTrail() {
+        //System.out.println("pos is: " + pos.getX()+ " , " + pos.getY());
     }
 
     @Override
@@ -45,6 +63,7 @@ public class Projectile extends Hitbox implements Updatable,Renderable{
         Point p = pos.translate(offset);
         graphics.rotate(p.getX(),p.getY(),((float)Math.toDegrees(direction)+90));
         graphics.drawImage(this.sprite,p.getExactX(),p.getExactY());
+        trail.setPosition(pos.getX() + offset.getX(),pos.getY() + offset.getY());
         graphics.popTransform();
     }
 
@@ -53,4 +72,7 @@ public class Projectile extends Hitbox implements Updatable,Renderable{
         pos = pos.translate(velocity);
     }
 
+    public ParticleEmitter getTrail(){
+        return trail;
+    }
 }

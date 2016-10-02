@@ -4,6 +4,7 @@ import com.HyperCauliflower.handlers.SpriteSheetData;
 import com.HyperCauliflower.items.Inventory;
 import com.HyperCauliflower.states.GameState;
 import com.HyperCauliflower.states.Point;
+import com.HyperCauliflower.ui.Bar;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -27,6 +28,13 @@ public class Player extends Entity {
     private final int MOVE_MODE = 0;
     private int fireUpdateCount;
     ArrayList<Sound> hurtSounds;
+    private double lastTime = 0;
+    private final int FIRE_RATE_MOD = 10;
+    int staminaDrain = 3;
+    int staminaRecovery = 5;
+    private Bar healthBar;
+    int maxStamina = 100;
+    int staminaCooldown = 10;
 
     public Player(SpriteSheetData spriteSheetData, String name, Point location, int health) {
         super(spriteSheetData, name, location, health, 16);
@@ -39,7 +47,6 @@ public class Player extends Entity {
         try {
             footsteps = ParticleIO.loadEmitter("/res/sprites/Particles/footsteps.xml");
             footsteps.setEnabled(true);
-
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(3);
@@ -83,10 +90,10 @@ public class Player extends Entity {
         return this.inventory;
     }
 
-    public void move(int dir) {
+    public void move(int dir, boolean running) {
         enableFootsteps();
         //todo make holding shift run but drain stamina
-        //todo add in option for different movement modes
+        //todo Sort out stupid Movement that matt added in
         if (MOVE_MODE == 0) {
             int shiftMod = 0;
 
@@ -103,8 +110,16 @@ public class Player extends Entity {
             if (dir == 3) {
                 direction = (facing - Math.PI / 2);
             }
+            if (running){
+                drainStamina(3);
+            //heeeeelp
+            } else {
+
+            }
+
 
             moveVector = moveVector.translate(new Point(Math.cos(direction), Math.sin(direction)));
+
         }
     }
 
@@ -132,7 +147,7 @@ public class Player extends Entity {
         footsteps.setPosition(this.getLocation().getX(), this.getLocation().getY(), true);
         rotatePlayer(offset);
         super.render(graphics, offset);
-        // render the weapon image on top
+        healthBar.render(graphics,offset,this.getHealth());
     }
 
     public int getAnimationFrame() {
@@ -178,8 +193,28 @@ public class Player extends Entity {
             hurtSounds.get(randomSoundNo).play(1.0F, 0.3F);
         }
     }
-}
 
+    int getStamina() {
+        return this.stamina;
+    }
+
+    void drainStamina(int drainAmount) {
+        if (this.stamina >= drainAmount) {
+            this.stamina -= drainAmount;
+        } else {
+            staminaCooldown += 1;
+        }
+    }
+
+    void recoverStamina(int staminaRecovery){
+        if (this.getStamina() <= this.maxStamina - staminaRecovery){
+            this.stamina = this.maxStamina;
+        } else {
+            this.stamina += staminaRecovery;
+        }
+    }
+
+}
 
 
 

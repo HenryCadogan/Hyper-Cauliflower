@@ -38,6 +38,8 @@ public class GameState extends BasicGameState {
     private int seed;
     private MobFactory factory;
     private SpriteSheetHandler spriteSheetHandler;
+    private GameContainer gameContainer;
+    private ArrayList<Integer> directions = new ArrayList(0);
 
     public int getID() {
         return Game.State.GAME.ordinal();
@@ -97,30 +99,43 @@ public class GameState extends BasicGameState {
         this.mousePos = new Point(gameContainer.getInput().getMouseX(),gameContainer.getInput().getMouseY());
         this.cameraPosition = player.getLocation();
         boolean moving = false;
+        boolean shift = false;
         player.enableFootsteps();
 
         this.delta = delta;
+
+        //is firing
         if (gameContainer.getInput().isMouseButtonDown(0)) {
             player.usePrimary();
         }
+        // is taking damage
         if (gameContainer.getInput().isMouseButtonDown(1)){
             player.takeDamage(12);
         }
+        //is holding shift
+        if (gameContainer.getInput().isKeyDown(Input.KEY_LSHIFT)){
+            shift = true;
+        }
+        //movement
         if (gameContainer.getInput().isKeyDown(Input.KEY_W)) {
-            player.move(0);
+            directions.add(0);
             moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_S)){
-            player.move(2);
+            directions.add(2);
             moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_A)){
-            player.move(3);
+            directions.add(3);
             moving = true;
         }
         if (gameContainer.getInput().isKeyDown(Input.KEY_D)){
-            player.move(1);
+            directions.add(1);
             moving = true;
+        }
+        //calling move method for all movements
+        for (int i : directions) {
+            player.move(i, shift);
         }
 
         if (!moving){
@@ -174,6 +189,7 @@ public class GameState extends BasicGameState {
     public void addProjectile(Projectile p){
         updatables.add(p);
         renderables.add(p);
+        pSystem.addEmitter(p.getTrail());
     }
 
     public Player getClosestPlayerTo(Point point){
